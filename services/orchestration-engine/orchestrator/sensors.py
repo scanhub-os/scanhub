@@ -55,7 +55,7 @@ def on_run_success(context: RunStatusSensorContext, notifier_workflow_manager: W
 
 
 @run_status_sensor(
-    run_status=DagsterRunStatus.SUCCESS,
+    run_status=DagsterRunStatus.FAILURE,
     default_status=DefaultSensorStatus.RUNNING,
     monitor_all_code_locations=True,
     minimum_interval_seconds=5,
@@ -69,8 +69,10 @@ def on_run_failure(context: RunStatusSensorContext, notifier_workflow_manager: W
     informational message indicating that the DAG status could not be reported.
 
     Args:
-        context (RunStatusSensorContext): The context object containing information about the DAG run and logging utilities.
-        notifier_workflow_manager (WorkflowManagerNotifier): The notifier used to send DAG status updates.
+        context (RunStatusSensorContext):
+            The context object containing information about the DAG run and logging utilities.
+        notifier_workflow_manager (WorkflowManagerNotifier):
+            The notifier used to send DAG status updates.
 
     Returns:
         None
@@ -88,7 +90,7 @@ def on_run_failure(context: RunStatusSensorContext, notifier_workflow_manager: W
         context.log.info("Run failed, but can not report DAG status, missing access_token and/or result_id.")
 
 @run_status_sensor(
-    run_status=DagsterRunStatus.SUCCESS,
+    run_status=DagsterRunStatus.CANCELED,
     default_status=DefaultSensorStatus.RUNNING,
     monitor_all_code_locations=True,
     minimum_interval_seconds=5,
