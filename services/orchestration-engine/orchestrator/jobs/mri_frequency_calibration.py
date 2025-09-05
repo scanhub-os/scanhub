@@ -1,3 +1,6 @@
+# Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
+# SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
+
 """MRI calibration assets."""
 import ismrmrd
 import numpy as np
@@ -14,13 +17,28 @@ def frequency_calibration_op(
     context: OpExecutionContext,
     data: AcquisitionData,
     dag_config: DAGConfiguration,
-    notigier_device_manager: DeviceManagerNotifier,
+    notifier_device_manager: DeviceManagerNotifier,
 ) -> None:
-    """Perform frequency calibration."""
-    context.log.info("AcquisitionData: %s", data)
+    """Perform frequency calibration on MRI acquisition data.
+
+    This operation reads an ISMRMRD file containing MRI acquisition data, computes the frequency offset using FFT,
+    calculates the signal-to-noise ratio (SNR) and full width at half maximum (FWHM), and updates the device's
+    larmor frequency parameter accordingly. The updated parameter is sent to the device manager notifier.
+
+    Args:
+        context (OpExecutionContext): The execution context for logging and operation metadata.
+        data (AcquisitionData): The acquisition data containing device parameters and the path to the ISMRMRD file.
+        dag_config (DAGConfiguration): The DAG configuration, including user access token.
+        notifier_device_manager (DeviceManagerNotifier): The notifier for sending device parameter updates.
+
+    Returns:
+        None
+
+    """
     parameter = data.device_parameter
     context.log.info(f"Received device parameters (device id: {data.device_id}): {parameter}")
 
+    # Read ismrmrd file provided by acquisition data asset
     with ismrmrd.File(data.mrd_path, "r") as f:
         ds = f[list(f.keys())[0]]
         header = ds.header
@@ -58,24 +76,25 @@ def frequency_calibration_op(
 
     # Correct device parameter
     parameter["larmor_frequency"] = f0 + freq_offset
-    notigier_device_manager.send_device_parameter_update(
+    notifier_device_manager.send_device_parameter_update(
         device_id=data.device_id, access_token=dag_config.user_access_token, parameter=parameter,
     )
 
-
-# @op(ins={"start": In(Nothing), })
-# def success_notify_op(context: OpExecutionContext, scanhub_notifier: BackendNotifier) -> None:
-#     """Single, end-of-run success signal."""
-#     scanhub_notifier.send_dag_success()
-#     context.log.info("Backend notification send.")
 
 @job(
     name="frequency_calibration",
     description="Read ismrmrd data and adjust Larmor frequency.",
 )
 def frequency_calibration_job() -> None:
-    """Calibrate Larmor frequency."""
+    """Perform the Larmor frequency calibration job.
+
+    This function loads acquisition data and then runs the frequency calibration
+    operation using loaded ISMRMRD data. It is intended to be used as a job in the
+    orchestration engine for MRI frequency calibration.
+
+    Returns:
+        None
+
+    """
     data = acquisition_data_op()
     frequency_calibration_op(data)
-    # done = frequency_calibration_op(data)
-    # success_notify_op(start=done)

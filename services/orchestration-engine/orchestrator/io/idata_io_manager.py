@@ -1,3 +1,6 @@
+# Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
+# SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
+
 """Dagster IO Manager for mrpro IData object."""
 from dataclasses import dataclass
 from pathlib import Path
@@ -19,7 +22,20 @@ class IDataIOManager(ConfigurableIOManager):
     """IO manager for mrpro IData object."""
 
     def handle_output(self, context: OutputContext, obj: IDataContext) -> None:
-        """Write idata to dicom folder."""
+        """Handle the output of a data processing step by saving the data as DICOM files.
+
+        Args:
+            context (OutputContext): The context object providing logging and metadata methods.
+            obj (IDataContext): The data context containing the data and DAG configuration.
+
+        Raises:
+            AttributeError: If the output directory is not defined in the DAG configuration.
+
+        Side Effects:
+            - Saves the data as DICOM files in the specified output directory.
+            - Adds output metadata including the output directory path and list of stored files.
+
+        """
         # Decide where to write based on asset key
         if not obj.dag_config.output_directory:
             context.log.error("Output directory not defined")
@@ -36,7 +52,22 @@ class IDataIOManager(ConfigurableIOManager):
         })
 
     def load_input(self, context: InputContext) -> IData:
-        """Read idata from dicom folder."""
+        """Load input DICOM data from a specified directory using metadata from the provided context.
+
+        Args:
+            context (InputContext): The context containing metadata and logging utilities.
+
+        Returns:
+            IData: An IData instance loaded from the DICOM folder.
+
+        Raises:
+            AttributeError: If required metadata or the output directory is missing.
+            FileNotFoundError: If the specified DICOM folder does not exist.
+
+        Logs:
+            Errors are logged if metadata or directory information is missing or invalid.
+
+        """
         if (meta := context.metadata) is None:
             context.log.error("No metadata, cannot save result")
             raise AttributeError

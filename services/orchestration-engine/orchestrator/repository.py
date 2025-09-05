@@ -1,3 +1,6 @@
+# Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
+# SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
+
 """Define dagster repository."""
 import os
 
@@ -5,7 +8,7 @@ from dagster import AssetSelection, Definitions, define_asset_job, in_process_ex
 from scanhub_libraries.resources import DAG_CONFIG_KEY, DATA_LAKE_KEY, IDATA_IO_KEY, NOTIFIER_DM_KEY, NOTIFIER_WM_KEY
 from scanhub_libraries.resources.dag_config import DAGConfiguration
 from scanhub_libraries.resources.data_lake import DataLakeResource
-from scanhub_libraries.resources.notifier import WorkflowManagerNotifier, DeviceManagerNotifier
+from scanhub_libraries.resources.notifier import DeviceManagerNotifier, WorkflowManagerNotifier
 
 from orchestrator.assets.mrpro_direct_reconstruction import mrpro_direct_reconstruction
 from orchestrator.io.acquisition_data import acquisition_data_asset
@@ -16,6 +19,7 @@ from orchestrator.sensors import on_run_canceled, on_run_failure, on_run_success
 DATA_LAKE_DIR = os.getenv("DATA_LAKE_DIRECTORY", "data")
 DEVICE_MANAGER_URI = "http://device-manager:8000/api/v1/device"
 WORKFLOW_MANAGER_URI = "http://workflow-manager:8000/api/v1/workflowmanager"
+
 
 assets = [
     acquisition_data_asset,
