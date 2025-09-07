@@ -11,7 +11,6 @@ TODO: How to handle tasks, and where to trigger the device task?
 
 """
 import json
-import logging
 import os
 from pathlib import Path
 from typing import Annotated, Any
@@ -38,7 +37,6 @@ from scanhub_libraries.models import (
 )
 from scanhub_libraries.resources import DAG_CONFIG_KEY
 from scanhub_libraries.resources.dag_config import DAGConfiguration
-# from scanhub_libraries.resources.notifier import BackendNotifier
 from scanhub_libraries.security import get_current_user
 from scanhub_libraries.utils import calc_age_from_date
 
@@ -229,11 +227,6 @@ def handle_dag_task_trigger(
                 user_access_token=access_token,
                 output_result_id=str(new_result_out.id),
             ),
-            # NOTIFIER_KEY: BackendNotifier(
-            #     success_callback_url=f"{WORKFLOW_MANAGER_URI}/result_ready/{new_result_out.id}",
-            #     devicemanager_url=f"{DEVICE_MANAGER_URI}/parameter/",
-            #     access_token=access_token,
-            # ),
         }
 
         try:

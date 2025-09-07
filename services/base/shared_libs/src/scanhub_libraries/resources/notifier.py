@@ -28,7 +28,7 @@ class DeviceManagerNotifier(ConfigurableResource):
     def send_device_parameter_update(self, device_id: str, access_token: str, parameter: dict) -> None:
         """Notify backend about device parameter update and send parameters."""
         headers = {"Authorization": "Bearer " + access_token}
-        url = self.base_url.rstrip("/") + f"/{device_id}"
+        url = self.base_url.rstrip("/") + f"/parameter/{device_id}"
         with httpx.Client(timeout=self.timeout) as client:
             response = client.put(url, json=parameter, headers=headers)
             response.raise_for_status()
