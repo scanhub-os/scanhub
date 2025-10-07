@@ -427,12 +427,8 @@
 <span class="s2">        ... on RepositoryConnection {</span>
 <span class="s2">          nodes {</span>
 <span class="s2">            name</span>
-<span class="s2">            location {</span>
-<span class="s2">              name</span>
-<span class="s2">            }</span>
-<span class="s2">            pipelines {</span>
-<span class="s2">              name</span>
-<span class="s2">            }</span>
+<span class="s2">            location { name }</span>
+<span class="s2">            jobs { name }</span>
 <span class="s2">          }</span>
 <span class="s2">        }</span>
 <span class="s2">      }</span>
@@ -445,8 +441,10 @@
     <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;repositoriesOrError&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]:</span>
         <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
         <span class="n">location_name</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">repo</span><span class="p">[</span><span class="s2">&quot;pipelines&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">pipeline</span> <span class="ow">in</span> <span class="n">repo</span><span class="p">[</span><span class="s2">&quot;jobs&quot;</span><span class="p">]:</span>
             <span class="n">job_name</span> <span class="o">=</span> <span class="n">pipeline</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">job_name</span> <span class="o">==</span> <span class="s2">&quot;__ASSET_JOB&quot;</span><span class="p">:</span>
+              <span class="k">continue</span>
             <span class="n">job_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">location_name</span><span class="si">}</span><span class="s2">::</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">::</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s2">&quot;job_id&quot;</span><span class="p">:</span> <span class="n">job_id</span><span class="p">,</span>

@@ -394,343 +394,279 @@
    <h1>HTTP Routing Table</h1>
 
    <div class="modindex-jumpbox">
-   <a href="#cap-/api"><strong>/api</strong></a>
+   <a href="#cap-/"><strong>/</strong></a> | 
+   <a href="#cap-/api"><strong>/api</strong></a> | 
+   <a href="#cap-/health"><strong>/health</strong></a> | 
+   <a href="#cap-/readiness"><strong>/readiness</strong></a> | 
+   <a href="#cap-/{patient_id}"><strong>/{patient_id}</strong></a>
    </div>
 
    <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/"><td></td><td>
+       <strong>/</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_ui_patient_manager.html#get--"><code class="xref">GET /</code></a></td><td>
+       <em>Get Patient List</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_ui_patient_manager.html#post--"><code class="xref">POST /</code></a></td><td>
+       <em>Create Patient</em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-/api"><td></td><td>
        <strong>/api</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_device_manager.html#get--api-v1-device-"><code class="xref">GET /api/v1/device/</code></a></td><td>
+       <a href="api_device.html#get--api-v1-device-"><code class="xref">GET /api/v1/device/</code></a></td><td>
        <em>Get Devices</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_device_manager.html#get--api-v1-device-health-readiness"><code class="xref">GET /api/v1/device/health/readiness</code></a></td><td>
+       <a href="api_device.html#get--api-v1-device-health-readiness"><code class="xref">GET /api/v1/device/health/readiness</code></a></td><td>
        <em>Readiness</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_device_manager.html#get--api-v1-device-device_id"><code class="xref">GET /api/v1/device/{device_id}</code></a></td><td>
+       <a href="api_device.html#get--api-v1-device-device_id"><code class="xref">GET /api/v1/device/{device_id}</code></a></td><td>
        <em>Get Device</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-all-patient_id"><code class="xref">GET /api/v1/exam/all/{patient_id}</code></a></td><td>
-       <em>Get All Patient Exams</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-all-patient_id"><code class="xref">GET /api/v1/exam/all/{patient_id}</code></a></td><td>
+       <em>Exam Get All</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-dcm-workflow_id-task_id-result_id-filename"><code class="xref">GET /api/v1/exam/dcm/{workflow_id}/{task_id}/{result_id}/{filename}</code></a></td><td>
-       <em>Get DICOM result</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-health-readiness"><code class="xref">GET /api/v1/exam/health/readiness</code></a></td><td>
+       <a href="api_exam.html#get--api-v1-exam-health-readiness"><code class="xref">GET /api/v1/exam/health/readiness</code></a></td><td>
        <em>Readiness</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-mrd-workflow_id-task_id-result_id-data"><code class="xref">GET /api/v1/exam/mrd/{workflow_id}/{task_id}/{result_id}/data</code></a></td><td>
-       <em>Get MRD (binary, interleaved float32 complex)</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-job-all-procedure_id"><code class="xref">GET /api/v1/exam/job/all/{procedure_id}</code></a></td><td>
+       <em>Job Get All</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-mrd-workflow_id-task_id-result_id-meta"><code class="xref">GET /api/v1/exam/mrd/{workflow_id}/{task_id}/{result_id}/meta</code></a></td><td>
-       <em>Get ISMRMRD metadata (indexed acquisitions)</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-job-job_id"><code class="xref">GET /api/v1/exam/job/{job_id}</code></a></td><td>
+       <em>Job Get</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-result-all-task_id"><code class="xref">GET /api/v1/exam/result/all/{task_id}</code></a></td><td>
-       <em>Get All Task Results</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-procedure-all-exam_id"><code class="xref">GET /api/v1/exam/procedure/all/{exam_id}</code></a></td><td>
+       <em>Procedure Get All</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-result-result_id"><code class="xref">GET /api/v1/exam/result/{result_id}</code></a></td><td>
-       <em>Get Result</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-procedure-procedure_id"><code class="xref">GET /api/v1/exam/procedure/{procedure_id}</code></a></td><td>
+       <em>Procedure Get</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-sequence-sequence_id"><code class="xref">GET /api/v1/exam/sequence/{sequence_id}</code></a></td><td>
-       <em>Get Mri Sequence By Id</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-record-all-job_id"><code class="xref">GET /api/v1/exam/record/all/{job_id}</code></a></td><td>
+       <em>Record Get All</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-sequence-sequence_id-file"><code class="xref">GET /api/v1/exam/sequence/{sequence_id}/file</code></a></td><td>
-       <em>Get Mri Sequence File By Id</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-record-record_id"><code class="xref">GET /api/v1/exam/record/{record_id}</code></a></td><td>
+       <em>Record Get</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-sequence-sequence_id-header"><code class="xref">GET /api/v1/exam/sequence/{sequence_id}/header</code></a></td><td>
-       <em>Get Mri Sequence Header File By Id</em></td></tr>
+       <a href="api_exam.html#get--api-v1-exam-exam_id"><code class="xref">GET /api/v1/exam/{exam_id}</code></a></td><td>
+       <em>Exam Get</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-sequences-all"><code class="xref">GET /api/v1/exam/sequences/all</code></a></td><td>
-       <em>Get All Mri Sequences</em></td></tr>
+       <a href="api_mri_sequences.html#get--api-v1-mri-sequences-"><code class="xref">GET /api/v1/mri/sequences/</code></a></td><td>
+       <em>Get Mri Sequences Endpoint</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-task-all-workflow_id"><code class="xref">GET /api/v1/exam/task/all/{workflow_id}</code></a></td><td>
-       <em>Get All Workflow Tasks</em></td></tr>
+       <a href="api_mri_sequences.html#get--api-v1-mri-sequences-mri-sequence-file-mri_sequence_id"><code class="xref">GET /api/v1/mri/sequences/mri-sequence-file/{mri_sequence_id}</code></a></td><td>
+       <em>Get Mri Sequence File By Id Endpoint</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-task-templates-all"><code class="xref">GET /api/v1/exam/task/templates/all</code></a></td><td>
-       <em>Get All Task Templates</em></td></tr>
+       <a href="api_mri_sequences.html#get--api-v1-mri-sequences-mri-sequence-plot-seq_id"><code class="xref">GET /api/v1/mri/sequences/mri-sequence-plot/{seq_id}</code></a></td><td>
+       <em>Plot Mri Sequence</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-task-task_id"><code class="xref">GET /api/v1/exam/task/{task_id}</code></a></td><td>
-       <em>Get Task</em></td></tr>
+       <a href="api_mri_sequences.html#get--api-v1-mri-sequences-mri_sequence_id"><code class="xref">GET /api/v1/mri/sequences/{mri_sequence_id}</code></a></td><td>
+       <em>Get Mri Sequence By Id Endpoint</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-templates-all"><code class="xref">GET /api/v1/exam/templates/all</code></a></td><td>
-       <em>Get All Exam Templates</em></td></tr>
+       <a href="api_workflow.html#get--api-v1-workflow-"><code class="xref">GET /api/v1/workflow/</code></a></td><td>
+       <em>Get Workflow List</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-workflow-all-exam_id"><code class="xref">GET /api/v1/exam/workflow/all/{exam_id}</code></a></td><td>
-       <em>Get All Exam Workflows</em></td></tr>
+       <a href="api_workflow.html#get--api-v1-workflow-health-readiness"><code class="xref">GET /api/v1/workflow/health/readiness</code></a></td><td>
+       <em>Readiness</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-workflow-templates-all"><code class="xref">GET /api/v1/exam/workflow/templates/all</code></a></td><td>
-       <em>Get All Workflow Templates</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-workflow-workflow_id"><code class="xref">GET /api/v1/exam/workflow/{workflow_id}</code></a></td><td>
+       <a href="api_workflow.html#get--api-v1-workflow-workflow_id"><code class="xref">GET /api/v1/workflow/{workflow_id}</code></a></td><td>
        <em>Get Workflow</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#get--api-v1-exam-exam_id"><code class="xref">GET /api/v1/exam/{exam_id}</code></a></td><td>
-       <em>Get Exam</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_patient_manager.html#get--api-v1-patient-"><code class="xref">GET /api/v1/patient/</code></a></td><td>
-       <em>Get Patient List</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_patient_manager.html#get--api-v1-patient-health-readiness"><code class="xref">GET /api/v1/patient/health/readiness</code></a></td><td>
-       <em>Readiness</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_patient_manager.html#get--api-v1-patient-patient_id"><code class="xref">GET /api/v1/patient/{patient_id}</code></a></td><td>
-       <em>Get Patient</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_user_login_manager.html#get--api-v1-userlogin-checknousers"><code class="xref">GET /api/v1/userlogin/checknousers</code></a></td><td>
-       <em>Check No Users</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_user_login_manager.html#get--api-v1-userlogin-getallusers"><code class="xref">GET /api/v1/userlogin/getallusers</code></a></td><td>
-       <em>Get User List</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_user_login_manager.html#get--api-v1-userlogin-getcurrentuser"><code class="xref">GET /api/v1/userlogin/getcurrentuser</code></a></td><td>
-       <em>Get Current User</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_user_login_manager.html#get--api-v1-userlogin-health-readiness"><code class="xref">GET /api/v1/userlogin/health/readiness</code></a></td><td>
-       <em>Readiness</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_workflow_manager.html#get--api-v1-workflowmanager-health-readiness"><code class="xref">GET /api/v1/workflowmanager/health/readiness</code></a></td><td>
-       <em>Readiness</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_workflow_manager.html#get--api-v1-workflowmanager-tasks-"><code class="xref">GET /api/v1/workflowmanager/tasks/</code></a></td><td>
-       <em>List Available Tasks</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_device_manager.html#post--api-v1-device-createdevice"><code class="xref">POST /api/v1/device/createdevice</code></a></td><td>
+       <a href="api_device.html#post--api-v1-device-"><code class="xref">POST /api/v1/device/</code></a></td><td>
        <em>Create Device</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_device_manager.html#post--api-v1-device-start_scan_via_websocket"><code class="xref">POST /api/v1/device/start_scan_via_websocket</code></a></td><td>
-       <em>Start Scan Via Websocket</em></td></tr>
+       <a href="api_exam.html#post--api-v1-exam-"><code class="xref">POST /api/v1/exam/</code></a></td><td>
+       <em>Exam Create</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-"><code class="xref">POST /api/v1/exam/</code></a></td><td>
-       <em>Create Exam From Template</em></td></tr>
+       <a href="api_exam.html#post--api-v1-exam-job"><code class="xref">POST /api/v1/exam/job</code></a></td><td>
+       <em>Job Create</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-new"><code class="xref">POST /api/v1/exam/new</code></a></td><td>
-       <em>Create Exam</em></td></tr>
+       <a href="api_exam.html#post--api-v1-exam-procedure"><code class="xref">POST /api/v1/exam/procedure</code></a></td><td>
+       <em>Procedure Create</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-result"><code class="xref">POST /api/v1/exam/result</code></a></td><td>
-       <em>Create Blank Result</em></td></tr>
+       <a href="api_exam.html#post--api-v1-exam-record"><code class="xref">POST /api/v1/exam/record</code></a></td><td>
+       <em>Record Create</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-sequence"><code class="xref">POST /api/v1/exam/sequence</code></a></td><td>
-       <em>Create Mri Sequence</em></td></tr>
+       <a href="api_mri_acquisition.html#post--api-v1-mri-acquisitioncontrol-forward-status"><code class="xref">POST /api/v1/mri/acquisitioncontrol/forward-status</code></a></td><td>
+       <em>Forward Status</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-task"><code class="xref">POST /api/v1/exam/task</code></a></td><td>
-       <em>Create Task From Template</em></td></tr>
+       <a href="api_mri_acquisition.html#post--api-v1-mri-acquisitioncontrol-start-scan"><code class="xref">POST /api/v1/mri/acquisitioncontrol/start-scan</code></a></td><td>
+       <em>Start Scan</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-task-new"><code class="xref">POST /api/v1/exam/task/new</code></a></td><td>
-       <em>Create Task</em></td></tr>
+       <a href="api_mri_sequences.html#post--api-v1-mri-sequences-"><code class="xref">POST /api/v1/mri/sequences/</code></a></td><td>
+       <em>Create Mri Sequence Endpoint</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-workflow"><code class="xref">POST /api/v1/exam/workflow</code></a></td><td>
-       <em>Create Workflow From Template</em></td></tr>
+       <a href="api_mri_sequences.html#post--api-v1-mri-sequences-upload"><code class="xref">POST /api/v1/mri/sequences/upload</code></a></td><td>
+       <em>Upload Mri Sequence File</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#post--api-v1-exam-workflow-new"><code class="xref">POST /api/v1/exam/workflow/new</code></a></td><td>
+       <a href="api_workflow.html#post--api-v1-workflow-"><code class="xref">POST /api/v1/workflow/</code></a></td><td>
        <em>Create Workflow</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_patient_manager.html#post--api-v1-patient-"><code class="xref">POST /api/v1/patient/</code></a></td><td>
-       <em>Create Patient</em></td></tr>
+       <a href="api_workflow.html#post--api-v1-workflow-upload-record_id-"><code class="xref">POST /api/v1/workflow/upload/{record_id}/</code></a></td><td>
+       <em>Upload Result</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_user_login_manager.html#post--api-v1-userlogin-createfirstuser"><code class="xref">POST /api/v1/userlogin/createfirstuser</code></a></td><td>
-       <em>Create First User</em></td></tr>
+       <a href="api_device.html#put--api-v1-device-device_id"><code class="xref">PUT /api/v1/device/{device_id}</code></a></td><td>
+       <em>Update Device</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_user_login_manager.html#post--api-v1-userlogin-createuser"><code class="xref">POST /api/v1/userlogin/createuser</code></a></td><td>
-       <em>Create User</em></td></tr>
+       <a href="api_exam.html#put--api-v1-exam-job-job_id"><code class="xref">PUT /api/v1/exam/job/{job_id}</code></a></td><td>
+       <em>Job Update</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_user_login_manager.html#post--api-v1-userlogin-login"><code class="xref">POST /api/v1/userlogin/login</code></a></td><td>
-       <em>Login</em></td></tr>
+       <a href="api_exam.html#put--api-v1-exam-procedure-procedure_id"><code class="xref">PUT /api/v1/exam/procedure/{procedure_id}</code></a></td><td>
+       <em>Proceedure Update</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_user_login_manager.html#post--api-v1-userlogin-loginfromcookie"><code class="xref">POST /api/v1/userlogin/loginfromcookie</code></a></td><td>
-       <em>Loginfromcookie</em></td></tr>
+       <a href="api_exam.html#put--api-v1-exam-exam_id"><code class="xref">PUT /api/v1/exam/{exam_id}</code></a></td><td>
+       <em>Exam Update</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_user_login_manager.html#post--api-v1-userlogin-logout"><code class="xref">POST /api/v1/userlogin/logout</code></a></td><td>
-       <em>Logout</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_workflow_manager.html#post--api-v1-workflowmanager-result_ready-task_id-result_id"><code class="xref">POST /api/v1/workflowmanager/result_ready/{task_id}/{result_id}</code></a></td><td>
-       <em>Callback Results Ready</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_workflow_manager.html#post--api-v1-workflowmanager-trigger_task-task_id-"><code class="xref">POST /api/v1/workflowmanager/trigger_task/{task_id}/</code></a></td><td>
-       <em>Trigger Task</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_device_manager.html#put--api-v1-device-parameter-device_id"><code class="xref">PUT /api/v1/device/parameter/{device_id}</code></a></td><td>
-       <em>Update acquisition/device parameter</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_exam_manager.html#put--api-v1-exam-result-result_id"><code class="xref">PUT /api/v1/exam/result/{result_id}</code></a></td><td>
-       <em>Set Result</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_exam_manager.html#put--api-v1-exam-sequence-sequence_id"><code class="xref">PUT /api/v1/exam/sequence/{sequence_id}</code></a></td><td>
+       <a href="api_mri_sequences.html#put--api-v1-mri-sequences-mri_sequence_id"><code class="xref">PUT /api/v1/mri/sequences/{mri_sequence_id}</code></a></td><td>
        <em>Update Mri Sequence Endpoint</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#put--api-v1-exam-task-task_id"><code class="xref">PUT /api/v1/exam/task/{task_id}</code></a></td><td>
-       <em>Update Task</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_exam_manager.html#put--api-v1-exam-workflow-workflow_id"><code class="xref">PUT /api/v1/exam/workflow/{workflow_id}</code></a></td><td>
+       <a href="api_workflow.html#put--api-v1-workflow-workflow_id-"><code class="xref">PUT /api/v1/workflow/{workflow_id}/</code></a></td><td>
        <em>Update Workflow</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#put--api-v1-exam-exam_id"><code class="xref">PUT /api/v1/exam/{exam_id}</code></a></td><td>
-       <em>Update Exam</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_patient_manager.html#put--api-v1-patient-patient_id"><code class="xref">PUT /api/v1/patient/{patient_id}</code></a></td><td>
-       <em>Update Patient</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_user_login_manager.html#put--api-v1-userlogin-changepassword"><code class="xref">PUT /api/v1/userlogin/changepassword</code></a></td><td>
-       <em>Change Password</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_user_login_manager.html#put--api-v1-userlogin-updateuser"><code class="xref">PUT /api/v1/userlogin/updateuser</code></a></td><td>
-       <em>Update User</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_device_manager.html#delete--api-v1-device-device_id"><code class="xref">DELETE /api/v1/device/{device_id}</code></a></td><td>
+       <a href="api_device.html#delete--api-v1-device-device_id"><code class="xref">DELETE /api/v1/device/{device_id}</code></a></td><td>
        <em>Delete Device</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#delete--api-v1-exam-result-result_id"><code class="xref">DELETE /api/v1/exam/result/{result_id}</code></a></td><td>
-       <em>Delete Result</em></td></tr>
+       <a href="api_exam.html#delete--api-v1-exam-job-job_id"><code class="xref">DELETE /api/v1/exam/job/{job_id}</code></a></td><td>
+       <em>Job Delete</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#delete--api-v1-exam-sequence-sequence_id"><code class="xref">DELETE /api/v1/exam/sequence/{sequence_id}</code></a></td><td>
-       <em>Delete Mri Sequence Endpoint</em></td></tr>
+       <a href="api_exam.html#delete--api-v1-exam-procedure-procedure_id"><code class="xref">DELETE /api/v1/exam/procedure/{procedure_id}</code></a></td><td>
+       <em>Procedure Delete</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#delete--api-v1-exam-task-task_id"><code class="xref">DELETE /api/v1/exam/task/{task_id}</code></a></td><td>
-       <em>Delete Task</em></td></tr>
+       <a href="api_exam.html#delete--api-v1-exam-record-record_id"><code class="xref">DELETE /api/v1/exam/record/{record_id}</code></a></td><td>
+       <em>Record Delete</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_exam_manager.html#delete--api-v1-exam-workflow-workflow_id"><code class="xref">DELETE /api/v1/exam/workflow/{workflow_id}</code></a></td><td>
-       <em>Delete Workflow</em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="api_exam_manager.html#delete--api-v1-exam-exam_id"><code class="xref">DELETE /api/v1/exam/{exam_id}</code></a></td><td>
+       <a href="api_exam.html#delete--api-v1-exam-exam_id"><code class="xref">DELETE /api/v1/exam/{exam_id}</code></a></td><td>
        <em>Exam Delete</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_patient_manager.html#delete--api-v1-patient-patient_id"><code class="xref">DELETE /api/v1/patient/{patient_id}</code></a></td><td>
-       <em>Delete Patient</em></td></tr>
+       <a href="api_mri_sequences.html#delete--api-v1-mri-sequences-mri_sequence_id"><code class="xref">DELETE /api/v1/mri/sequences/{mri_sequence_id}</code></a></td><td>
+       <em>Delete Mri Sequence Endpoint</em></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="api_user_login_manager.html#delete--api-v1-userlogin-deleteuser"><code class="xref">DELETE /api/v1/userlogin/deleteuser</code></a></td><td>
-       <em>User Delete</em></td></tr>
+       <a href="api_workflow.html#delete--api-v1-workflow-workflow_id"><code class="xref">DELETE /api/v1/workflow/{workflow_id}</code></a></td><td>
+       <em>Delete Workflow</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/health"><td></td><td>
+       <strong>/health</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_mri_sequences.html#get--health"><code class="xref">GET /health</code></a></td><td>
+       <em>Health Check</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/readiness"><td></td><td>
+       <strong>/readiness</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_mri_sequences.html#get--readiness"><code class="xref">GET /readiness</code></a></td><td>
+       <em>Readiness Check</em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/{patient_id}"><td></td><td>
+       <strong>/{patient_id}</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_ui_patient_manager.html#get--patient_id"><code class="xref">GET /{patient_id}</code></a></td><td>
+       <em>Get Patient</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_ui_patient_manager.html#put--patient_id"><code class="xref">PUT /{patient_id}</code></a></td><td>
+       <em>Update Patient</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="api_ui_patient_manager.html#delete--patient_id"><code class="xref">DELETE /{patient_id}</code></a></td><td>
+       <em>Delete Patient</em></td></tr>
    </table>
 
 

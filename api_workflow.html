@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Web API &#8212; ScanHub Documentation</title>
+    <title>Workflow Manager &#8212; ScanHub Documentation</title>
   
   
   
@@ -43,12 +43,12 @@
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'scanhub_api';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_workflow';</script>
     <link rel="icon" href="_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="UI Patient Manager" href="api_ui_patient_manager.html" />
-    <link rel="prev" title="ScanHub" href="introduction.html" />
+    <link rel="next" title="MRI Acquisition Manager" href="api_mri_acquisition.html" />
+    <link rel="prev" title="Exam Manager" href="api_exam.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -141,7 +141,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
@@ -280,7 +280,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
@@ -365,11 +365,11 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api_ui_patient_manager.html">UI Patient Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_device.html">Device Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Workflow Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_mri_acquisition.html">MRI Acquisition Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_mri_sequences.html">MRI Sequences Manager</a></li>
 </ul>
@@ -412,7 +412,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Web API</span></li>
+    
+    <li class="breadcrumb-item"><a href="scanhub_api.html" class="nav-link">Web API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Workflow Manager</span></li>
   </ul>
 </nav>
 </div>
@@ -429,19 +432,256 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="web-api">
-<h1>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h1>
-<p>Web API documentation for services.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api_ui_patient_manager.html">UI Patient Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_device.html">Device Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_mri_acquisition.html">MRI Acquisition Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_mri_sequences.html">MRI Sequences Manager</a></li>
-</ul>
-</div>
+  <section id="workflow-manager">
+<h1>Workflow Manager<a class="headerlink" href="#workflow-manager" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The Workflow Manager API provided by ScanHub is specifically designed to manage the workflows within a scanning and imaging environment.
+It plays a crucial role in creating, updating, retrieving, and deleting workflows, as well as handling the uploading of results related to specific records. The key endpoints in this API are:</p>
+</section>
+<section id="web-api">
+<h2>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h2>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-workflow-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/</span></span><a class="headerlink" href="#get--api-v1-workflow-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Workflow List</strong></p>
+<p>Get all workflows endpoint.</p>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>List of workflow pydantic output models, might be empty</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-workflow-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/</span></span><a class="headerlink" href="#post--api-v1-workflow-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Create Workflow</strong></p>
+<p>Create new workflow endpoint.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>payload</dt><dd><p>Workflow pydantic base model</p>
+</dd>
+</dl>
+</section>
+<section id="id1">
+<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Workflow pydantic output model</p>
+</div></blockquote>
+</section>
+<section id="raises">
+<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Creation unsuccessful</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 201<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-workflow-workflow_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/{workflow_id}</span></span><a class="headerlink" href="#get--api-v1-workflow-workflow_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Workflow</strong></p>
+<p>Get workflow endpoint.</p>
+<section id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>workflow_id</dt><dd><p>Id of the workflow object to be returned</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Workflow pydantic output model</p>
+</div></blockquote>
+</section>
+<section id="id4">
+<h3>Raises<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Not found</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param integer workflow_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http delete">
+<dt class="sig sig-object http" id="delete--api-v1-workflow-workflow_id">
+<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/{workflow_id}</span></span><a class="headerlink" href="#delete--api-v1-workflow-workflow_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Delete Workflow</strong></p>
+<p>Delete workflow endpoint.</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>workflow_id</dt><dd><p>Id of workflow to be deleted</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Raises<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Not found</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param integer workflow_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 204<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http put">
+<dt class="sig sig-object http" id="put--api-v1-workflow-workflow_id-">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/{workflow_id}/</span></span><a class="headerlink" href="#put--api-v1-workflow-workflow_id-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Update Workflow</strong></p>
+<p>Update existing workflow endpoint.</p>
+<section id="id7">
+<h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>workflow_id</dt><dd><p>Id of the workflow to be updated</p>
+</dd>
+<dt>payload</dt><dd><p>Data to be updated, workflow pydantic base model</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Workflow pydantic output model.</p>
+</div></blockquote>
+</section>
+<section id="id9">
+<h3>Raises<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Not found</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param integer workflow_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-workflow-upload-record_id-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/upload/{record_id}/</span></span><a class="headerlink" href="#post--api-v1-workflow-upload-record_id-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Upload Result</strong></p>
+<p>Upload workflow result.</p>
+<section id="id10">
+<h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>record_id</dt><dd><p>Id of the record, which is processed by workflow</p>
+</dd>
+<dt>file, optional</dt><dd><p>Data upload, e.g. reconstruction result, by default File(…)</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h3>Returns<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Notification</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">param string record_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-workflow-health-readiness">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflow/health/readiness</span></span><a class="headerlink" href="#get--api-v1-workflow-health-readiness" title="Link to this definition">#</a></dt>
+<dd><p><strong>Readiness</strong></p>
+<p>Readiness health endpoint.</p>
+<p>Inspects sqlalchemy engine and check if workflow table exists.</p>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Status docstring</p>
+</div></blockquote>
+</section>
+<section id="id13">
+<h3>Raises<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>500: Workflow table does not exist</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<p>Workflow Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
+<section id="open-source-license">
+<h3>Open Source License<a class="headerlink" href="#open-source-license" title="Link to this heading">#</a></h3>
+<p>If you want to use the Software under the terms of the GPLv3, you may do so for free. Under the GPLv3, you are allowed to modify and distribute the Software, but any derivative works that you distribute must also be licensed under the GPLv3. For the precise terms and conditions, please refer to the text of the GPLv3, which is included with the Software and can also be found at: <a class="reference external" href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
+</section>
+<section id="commercial-license">
+<h3>Commercial License<a class="headerlink" href="#commercial-license" title="Link to this heading">#</a></h3>
+<p>If you wish to use the Software without the restrictions of the GPLv3, such as for the purpose of developing proprietary software that includes the Software without the obligation to disclose your source code, you may purchase a commercial license from BRAIN-LINK UG (haftungsbeschränkt).</p>
+<p>The commercial license grants you, the licensee, the rights to use, modify, and distribute the Software without the requirement of providing the source code of your proprietary software to the end users. The commercial license also includes access to premium support and services.</p>
+<p>For more information on the commercial license, including pricing, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;brain-link&#46;de">info<span>&#64;</span>brain-link<span>&#46;</span>de</a>.</p>
+</section>
+<section id="choice-of-license">
+<h3>Choice of License<a class="headerlink" href="#choice-of-license" title="Link to this heading">#</a></h3>
+<p>You may choose to use the Software under either the GPLv3 or the commercial license. If you choose to use the Software under the GPLv3, you must comply with all of the terms of the GPLv3. If you choose to use the Software under the commercial license, you must comply with all of the terms of the commercial license.</p>
+</section>
+<section id="disclaimer">
+<h3>Disclaimer<a class="headerlink" href="#disclaimer" title="Link to this heading">#</a></h3>
+<p>This is not a legal document. The exact terms of the GPLv3 and the commercial license are specified in their respective legal texts. This document is merely intended to provide a general overview of the dual licensing scheme.</p>
+</section>
+</section>
 </section>
 
 
@@ -455,20 +695,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="introduction.html"
+       href="api_exam.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ScanHub</p>
+        <p class="prev-next-title">Exam Manager</p>
       </div>
     </a>
     <a class="right-next"
-       href="api_ui_patient_manager.html"
+       href="api_mri_acquisition.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">UI Patient Manager</p>
+        <p class="prev-next-title">MRI Acquisition Manager</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -484,10 +724,30 @@
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-api">Web API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-source-license">Open Source License</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commercial-license">Commercial License</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-of-license">Choice of License</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disclaimer">Disclaimer</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/scanhub_api.rst.txt"
+      <li><a href="_sources/api_workflow.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

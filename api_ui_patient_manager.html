@@ -43,12 +43,12 @@
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_patient_manager';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_ui_patient_manager';</script>
     <link rel="icon" href="_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="User Login Manager" href="api_user_login_manager.html" />
-    <link rel="prev" title="Exam Manager" href="api_exam_manager.html" />
+    <link rel="next" title="Device Manager" href="api_device.html" />
+    <link rel="prev" title="Web API" href="scanhub_api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -366,11 +366,12 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="api_device_manager.html">Device Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_exam_manager.html">Exam Manager</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">UI Patient Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_user_login_manager.html">User Login Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_workflow_manager.html">Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_device.html">Device Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_mri_acquisition.html">MRI Acquisition Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_mri_sequences.html">MRI Sequences Manager</a></li>
 </ul>
 </div>
 </nav></div>
@@ -442,37 +443,12 @@ Here’s a brief look at the main endpoints:</p>
 <section id="web-api">
 <h2>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h2>
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-patient-health-readiness">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/health/readiness</span></span><a class="headerlink" href="#get--api-v1-patient-health-readiness" title="Link to this definition">#</a></dt>
-<dd><p><strong>Readiness</strong></p>
-<p>Readiness health endpoint.</p>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Status dictionary</p>
-</div></blockquote>
-</section>
-<section id="raises">
-<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>HTTPException</dt><dd><p>500: Any of the exam-tree tables does not exist</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">status 200<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Successful Response</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-patient-">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/</span></span><a class="headerlink" href="#get--api-v1-patient-" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object http" id="get--">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/</span></span><a class="headerlink" href="#get--" title="Link to this definition">#</a></dt>
 <dd><p><strong>Get Patient List</strong></p>
 <p>Get all patients endpoint.</p>
-<section id="id1">
-<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
 <blockquote>
 <div><p>List of patient pydantic output models</p>
 </div></blockquote>
@@ -485,8 +461,8 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http post">
-<dt class="sig sig-object http" id="post--api-v1-patient-">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/</span></span><a class="headerlink" href="#post--api-v1-patient-" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object http" id="post--">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/</span></span><a class="headerlink" href="#post--" title="Link to this definition">#</a></dt>
 <dd><p><strong>Create Patient</strong></p>
 <p>Create new patient database entry.</p>
 <section id="parameters">
@@ -496,14 +472,14 @@ Here’s a brief look at the main endpoints:</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id1">
+<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <blockquote>
 <div><p>Patient pydantic output model</p>
 </div></blockquote>
 </section>
-<section id="id3">
-<h3>Raises<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="raises">
+<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>HTTPException</dt><dd><p>404: Could not create patient</p>
 </dd>
@@ -520,31 +496,70 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-patient-patient_id">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/{patient_id}</span></span><a class="headerlink" href="#get--api-v1-patient-patient_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object http" id="get--patient_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/{patient_id}</span></span><a class="headerlink" href="#get--patient_id" title="Link to this definition">#</a></dt>
 <dd><p><strong>Get Patient</strong></p>
 <p>Get a patient from database by id.</p>
-<section id="id4">
-<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="id2">
+<h3>Parameters<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>patient_id</dt><dd><p>Id of the requested patient</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <blockquote>
 <div><p>Patient pydantic output model</p>
 </div></blockquote>
 </section>
-<section id="id6">
-<h3>Raises<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>Raises<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>HTTPException</dt><dd><p>404: Patient not found</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">param string patient_id<span class="colon">:</span></dt>
+<dt class="field-odd">param integer patient_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http put">
+<dt class="sig sig-object http" id="put--patient_id">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/{patient_id}</span></span><a class="headerlink" href="#put--patient_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Update Patient</strong></p>
+<p>Update existing patient endpoint.</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>patient_id</dt><dd><p>Id of the patient to be updated</p>
+</dd>
+<dt>payload</dt><dd><p>Patient data to be updated</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Updated patient pydantic output model</p>
+</div></blockquote>
+</section>
+<section id="id7">
+<h3>Raises<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Patient not found</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param integer patient_id<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
 <dt class="field-even">status 200<span class="colon">:</span></dt>
 <dd class="field-even"><p>Successful Response</p>
@@ -557,66 +572,27 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http delete">
-<dt class="sig sig-object http" id="delete--api-v1-patient-patient_id">
-<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/{patient_id}</span></span><a class="headerlink" href="#delete--api-v1-patient-patient_id" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object http" id="delete--patient_id">
+<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/{patient_id}</span></span><a class="headerlink" href="#delete--patient_id" title="Link to this definition">#</a></dt>
 <dd><p><strong>Delete Patient</strong></p>
 <p>Delete patient from database.</p>
-<section id="id7">
-<h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>patient_id</dt><dd><p>Id of patient to be deleted</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h3>Raises<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<section id="id9">
+<h3>Raises<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>HTTPException</dt><dd><p>_description_</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">param string patient_id<span class="colon">:</span></dt>
+<dt class="field-odd">param integer patient_id<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
 <dt class="field-even">status 204<span class="colon">:</span></dt>
-<dd class="field-even"><p>Successful Response</p>
-</dd>
-<dt class="field-odd">status 422<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Validation Error</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="http put">
-<dt class="sig sig-object http" id="put--api-v1-patient-patient_id">
-<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/{patient_id}</span></span><a class="headerlink" href="#put--api-v1-patient-patient_id" title="Link to this definition">#</a></dt>
-<dd><p><strong>Update Patient</strong></p>
-<p>Update existing patient endpoint.</p>
-<section id="id9">
-<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>patient_id</dt><dd><p>Id of the patient to be updated</p>
-</dd>
-<dt>payload</dt><dd><p>Patient data to be updated</p>
-</dd>
-</dl>
-</section>
-<section id="id10">
-<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Updated patient pydantic output model</p>
-</div></blockquote>
-</section>
-<section id="id11">
-<h3>Raises<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>HTTPException</dt><dd><p>404: Patient not found</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">param string patient_id<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">status 200<span class="colon">:</span></dt>
 <dd class="field-even"><p>Successful Response</p>
 </dd>
 <dt class="field-odd">status 422<span class="colon">:</span></dt>
@@ -662,20 +638,20 @@ Here’s a brief look at the main endpoints:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_exam_manager.html"
+       href="scanhub_api.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Exam Manager</p>
+        <p class="prev-next-title">Web API</p>
       </div>
     </a>
     <a class="right-next"
-       href="api_user_login_manager.html"
+       href="api_device.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">User Login Manager</p>
+        <p class="prev-next-title">Device Manager</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -714,7 +690,7 @@ Here’s a brief look at the main endpoints:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/api_patient_manager.rst.txt"
+      <li><a href="_sources/api_ui_patient_manager.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
