@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.5",
     "@kitware/vtk.js": "32.12.1",
+    "@monaco-editor/react": "^4.7.0",
     "@mui/icons-material": "^7.1.1",
     "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^7.1.1",

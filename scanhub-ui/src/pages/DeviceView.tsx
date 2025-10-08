@@ -20,6 +20,10 @@ import Sheet from '@mui/joy/Sheet'
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp'
 import ModalClose from '@mui/joy/ModalClose'
+import Textarea from '@mui/joy/Textarea'
+import Button from '@mui/joy/Button'
+import Editor from "@monaco-editor/react";
+import { Card } from "@mui/joy";
 
 import NotificationContext from '../NotificationContext'
 import { deviceApi } from '../api'
@@ -28,6 +32,8 @@ import { Alerts } from '../interfaces/components.interface'
 import { DeviceOut } from '../openapi/generated-client/device/api'
 import DeviceCreateModal from '../components/DeviceCreateModal'
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
+import { haveSameKeys } from '../utils/Compare'
+import { flexGrow } from '@mui/system'
 
 
 export default function DeviceView() {
@@ -36,7 +42,8 @@ export default function DeviceView() {
   // const [isUpdating, setIsUpdating] = React.useState<boolean>(false)
   const [deviceToDelete, setDeviceToDelete] = React.useState<DeviceOut | undefined>(undefined)
   const [deviceOpen, setDeviceOpen] = React.useState<DeviceOut | undefined>(undefined)
-  
+  const [deviceParameterString, setDeviceParameterString] = React.useState('');
+
 
   const {
     data: devices,
@@ -73,26 +80,49 @@ export default function DeviceView() {
     }
   })
 
-  // const updateMutation = useMutation<unknown, unknown, User>(async (user) => {
-  //   await userApi
-  //     .updateUserApiV1UserloginUpdateuserPut(user)
-  //     .then(() => {
-  //       console.log('Modified user:', user.username)
-  //       setIsUpdating(false)
-  //       refetch()
-  //     })
-  //     .catch((err) => {
-  //       let errorMessage = null
-  //       if (err?.response?.data?.detail) {
-  //         errorMessage = 'Could not update user. Detail: ' + err.response.data.detail
-  //       } else {
-  //         errorMessage = 'Could not update user.'
-  //       }
-  //       setIsUpdating(false)
-  //       refetch()
-  //       showNotification({message: errorMessage, type: 'warning'})
-  //     })
-  // })
+  const deviceParameterMutation = useMutation<unknown, unknown, { deviceId: string; parameter: Object }>({
+    mutationFn: async ({ deviceId, parameter }) => {
+      await deviceApi.updateDeviceParameterApiV1DeviceParameterDeviceIdPut(deviceId, parameter)
+        .then(() => {
+          console.log('Modified device parameter:', parameter)
+          refetch()
+        })
+        .catch((err) => {
+          let errorMessage = null
+          if (err?.response?.data?.detail) {
+            errorMessage = 'Could not update device parameter. Detail: ' + err.response.data.detail
+          } else {
+            errorMessage = 'Could not update user.'
+          }
+          refetch()
+          showNotification({ message: errorMessage, type: 'warning' })
+        })
+    }
+  })
+
+  // Set device parameter string, when deviceOpen is not undefined
+  React.useEffect(() => {
+    if (deviceOpen !== undefined) {
+      setDeviceParameterString(JSON.stringify(deviceOpen?.parameter, null, 4))
+    }
+  }, [deviceOpen])
+
+  const handleDeviceParameterSave = () => {
+    try {
+      const parsed = JSON.parse(deviceParameterString);
+      if (parsed && deviceOpen !== undefined) {
+        if (haveSameKeys(parsed, deviceOpen?.parameter)) {
+          deviceParameterMutation.mutate({deviceId: deviceOpen.id, parameter: parsed})
+          setDeviceOpen(undefined)
+        } else {
+          showNotification({ message: 'Invalid key(s): Modify existing values only.', type: 'warning' })
+        }
+      }
+    } catch (err) {
+      showNotification({ message: 'Invalid JSON: Please correct the format before saving.', type: 'warning' })
+    }
+  };
+
 
   if (isLoading) {
     return (
@@ -212,8 +242,6 @@ export default function DeviceView() {
       />
 
       <Modal
-        aria-labelledby="modal-title"
-        aria-describedby="modal-desc"
         open={deviceOpen !== undefined && deviceOpen.parameter !== undefined}
         onClose={() => setDeviceOpen(undefined)}
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -231,23 +259,44 @@ export default function DeviceView() {
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
-          <Typography component="h2" id="modal-title" level="h4" sx={{ fontWeight: 'lg', mb: 1 }}>Device Parameter</Typography>
-          <Box
-            sx={{
-              bgcolor: 'background.level1',
-              borderRadius: 'sm',
-              p: 2,
-              width: '100%',
-              flex: 1,
-              minHeight: 0,
-              overflow: 'auto',
-              mt: 2,
-            }}
+          <Typography level="h4" sx={{ fontWeight: 'lg', mb: 1 }}>Device Parameter</Typography>
+          {/* <Textarea 
+            value={deviceParameterString}
+            onChange={(e) => setDeviceParameterString(e.target.value)}
+          /> */}
+          <Card sx={{ p: 1 }}>
+            <Editor
+              height='40vh'
+              defaultLanguage="json"
+              theme="vs-light"
+              value={deviceParameterString}
+              onChange={(value) => { value !== undefined ? setDeviceParameterString(value) : () => {} }}
+              options={{
+                lineNumbers: 'on',
+                tabSize: 4,
+                insertSpaces: true,
+                autoIndent: 'advanced',
+                formatOnPaste: true,
+                formatOnType: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                scrollbar: {
+                  vertical: "auto",   // only show vertical scrollbar when needed
+                  horizontal: "auto", // only show horizontal scrollbar when needed
+                  useShadows: false,  // cleaner look
+                },
+              }}
+            />
+          </Card>
+          <Button
+            color="primary"
+            onClick={handleDeviceParameterSave}
+            sx={{ width: '150px', marginTop: 2}}
           >
-            <Typography id="modal-desc" textColor="text.tertiary" component="pre" sx={{ m: 0, whiteSpace: 'pre-wrap' }}>
-              { JSON.stringify(deviceOpen?.parameter, null, 4) }
-            </Typography>
-          </Box>
+            Save
+          </Button>
+
         </Sheet>
       </Modal>
 
