@@ -125,9 +125,25 @@ export default function StatusBar() {
     },
   })
 
+  // Prefetch device status after list of devices has been loaded
+  React.useEffect(() => {
+    if (devices) {
+      devices.forEach((device) =>
+        queryClient.prefetchQuery({
+          queryKey: ['deviceStatus', device.id],
+          queryFn: async () => {
+            const res = await deviceApi.getDeviceApiV1DeviceDeviceIdGet(device.id);
+            return res.data.status ?? undefined;
+          },
+          staleTime: 10_000,
+        })
+      );
+    }
+  }, [devices]);
+
   // Poll only the selected device, but more frequently to get updated device status
-  const { data: deviceStatus, refetch } = useQuery<string | undefined>({
-    queryKey: ['deviceStatus', 'selectedDeviceId'], // depends on selected device
+  const { data: deviceStatus } = useQuery<string | undefined>({
+    queryKey: ['deviceStatus', selectedDeviceId], // depends on selected device
 
     queryFn: async () => {
       if (!selectedDeviceId) throw new Error('No device selected')
@@ -140,6 +156,7 @@ export default function StatusBar() {
     refetchIntervalInBackground: true,
   })
 
+  
   return (
     <Sheet
       variant='solid'
@@ -164,10 +181,7 @@ export default function StatusBar() {
           variant='solid'
           color='primary'
           value={selectedDeviceId || null}
-          onChange={(_, newValue) => {
-            setSelectedDeviceId(newValue);
-            refetch()
-          }}
+          onChange={(_, newValue) => {setSelectedDeviceId(newValue)}}
           placeholder="Select a device..."
           renderValue={(selected) => {
             if (!selected) return '-'
