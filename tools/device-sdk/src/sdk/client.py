@@ -17,14 +17,15 @@ import logging
 from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any, Optional
+from sdk.device_state_machine import DeviceStateMachine
 
 from scanhub_libraries.models import AcquisitionPayload, DeviceDetails, DeviceStatus
 
 from sdk.websocket_handler import WebSocketHandler
 
 CHUNK = 1 << 20  # 1 MiB, chunk size for file transfers
-
 logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("DeviceClient")
 
 
 class Client:
@@ -84,44 +85,51 @@ class Client:
         self.device_token = device_token
         self.details: DeviceDetails = device_details
         self.reconnect_delay = reconnect_delay
-        # (Optional) Server feedback handler callback function
+
+        # External handlers
         self.feedback_handler: Optional[Callable[[str], Awaitable[None]]] = None
-        # (Optional) Server error handler callback function
         self.error_handler: Optional[Callable[[str], Awaitable[None]]] = None
-        # Acquisition callback function
         self.scan_callback: Optional[Callable[[AcquisitionPayload], Awaitable[None]]] = None
 
-        # Initialize logger
-        self.logger = logging.getLogger("DeviceClient")
+        # Task management
+        self.active_tasks: dict[str, asyncio.Task] = {}
+        self._task_lock = asyncio.Lock()
+
+        # Device state machine
+        self.state_machine = DeviceStateMachine(self)
+
+    # --------------------------------------------------------------------------
+    # Core lifecycle
 
     async def start(self) -> None:
-        """Start the client by establishing a WebSocket connection.
-
-        Registers the device and listening for incoming commands from the server.
-        """
+        """Start client: connect, register, and listen for commands."""
         await self.connect_and_register()
         asyncio.create_task(self.listen_for_commands())
 
     async def connect_and_register(self) -> None:
-        """Connect to the WebSocket server and registers the device.
-
-        Retries the connection and registration process upon failure after a delay.
-        """
+        """Connect to the WebSocket server and registers the device."""
         await self.websocket_handler.connect()
-        self.logger.info("WebSocket connection established.")
+        await self.state_machine.transition(DeviceStatus.ONLINE)
         await self.register_device()
 
-    async def register_device(self) -> None:
-        """Send a registration message to the server to register the device.
+    async def stop(self) -> None:
+        """Stop the client and close all tasks."""
+        async with self._task_lock:
+            for t in self.active_tasks.values():
+                t.cancel()
+            self.active_tasks.clear()
+        await self.state_machine.transition(DeviceStatus.OFFLINE)
+        await self.websocket_handler.close()
+        log.info("WebSocket connection closed.")
 
-        The registration data includes device details like ID, name, manufacturer, and location.
-        """
-        registration_data = {
-            "command": "register",
-            "data": self.details.model_dump(),
-        }
-        await self.websocket_handler.send_message(json.dumps(registration_data))
-        self.logger.info("Device registration sent.")
+    async def reconnect(self) -> None:
+        """Reconnect to the server and re-register the device."""
+        log.info("Attempting to reconnect in %d seconds...", self.reconnect_delay)
+        await asyncio.sleep(self.reconnect_delay)
+        await self.connect_and_register()
+
+    # --------------------------------------------------------------------------
+    # WebSocket command loop
 
     async def listen_for_commands(self) -> None:
         """Listen for incoming commands from the server and processes them.
@@ -145,15 +153,18 @@ class Client:
                 else:  # on error whole websocket message is needed
                     await self.handle_error(str(data))
             except json.JSONDecodeError:
-                self.logger.error("Received invalid JSON message: %s", message)
+                log.error("Received invalid JSON message: %s", message)
             except ConnectionError as e:
                 if self.websocket_handler.websocket is None:
                     return  # No active connection, exit the loop
-                self.logger.error(e)
+                log.error(e)
                 await self.reconnect()
             except Exception as e:
-                self.logger.error("Error while receiving commands: %s", str(e))
+                log.error("Error while receiving commands: %s", str(e))
                 await self.reconnect()
+
+    # --------------------------------------------------------------------------
+    # Command handlers
 
     async def handle_start_command(self, payload: AcquisitionPayload) -> None:
         """Handle the 'start' command from the server to begin a scanning process.
@@ -165,65 +176,142 @@ class Client:
             deviceTask (dict): Command data containing scanning parameters.
 
         """
-        try:
-            if self.scan_callback:
-                # Set device status to busy
-                await self.send_status(status=DeviceStatus.BUSY)
-                # Initialize scanning status (set to zero)
-                await self.send_scanning_status(
-                    progress=0, task_id=str(payload.id), user_access_token=payload.access_token,
-                )
-                # Call the external scan callback function
-                await self.scan_callback(payload)
-                # Set device status to ready
-                await self.send_status(status=DeviceStatus.ONLINE)
-            else:
-                self.logger.error("Scan callback not defined.")
-                await self.send_error_status("Scan callback not defined.")
-        except Exception as exc:
-            await self.send_error_status(
-                error_message=str(exc), task_id=str(payload.id), user_access_token=payload.access_token,
+        if not self.scan_callback:
+            log.error("Scan callback not defined.")
+            await self.state_machine.transition(
+                DeviceStatus.ERROR,
+                context={"error_message": "Scan callback not defined."},
             )
-            self.logger.error("An error occurred while handling the start command: %s", str(exc))
+            return
 
-    async def send_status(
-        self,
-        status: DeviceStatus,
-        user_access_token: str | None = None,
-        data: None | dict[str, Any] = None,
-        task_id: str | None = None,
-    ) -> None:
-        """Send a status update to the server.
+        async with self._task_lock:
+            if str(payload.id) in self.active_tasks:
+                log.warning("Scan already running for task %s", payload.id)
+                return
 
-        Args:
-        ----
-            status (str): The status to report (e.g., 'scanning', 'ready', 'error').
-            additional_data (dict, optional): Extra information to include with the status.
+            # Create background task (non-blocking)
+            task = asyncio.create_task(self._run_scan_task(payload))
+            self.active_tasks[str(payload.id)] = task
 
+    async def _run_scan_task(self, payload: AcquisitionPayload) -> None:
+        """Execute the scan asynchronously and manage its lifecycle."""
+        task_id = str(payload.id)
+        try:
+            if not callable(self.scan_callback):
+                log.error("Scan callback not defined.")
+                await self.state_machine.transition(
+                    DeviceStatus.ERROR,
+                    context={"error_message": "Scan callback not defined."},
+                )
+                return
+            await self.state_machine.transition(DeviceStatus.BUSY, context={"progress": 0})
+            await self.scan_callback(payload)
+            await self.state_machine.transition(DeviceStatus.ONLINE)
+            log.info(f"Scan task {task_id} completed successfully.")
+
+        except asyncio.CancelledError:
+            log.warning(f"Scan task {task_id} cancelled.")
+            await self.state_machine.transition(
+                DeviceStatus.ERROR,
+                context={"error_message": "Scan cancelled"},
+            )
+        except Exception as exc:
+            log.exception(f"Scan task {task_id} failed: {exc}")
+            await self.state_machine.transition(
+                DeviceStatus.ERROR,
+                context={"error_message": str(exc)},
+            )
+        finally:
+            async with self._task_lock:
+                self.active_tasks.pop(task_id, None)
+
+    async def cancel_scan(self, task_id: str) -> None:
+        """Cancel an active scan."""
+        async with self._task_lock:
+            task = self.active_tasks.get(task_id)
+            if task:
+                task.cancel()
+                log.info(f"Cancelled scan task {task_id}")
+
+
+
+    # async def send_status(
+    #     self,
+    #     status: DeviceStatus,
+    #     user_access_token: str | None = None,
+    #     data: None | dict[str, Any] = None,
+    #     task_id: str | None = None,
+    # ) -> None:
+    #     """Send a status update to the server.
+
+    #     Args:
+    #     ----
+    #         status (str): The status to report (e.g., 'scanning', 'ready', 'error').
+    #         additional_data (dict, optional): Extra information to include with the status.
+
+    #     """
+    #     if not isinstance(status, DeviceStatus):
+    #         raise TypeError("Invalid device status.")
+    #     status_data = {
+    #         "command": "update_status",
+    #         "status": status.value,
+    #         "data": data,
+    #         "task_id": task_id,
+    #         "user_access_token": user_access_token,
+    #     }
+    #     await self.websocket_handler.send_message(json.dumps(status_data))
+
+
+    # --------------------------------------------------------------------------
+    # Status and feedback
+
+    async def register_device(self) -> None:
+        """Send a registration message to the server to register the device.
+
+        The registration data includes device details like ID, name, manufacturer, and location.
         """
-        if not isinstance(status, DeviceStatus):
-            raise TypeError("Invalid device status.")
-        status_data = {
-            "command": "update_status",
-            "status": status.value,
-            "data": data,
-            "task_id": task_id,
-            "user_access_token": user_access_token,
+        registration_data = {
+            "command": "register",
+            "data": self.details.model_dump(),
         }
-        await self.websocket_handler.send_message(json.dumps(status_data))
+        await self.websocket_handler.send_message(json.dumps(registration_data))
+        log.info("Device registration sent.")
+
+
+    async def handle_feedback(self, message: str) -> None:
+        """Handle feedback messages from the server."""
+        if self.feedback_handler is not None:
+            await self.feedback_handler(message)
+        else:
+            log.info("Feedback received from server: %s", message)
+
+    async def handle_error(self, message: str) -> None:
+        """Handle error messages from the server."""
+        if self.error_handler is not None:
+            await self.error_handler(message)
+        else:
+            log.info("Error received from server: %s", message)
+
+    # --------------------------------------------------------------------------
+    # Handler registration
 
     async def upload_file_result(self, file_path: str | Path, task_id: str, user_access_token: str) -> None:
         """Send MRD file as base64-encoded binary."""
         path = Path(file_path) if not isinstance(file_path, Path) else file_path
         if not path.exists():
-            await self.send_error_status("Could not upload file", task_id=task_id, user_access_token=user_access_token)
-            raise FileNotFoundError(f"File {file_path} does not exist.")
+            await self.state_machine.transition(
+                DeviceStatus.ERROR,
+                context={"error_message": f"File not found: {file_path}"},
+            )
+            raise FileNotFoundError(file_path)
 
         try:
             size = path.stat().st_size
-            ct = "application/x-ismrmrd+hdf5" if path.suffix == ".mrd" else "application/octet-stream"
+            content_type = (
+                "application/x-ismrmrd+hdf5" if path.suffix == ".mrd" else "application/octet-stream"
+            )
 
-            # Optional integrity: precompute sha256
+            # Compute checksum
             sha = hashlib.sha256()
             with path.open("rb") as f:
                 for chunk in iter(lambda: f.read(CHUNK), b""):
@@ -236,135 +324,37 @@ class Client:
                 "user_access_token": user_access_token,
                 "filename": path.name,
                 "size_bytes": size,
-                "content_type": ct,
+                "content_type": content_type ,
                 "sha256": sha_hex,
             }
-            await self.websocket_handler.send_message(json.dumps(header))  # metadata
 
-            # stream file in binary frames
+            # Send header
+            await self.websocket_handler.send_message(json.dumps(header))
+            # Stream file in binary frames
             with path.open("rb") as f:
                 for chunk in iter(lambda: f.read(CHUNK), b""):
                     await self.websocket_handler.send_message(chunk)
-            self.logger.info(f"Uploaded file {file_path} successfully!")
+
+            log.info("File %s uploaded successfully.", file_path)
+
         except Exception as exc:
-            await self.send_error_status(
-                f"Could not upload file: {exc}", task_id=task_id, user_access_token=user_access_token,
+            await self.state_machine.transition(
+                DeviceStatus.ERROR,
+                context={"error_message": f"Upload failed: {exc}"},
             )
             raise
 
-    async def send_scanning_status(
-        self,
-        progress: int,
-        task_id: str,
-        user_access_token: str,
-    ) -> None:
-        """Send a 'scanning' status with progress percentage.
-
-        Args:
-        ----
-            progress (int): The scanning progress percentage.
-            task_id (str): The task ID to report progress for.
-            user_access_token (str): User access token.
-
-        """
-        await self.send_status(
-            DeviceStatus.BUSY,
-            data={"progress": progress},
-            task_id=task_id,
-            user_access_token=user_access_token,
-        )
-
-    async def send_error_status(
-        self,
-        error_message: str,
-        task_id: str | None = None,
-        user_access_token: str | None = None,
-    ) -> None:
-        """Send an 'error' status with a specific error message.
-
-        Args:
-        ----
-            error_message (str): The error message to include.
-
-        """
-        if task_id is not None and user_access_token is not None:
-            await self.send_status(
-                DeviceStatus.ERROR,
-                data={"error_message": error_message},
-                task_id=task_id,
-                user_access_token=user_access_token,
-            )
-        else:
-            await self.send_status(
-                DeviceStatus.ERROR, data={"error_message": error_message},
-            )
-
-    async def stop(self) -> None:
-        """Close the WebSocket connection."""
-        await self.websocket_handler.close()
-        self.logger.info("WebSocket connection closed.")
-
-    async def reconnect(self) -> None:
-        """Reconnect to the server and re-registers the device.
-
-        Waits for `reconnect_delay` seconds before attempting to reconnect.
-        """
-        self.logger.info("Attempting to reconnect in %d seconds...", self.reconnect_delay)
-        await asyncio.sleep(self.reconnect_delay)
-        await self.connect_and_register()
-
-    async def handle_feedback(self, message: str) -> None:
-        """Handle feedback messages from the server.
-
-        Args:
-        ----
-            message (str): The feedback message.
-
-        """
-        if self.feedback_handler is not None:
-            await self.feedback_handler(message)
-        else:
-            self.logger.info("Feedback received from server: %s", message)
-
-    async def handle_error(self, message: str) -> None:
-        """Handle error messages from the server.
-
-        Args:
-        ----
-            message (str): The error message.
-
-        """
-        if self.error_handler is not None:
-            await self.error_handler(message)
-        else:
-            self.logger.info("Error received from server: %s", message)
+    # --------------------------------------------------------------------------
+    # Handler registration
 
     def set_feedback_handler(self, handler: Callable[[str], Awaitable[None]]) -> None:
-        """Set a callback function to handle feedback messages.
-
-        Args:
-        ----
-            handler (callable): A function that takes a single string argument.
-
-        """
+        """Set feedback handler."""
         self.feedback_handler = handler
 
     def set_error_handler(self, handler: Callable[[str], Awaitable[None]]) -> None:
-        """Set a callback function to handle error messages.
-
-        Args:
-        ----
-            handler (callable): A function that takes a single string argument.
-
-        """
+        """Set error handler."""
         self.error_handler = handler
 
     def set_scan_callback(self, callback: Callable[[AcquisitionPayload], Awaitable[None]]) -> None:
-        """Set a callback function to handle the scanning process.
-
-        Args:
-        ----
-            callback (callable): A function that takes one argument (deviceTask).
-
-        """
+        """Set scan callback."""
         self.scan_callback = callback
