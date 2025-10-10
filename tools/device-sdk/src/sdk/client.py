@@ -23,8 +23,9 @@ from scanhub_libraries.models import AcquisitionPayload, DeviceDetails, DeviceSt
 
 from sdk.websocket_handler import WebSocketHandler
 
+MAX_FILE_UPLOAD_ATTEMPTS = 3
+
 CHUNK = 1 << 20  # 1 MiB, chunk size for file transfers
-logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("DeviceClient")
 
 
@@ -98,13 +99,19 @@ class Client:
         # Device state machine
         self.state_machine = DeviceStateMachine(self)
 
+        # Create file upload queue
+        self.upload_queue: asyncio.Queue = asyncio.Queue()
+
     # --------------------------------------------------------------------------
     # Core lifecycle
 
     async def start(self) -> None:
         """Start client: connect, register, and listen for commands."""
         await self.connect_and_register()
+        # Start background tasks
         asyncio.create_task(self.listen_for_commands())
+        asyncio.create_task(self._heartbeat(interval=15))
+        asyncio.create_task(self._file_uploader())
 
     async def connect_and_register(self) -> None:
         """Connect to the WebSocket server and registers the device."""
@@ -129,7 +136,7 @@ class Client:
         await self.connect_and_register()
 
     # --------------------------------------------------------------------------
-    # WebSocket command loop
+    # Command loop and & heartbeat
 
     async def listen_for_commands(self) -> None:
         """Listen for incoming commands from the server and processes them.
@@ -150,6 +157,9 @@ class Client:
                     await self.handle_start_command(payload)
                 elif command == "feedback":  # for feedback only 'message' is needed
                     await self.handle_feedback(data.get("message"))
+                elif command == "pong":
+                    log.debug("Pong received.")
+                    continue
                 else:  # on error whole websocket message is needed
                     await self.handle_error(str(data))
             except json.JSONDecodeError:
@@ -161,6 +171,24 @@ class Client:
                 await self.reconnect()
             except Exception as e:
                 log.error("Error while receiving commands: %s", str(e))
+                await self.reconnect()
+
+    async def _heartbeat(self, interval: int = 15) -> None:
+        """Periodically send ping messages to keep connection alive.
+
+        This application level ping-pong allows to track if devices are still alive
+        and store additional information such as 'last_seen'.
+        """
+        while True:
+            try:
+                await asyncio.sleep(interval)
+                if self.websocket_handler.websocket:
+                    await self.websocket_handler.send_message(json.dumps({"command": "ping"}))
+                    log.debug("Ping sent.")
+            except asyncio.CancelledError:
+                break
+            except Exception as exc:
+                log.warning(f"Heartbeat send failed: {exc}")
                 await self.reconnect()
 
     # --------------------------------------------------------------------------
@@ -233,35 +261,6 @@ class Client:
                 task.cancel()
                 log.info(f"Cancelled scan task {task_id}")
 
-
-
-    # async def send_status(
-    #     self,
-    #     status: DeviceStatus,
-    #     user_access_token: str | None = None,
-    #     data: None | dict[str, Any] = None,
-    #     task_id: str | None = None,
-    # ) -> None:
-    #     """Send a status update to the server.
-
-    #     Args:
-    #     ----
-    #         status (str): The status to report (e.g., 'scanning', 'ready', 'error').
-    #         additional_data (dict, optional): Extra information to include with the status.
-
-    #     """
-    #     if not isinstance(status, DeviceStatus):
-    #         raise TypeError("Invalid device status.")
-    #     status_data = {
-    #         "command": "update_status",
-    #         "status": status.value,
-    #         "data": data,
-    #         "task_id": task_id,
-    #         "user_access_token": user_access_token,
-    #     }
-    #     await self.websocket_handler.send_message(json.dumps(status_data))
-
-
     # --------------------------------------------------------------------------
     # Status and feedback
 
@@ -277,7 +276,6 @@ class Client:
         await self.websocket_handler.send_message(json.dumps(registration_data))
         log.info("Device registration sent.")
 
-
     async def handle_feedback(self, message: str) -> None:
         """Handle feedback messages from the server."""
         if self.feedback_handler is not None:
@@ -292,57 +290,151 @@ class Client:
         else:
             log.info("Error received from server: %s", message)
 
+    async def send_scanning_status(self, progress: int, task_id: str, user_access_token: str) -> None:
+        """Send progress updates via state machine.
+
+        Thin wrapper function which can be called within scan callback to update progress.
+        """
+        await self.state_machine.update_context({
+            "progress": progress,
+            "task_id": task_id,
+            "user_access_token": user_access_token,
+        })
+
     # --------------------------------------------------------------------------
-    # Handler registration
+    # File upload
 
-    async def upload_file_result(self, file_path: str | Path, task_id: str, user_access_token: str) -> None:
-        """Send MRD file as base64-encoded binary."""
-        path = Path(file_path) if not isinstance(file_path, Path) else file_path
+    async def upload_file_result(
+        self,
+        file_path: str | Path,
+        parameter: dict,
+        task_id: str,
+        user_access_token: str,
+    ) -> None:
+        """Enqueue file upload task."""
+        await self.upload_queue.put((Path(file_path), parameter, task_id, user_access_token))
+        msg = f"Queued file for upload: {file_path}"
+        log.info(msg)
+
+    async def _file_uploader(self) -> None:
+        """Background worker to upload files sequentially with retry logic."""
+        while True:
+            try:
+                file_path, parameter, task_id, user_token = await self.upload_queue.get()
+                attempt, success = 0, False
+
+                while not success and attempt < MAX_FILE_UPLOAD_ATTEMPTS:
+                    attempt += 1
+                    try:
+                        await self._upload_file_direct(file_path, parameter, task_id, user_token)
+                        success = True
+                        msg = f"Uploaded file {file_path} successfully."
+                        log.info(msg)
+                    except Exception as exc:
+                        msg = f"Upload failed (attempt {attempt}): {exc}"
+                        log.warning(msg)
+                        await asyncio.sleep(2**attempt)  # exponential backoff
+
+                if not success:
+                    msg = f"Giving up on file {file_path} after {attempt} attempts."
+                    log.error(msg)
+                    await self.state_machine.transition(
+                        DeviceStatus.ERROR,
+                        context={"error_message": f"File upload failed after {attempt} attempts."},
+                    )
+
+            except asyncio.CancelledError:
+                break
+            except Exception as exc:
+                msg = f"Uploader error: {exc}"
+                log.error(msg)
+
+    async def _upload_file_direct(self, path: Path, parameter: dict, task_id: str, user_access_token: str) -> None:
+        """Perform actual streaming of a file to the backend."""
         if not path.exists():
-            await self.state_machine.transition(
-                DeviceStatus.ERROR,
-                context={"error_message": f"File not found: {file_path}"},
-            )
-            raise FileNotFoundError(file_path)
+            raise FileNotFoundError(path)
 
-        try:
-            size = path.stat().st_size
-            content_type = (
-                "application/x-ismrmrd+hdf5" if path.suffix == ".mrd" else "application/octet-stream"
-            )
+        size = path.stat().st_size
+        ct = "application/x-ismrmrd+hdf5" if path.suffix == ".mrd" else "application/octet-stream"
 
-            # Compute checksum
-            sha = hashlib.sha256()
-            with path.open("rb") as f:
-                for chunk in iter(lambda: f.read(CHUNK), b""):
-                    sha.update(chunk)
-            sha_hex = sha.hexdigest()
+        sha = hashlib.sha256()
+        with path.open("rb") as f:
+            for chunk in iter(lambda: f.read(CHUNK), b""):
+                sha.update(chunk)
+        sha_hex = sha.hexdigest()
 
-            header = {
-                "command": "file-transfer",
-                "task_id": task_id,
-                "user_access_token": user_access_token,
-                "filename": path.name,
-                "size_bytes": size,
-                "content_type": content_type ,
-                "sha256": sha_hex,
-            }
+        header = {
+            "command": "file-transfer",
+            "task_id": task_id,
+            "user_access_token": user_access_token,
+            "filename": path.name,
+            "size_bytes": size,
+            "content_type": ct,
+            "sha256": sha_hex,
+            "device_parameter": parameter,
+        }
 
-            # Send header
-            await self.websocket_handler.send_message(json.dumps(header))
-            # Stream file in binary frames
-            with path.open("rb") as f:
-                for chunk in iter(lambda: f.read(CHUNK), b""):
-                    await self.websocket_handler.send_message(chunk)
+        await self.websocket_handler.send_message(json.dumps(header))
+        with path.open("rb") as f:
+            for chunk in iter(lambda: f.read(CHUNK), b""):
+                await self.websocket_handler.send_message(chunk)
 
-            log.info("File %s uploaded successfully.", file_path)
 
-        except Exception as exc:
-            await self.state_machine.transition(
-                DeviceStatus.ERROR,
-                context={"error_message": f"Upload failed: {exc}"},
-            )
-            raise
+    # async def upload_file_result(
+    #     self,
+    #     file_path: str | Path,
+    #     parameter: dict,
+    #     task_id: str,
+    #     user_access_token: str,
+    # ) -> None:
+    #     """Send MRD file as base64-encoded binary."""
+    #     path = Path(file_path) if not isinstance(file_path, Path) else file_path
+    #     if not path.exists():
+    #         await self.state_machine.transition(
+    #             DeviceStatus.ERROR,
+    #             context={"error_message": f"File not found: {file_path}"},
+    #         )
+    #         raise FileNotFoundError(file_path)
+
+    #     try:
+    #         size = path.stat().st_size
+    #         content_type = (
+    #             "application/x-ismrmrd+hdf5" if path.suffix == ".mrd" else "application/octet-stream"
+    #         )
+
+    #         # Compute checksum
+    #         sha = hashlib.sha256()
+    #         with path.open("rb") as f:
+    #             for chunk in iter(lambda: f.read(CHUNK), b""):
+    #                 sha.update(chunk)
+    #         sha_hex = sha.hexdigest()
+
+    #         header = {
+    #             "command": "file-transfer",
+    #             "task_id": task_id,
+    #             "user_access_token": user_access_token,
+    #             "filename": path.name,
+    #             "size_bytes": size,
+    #             "content_type": content_type ,
+    #             "sha256": sha_hex,
+    #             "device_parameter": parameter,
+    #         }
+
+    #         # Send header
+    #         await self.websocket_handler.send_message(json.dumps(header))
+    #         # Stream file in binary frames
+    #         with path.open("rb") as f:
+    #             for chunk in iter(lambda: f.read(CHUNK), b""):
+    #                 await self.websocket_handler.send_message(chunk)
+
+    #         log.info("File %s uploaded successfully.", file_path)
+
+    #     except Exception as exc:
+    #         await self.state_machine.transition(
+    #             DeviceStatus.ERROR,
+    #             context={"error_message": f"Upload failed: {exc}"},
+    #         )
+    #         raise
 
     # --------------------------------------------------------------------------
     # Handler registration

@@ -1,36 +1,38 @@
 """Example usage of the Device SDK for a simulated scanning process."""
 import asyncio
-import atexit
 
 from sdk.client import Client
 from scanhub_libraries.models import AcquisitionPayload, DeviceDetails
 import os
 import json
-import signal
+import logging
 from pathlib import Path
+
+logging.basicConfig(level=logging.INFO)
 
 
 async def perform_scan(client, payload: AcquisitionPayload):
     """Simulate a scanning process by sending status updates and results."""
     print("Received acquisition request with task ID: ", payload.id)
+    # Print device parameters obtained
+    print("Retrieved device parameters dict: ", payload.device_parameter)
 
-    # Update device status
-    for percentage in [0, 25, 50, 75, 100]:
-        await asyncio.sleep(1)
+    # Simulate some workload
+    delay_per_step = 4
+    for percentage in range(10):
+        await asyncio.sleep(delay_per_step)
         await client.send_scanning_status(
-            progress=percentage,
+            progress=(percentage+1)*10,
             task_id=str(payload.id),
             user_access_token=payload.access_token,
         )
-
-    # Print device parameters obtained
-    print("Retrieved device parameters dict: ", payload.device_parameter)
 
     # Upload MRD result
     directory = Path(__file__).resolve().parent
     file_path = directory / "data.mrd"
     await client.upload_file_result(
         file_path=file_path,
+        parameter=payload.device_parameter,
         task_id=str(payload.id),
         user_access_token=payload.access_token,
     )
@@ -81,15 +83,15 @@ async def main():
 
     stop_event = asyncio.Event()
 
-    def shutdown() -> None:
-        """Define shutdown."""
-        print("\nStopping client...")
-        stop_event.set()
-
-    atexit.register(shutdown)
-
-    await stop_event.wait()  # wait for signal
-    await client.stop()
+    try:
+        await stop_event.wait()
+    except asyncio.CancelledError:
+        print("Cancellation requested, shutting down...")
+    finally:
+        await client.stop()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Keyboard interrupt received.")
