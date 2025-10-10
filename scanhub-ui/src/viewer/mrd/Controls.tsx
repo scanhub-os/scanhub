@@ -9,11 +9,15 @@ import FormLabel from '@mui/joy/FormLabel'
 import Box from '@mui/joy/Box';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
+import { ResultOut } from '../../openapi/generated-client/exam';
 import { plotColorPaletteOptions, plotColorPalettes } from './utils/colormaps';
 
 
 export interface ControlsProps {
   metaCount: number;
+  results: ResultOut[];
+  selectedResultId: string;
+  setSelectedResultId: (v: string) => void;
   overlay: boolean;
   setOverlay: (v: boolean) => void;
   wantTime: boolean;
@@ -37,15 +41,32 @@ export default function Controls(p: ControlsProps) {
 
   return (
     
-    <Stack direction={'row'} sx={{alignItems: 'center', justifyContent: 'flex-end'}} gap={2}>
+    <Stack direction={'row'} sx={{alignItems: 'center', justifyContent: 'flex-start'}} gap={2}>
      
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        <FormLabel>Domain</FormLabel>
+      <Select
+        size="sm"
+        value={p.selectedResultId}
+        onChange={(_, value) => value && p.setSelectedResultId(value)}
+        required
+      >
+        {
+          p.results.map((result => {
+            const date_time = new Date(result.datetime_created)
+            return (
+              <Option id={result.id} value={result.id}>
+                {date_time.toLocaleDateString() + ', ' + date_time.toLocaleTimeString()}
+              </Option>
+            )
+          }))
+        }
+      </Select>
+
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        {/* <FormLabel>Domain</FormLabel> */}
         <Checkbox label="Time" size="sm" checked={p.wantTime} onChange={e=>p.setWantTime(e.target.checked)} />
         <Checkbox label="Frequency" size="sm" checked={p.wantFreq} onChange={e=>p.setWantFreq(e.target.checked)} />
       </Box>
 
-      <FormLabel>Complex</FormLabel>
       <Select
         size="sm"
         value={p.mode}
@@ -53,14 +74,14 @@ export default function Controls(p: ControlsProps) {
         onChange={(_, value) => p.setMode(value as ComplexMode)}
         required
       >
-          <Option value="abs">Magnitude</Option>
-          <Option value="phase">Phase</Option>
-          <Option value="real">Real</Option>
-          <Option value="imag">Imag</Option>
-
+        <Option value="abs">Magnitude</Option>
+        <Option value="phase">Phase</Option>
+        <Option value="real">Real</Option>
+        <Option value="imag">Imag</Option>
       </Select>
 
-      <FormLabel>Colormap</FormLabel>
+      {/* <FormLabel>Colormap</FormLabel> */}
+      <FormLabel>Color</FormLabel>
       <Select
         size="sm"
         value={p.colorPalette.id}
@@ -86,7 +107,7 @@ export default function Controls(p: ControlsProps) {
         onChange={(e) => p.setCoil(Math.max(0, Number(e.target.value)))}
       />
 
-      <FormLabel>Overlay</FormLabel>
+      <FormLabel>Plot</FormLabel>
       <Switch size="sm" checked={p.overlay} onChange={e=>p.setOverlay(e.target.checked)} />
 
       {/* <Slider
@@ -100,8 +121,8 @@ export default function Controls(p: ControlsProps) {
       /> */}
       {
         p.overlay ?
-          <Stack direction={'row'} gap={2}>
-            <FormLabel>Readout range</FormLabel>
+          <Stack direction={'row'} gap={1}>
+            <FormLabel>Range</FormLabel>
             <Input
               size="sm"
               type="number"
@@ -117,7 +138,7 @@ export default function Controls(p: ControlsProps) {
               onChange={(e) => p.setAcqRange([p.acqRange[0], Math.min(maxIdx, Number(e.target.value))])}
             />
           </Stack> :
-          <Stack direction={'row'} gap={2}>
+          <Stack direction={'row'} gap={1}>
             <FormLabel>Readout</FormLabel>
             <Input
               size="sm"

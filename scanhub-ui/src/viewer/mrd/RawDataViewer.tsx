@@ -3,7 +3,8 @@ import ReactECharts from 'echarts-for-react';
 
 import { useData } from './hooks/useData';
 import { useMeta } from './hooks/useMeta';
-import { useFileIds } from './hooks/useFileIds';
+// import { useFileIds } from './hooks/useFileIds';
+import { useResults } from './hooks/useResults';
 import { ColorPalette, ComplexMode } from './types';
 import type { CallbackDataParams } from 'echarts/types/dist/shared';
 import Controls from './Controls';
@@ -48,8 +49,8 @@ echartsUse([
 ]);
 const echarts = { init, use: echartsUse };
 
-export default function RawDataViewer({ item }: { item: ItemSelection }) {
 
+export default function RawDataViewer({ item }: { item: ItemSelection }) {
   const [overlay, setOverlay] = useState(true);
   const [wantTime, setWantTime] = useState(true);
   const [wantFreq, setWantFreq] = useState(false);
@@ -58,30 +59,42 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
   const [coil, setCoil] = useState(0);
   const [acqRange, setAcqRange] = useState<[number, number]>([0, 0]);
   const [currentAcq, setCurrentAcq] = useState(0);
+  const [selectedResultId, setSelectedResultId] = useState<string | undefined>(undefined);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Data layer hooks
   const {
-    fileIds,
+    workflowId,
+    taskId: resolvedTaskId,
+    results,
     isLoading: idsLoading,
     isError: idsError,
-  } = useFileIds(item);
+  } = useResults(item);
 
-  // Derive IDs (safe defaults) and readiness
-  const workflowId = fileIds?.workflowId ?? '';
-  const resolvedTaskId = fileIds?.taskId ?? '';
-  const resultId = fileIds?.resultId ?? '';
-  const idsReady = !!fileIds && !idsError;
-
-  // Meta query — MUST be called every render; gate with `enabled`
-  const metaQuery = useMeta(idsReady, workflowId, resolvedTaskId, resultId);
-
-  // Initialize range when meta changes (effect is fine; it's not a Hook order concern)
+  // Automatically select newest result when available or updated
   useEffect(() => {
-    const meta = metaQuery.data;
-    if (!meta) return;
-    const n = meta.acquisitions?.length ? meta.acquisitions.length : 1;
+    if (!results || results.length === 0) return;
+
+    const latest = results[0];
+    setSelectedResultId(latest.id);
+    // const currentStillExists = results.some((r) => r.id === selectedResultId);
+
+    // if (!selectedResultId || !currentStillExists) {
+    //   setSelectedResultId(latest.id);
+    // }
+  }, [results]);
+
+  // Readiness condition
+  const idsReady = !!workflowId && !!resolvedTaskId && !!selectedResultId && !idsError;
+
+  // Meta query — called every render, gated by `enabled`
+  const metaQuery = useMeta(idsReady, workflowId, resolvedTaskId, selectedResultId ?? '');
+
+  // Initialize range when meta changes
+  useEffect(() => {
+    if (!metaQuery.data) return;
+    const n = metaQuery.data.acquisitions?.length ?? 1;
     setAcqRange([0, Math.min(10, n - 1)]);
     setCurrentAcq(0);
     setCoil(0);
@@ -99,16 +112,17 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
     return String(currentAcq);
   }, [metaQuery.data, overlay, acqRange, currentAcq]);
 
-  // Binary acquisitions query — ALWAYS call, but disabled until ready
+  // Binary acquisitions query
   const acqQuery = useData(
     idsReady && !!idsExpr,
     workflowId,
     resolvedTaskId,
-    resultId,
+    selectedResultId ?? '',
     idsExpr,
     0,
     1
   );
+
 
   // Worker lifecycle (always mounted)
   const workerRef = useRef<Worker | null>(null);
@@ -297,15 +311,16 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
   ]);
 
   // Render (no early returns)
-  const showEmpty =
-    (idsError || !fileIds) &&
-    !(idsLoading); // avoid flashing the empty while still loading
+  const showEmpty = (idsError || !results || results.length === 0) && !idsLoading;
 
   return (
 
-    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height)) - 4', p: 2, gap: 1}}>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: 'calc(100vh - var(--Navigation-height) - var(Status-height)) - 50', p: 2, gap: 1}}>
       <Controls
         metaCount={metaQuery.data?.acquisitions?.length ?? 0}
+        results={results}
+        selectedResultId={selectedResultId ?? ''}
+        setSelectedResultId={setSelectedResultId}
         overlay={overlay}
         setOverlay={setOverlay}
         wantTime={wantTime}
@@ -324,35 +339,34 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
         setCurrentAcq={setCurrentAcq}
       />
       <Card variant="outlined" color="neutral" sx={{ p: 0.5, height: '100%' }}>
-
-          {
-            showEmpty ? (
-              <Container maxWidth={false} sx={{ width: '50%', mt: 5, justifyContent: 'center' }}>
-                <AlertItem
-                  title="Please select a reconstruction or processing task with a result to show a DICOM image."
-                  type={Alerts.Info}
-                />
-              </Container>
-            ) : (
-              <div
-                ref={containerRef}
-                style={{
-                  height: '100%',
-                  minHeight: 320,   // avoid 0 height on first paint
-                  minWidth: 400,
-                }}
-              >
-                <ReactECharts
-                  echarts={echarts}
-                  option={option}
-                  notMerge
-                  lazyUpdate
-                  style={{ width: '100%', height: '100%' }}
-                  opts={{ renderer: 'canvas' }}
-                />
-              </div>
-            )
-          }
+        {
+          showEmpty ? (
+            <Container maxWidth={false} sx={{ width: '50%', mt: 5, justifyContent: 'center' }}>
+              <AlertItem
+                title="Please select a reconstruction or processing task with a result to show a DICOM image."
+                type={Alerts.Info}
+              />
+            </Container>
+          ) : (
+            <div
+              ref={containerRef}
+              style={{
+                height: '100%',
+                minHeight: 200,   // avoid 0 height on first paint
+                minWidth: 300,
+              }}
+            >
+              <ReactECharts
+                echarts={echarts}
+                option={option}
+                notMerge
+                lazyUpdate
+                style={{ width: '100%', height: '100%' }}
+                opts={{ renderer: 'canvas' }}
+              />
+            </div>
+          )
+        }
       </Card>
     </Stack>
   );

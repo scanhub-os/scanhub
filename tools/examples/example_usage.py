@@ -18,7 +18,7 @@ async def perform_scan(client, payload: AcquisitionPayload):
     print("Retrieved device parameters dict: ", payload.device_parameter)
 
     # Simulate some workload
-    delay_per_step = 4
+    delay_per_step = 1
     for percentage in range(10):
         await asyncio.sleep(delay_per_step)
         await client.send_scanning_status(
