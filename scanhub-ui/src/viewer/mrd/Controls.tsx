@@ -53,7 +53,7 @@ export default function Controls(p: ControlsProps) {
           p.results.map((result => {
             const date_time = new Date(result.datetime_created)
             return (
-              <Option id={result.id} value={result.id}>
+              <Option key={result.id} id={result.id} value={result.id}>
                 {date_time.toLocaleDateString() + ', ' + date_time.toLocaleTimeString()}
               </Option>
             )

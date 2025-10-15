@@ -10,11 +10,27 @@ import React from 'react'
 // import Divider from '@mui/joy/Divider'
 import IconButton from '@mui/joy/IconButton'
 import ToggleButtonGroup from '@mui/joy/ToggleButtonGroup'
+import Stack from '@mui/joy/Stack';
+import Tooltip from '@mui/joy/Tooltip';
+import Divider from '@mui/joy/Divider';
 import { Enums } from '@cornerstonejs/tools';
 import { getLinkedToolGroup, tools } from './cornerstone/toolgroups';
 
 
-function DiconViewerToolbar() {
+// Layout icons (you can pick from @mui/icons-material or any other)
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import ViewModuleRoundedIcon from '@mui/icons-material/ViewModuleRounded';
+import ViewComfyRoundedIcon from '@mui/icons-material/ViewComfyRounded';
+
+
+interface DicomViewerToolbarProps {
+  onLayoutChange: (layout: '1x1' | '1x3' | '2x2') => void;
+  currentLayout: '1x1' | '1x3' | '2x2';
+}
+
+
+
+function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarProps) {
   const [activeTool, setActiveTool] = React.useState<string | null>(null)
 
 	const toolGroup = React.useMemo(() => getLinkedToolGroup(), [])
@@ -31,26 +47,59 @@ function DiconViewerToolbar() {
   }, [activeTool, toolGroup])
 
   return (
-    <ToggleButtonGroup
-      variant="plain"
-      spacing={0.5}
-      value={activeTool}
-      onChange={(_event, tool: string | null) => {
-        setActiveTool(tool) // tool may be null on deselect
-      }}
-      aria-label="viewer tools"
-    >
-      {tools.map(({ Tool, Icon, label }) => (
-        <IconButton
-          key={Tool.toolName}
-          value={Tool.toolName}
-          aria-label={label ?? Tool.toolName}
-          title={label ?? Tool.toolName}
-        >
-          <Icon fontSize="small"/>
-        </IconButton>
-      ))}
-    </ToggleButtonGroup>
+    <Stack direction="row" gap={2} sx={{ p: 0, m: 0 }}>
+
+      {/* --- Layout Selection --- */}
+      <ToggleButtonGroup
+        variant="plain"
+        spacing={0.5}
+        value={currentLayout}
+        onChange={(_event, layout: '1x1' | '1x3' | '2x2' | null) => {
+          if (layout) onLayoutChange(layout);
+        }}
+        aria-label="layout selection"
+      >
+        <Tooltip title="Single View (1×1)" variant="soft">
+          <IconButton value="1x1" aria-label="1x1 Layout">
+            <GridViewRoundedIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Three Orthogonal Views (1×3)" variant="soft">
+          <IconButton value="1x3" aria-label="1x3 Layout">
+            <ViewComfyRoundedIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="MPR + 3D (2×2)" variant="soft">
+          <IconButton value="2x2" aria-label="2x2 Layout">
+            <ViewModuleRoundedIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </ToggleButtonGroup>
+
+      <Divider orientation="vertical"/>
+
+      <ToggleButtonGroup
+        variant="plain"
+        spacing={0.5}
+        value={activeTool}
+        onChange={(_event, tool: string | null) => {
+          setActiveTool(tool) // tool may be null on deselect
+        }}
+        aria-label="viewer tools"
+      >
+        {tools.map(({ Tool, Icon, label }) => (
+          <IconButton
+            key={Tool.toolName}
+            value={Tool.toolName}
+            aria-label={label ?? Tool.toolName}
+            title={label ?? Tool.toolName}
+          >
+            <Icon fontSize="small"/>
+          </IconButton>
+        ))}
+      </ToggleButtonGroup>
+    </Stack>
+
   )
 }
 

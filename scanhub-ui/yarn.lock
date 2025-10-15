@@ -235,7 +235,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cornerstonejs/codec-charls@npm:^1.2.3":
+"@cornerstonejs/codec-charls@npm:1.2.3, @cornerstonejs/codec-charls@npm:^1.2.3":
   version: 1.2.3
   resolution: "@cornerstonejs/codec-charls@npm:1.2.3"
   checksum: 10c0/6ef74c2fab169acd97f659fa09d188c88514f8a71413118a2523bb9f8f9b1436267bb74544aa7d9404aacbc228e7757e6e7e22b844541fe5f3bdd0cca76edaf5
@@ -249,68 +249,68 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cornerstonejs/codec-openjpeg@npm:^1.2.2, @cornerstonejs/codec-openjpeg@npm:^1.2.4":
+"@cornerstonejs/codec-openjpeg@npm:1.2.4, @cornerstonejs/codec-openjpeg@npm:^1.2.4":
   version: 1.2.4
   resolution: "@cornerstonejs/codec-openjpeg@npm:1.2.4"
   checksum: 10c0/cccd12ad0239d4cbaddefa7d81c97a880665619bb9879ca8ae134b92631f4a1a8c50e67b84edbfedf46c3dea4031135aa3257178b596d46ef12d02999169d099
   languageName: node
   linkType: hard
 
-"@cornerstonejs/codec-openjph@npm:^2.4.5, @cornerstonejs/codec-openjph@npm:^2.4.7":
+"@cornerstonejs/codec-openjph@npm:2.4.7, @cornerstonejs/codec-openjph@npm:^2.4.7":
   version: 2.4.7
   resolution: "@cornerstonejs/codec-openjph@npm:2.4.7"
   checksum: 10c0/2f449fc2262bce654412873c540af75f408bb067691a6cc168b7ef58d74c498f3c3461af78cbceb0aa68fe96c843962fd78bfefefa3c7375e0a2f4054660a455
   languageName: node
   linkType: hard
 
-"@cornerstonejs/core@npm:^3.32.10":
-  version: 3.32.10
-  resolution: "@cornerstonejs/core@npm:3.32.10"
+"@cornerstonejs/core@npm:^4":
+  version: 4.5.6
+  resolution: "@cornerstonejs/core@npm:4.5.6"
   dependencies:
     "@kitware/vtk.js": "npm:32.12.1"
-    comlink: "npm:^4.4.1"
-    gl-matrix: "npm:^3.4.3"
-    loglevel: "npm:^1.9.2"
-  checksum: 10c0/da1003d04d343003d2020d1c80360dfee55f188aa2fe9a596e1e1bb68f513dbb0f134542c289087940ffbf6b9aa5aeaf9ffa17a90ee5b8265fb72ac463463c60
+    comlink: "npm:4.4.2"
+    gl-matrix: "npm:3.4.3"
+    loglevel: "npm:1.9.2"
+  checksum: 10c0/88a2b50cc778079817f8942c9d8028f0b42796b97afc2ffa31eb4a0e84ee0b45bc9acf68821af889e51132f561c9130500bce7307ca29dd889e94944919df625
   languageName: node
   linkType: hard
 
-"@cornerstonejs/dicom-image-loader@npm:^3.32.10":
-  version: 3.32.10
-  resolution: "@cornerstonejs/dicom-image-loader@npm:3.32.10"
+"@cornerstonejs/dicom-image-loader@npm:^4":
+  version: 4.5.6
+  resolution: "@cornerstonejs/dicom-image-loader@npm:4.5.6"
   dependencies:
-    "@cornerstonejs/codec-charls": "npm:^1.2.3"
-    "@cornerstonejs/codec-libjpeg-turbo-8bit": "npm:^1.2.2"
-    "@cornerstonejs/codec-openjpeg": "npm:^1.2.2"
-    "@cornerstonejs/codec-openjph": "npm:^2.4.5"
-    comlink: "npm:^4.4.1"
-    dicom-parser: "npm:^1.8.9"
-    jpeg-lossless-decoder-js: "npm:^2.1.0"
-    pako: "npm:^2.0.4"
-    uuid: "npm:^9.0.0"
+    "@cornerstonejs/codec-charls": "npm:1.2.3"
+    "@cornerstonejs/codec-libjpeg-turbo-8bit": "npm:1.2.2"
+    "@cornerstonejs/codec-openjpeg": "npm:1.2.4"
+    "@cornerstonejs/codec-openjph": "npm:2.4.7"
+    comlink: "npm:4.4.2"
+    dicom-parser: "npm:1.8.21"
+    jpeg-lossless-decoder-js: "npm:2.1.2"
+    pako: "npm:2.1.0"
+    uuid: "npm:9.0.1"
   peerDependencies:
-    "@cornerstonejs/core": ^3.32.10
-    dicom-parser: ^1.8.9
-  checksum: 10c0/0c20ecc096b832955c3e0d43f045401d378e6420ab7bd2f37e414074904b4c9dc3f9e195b8743a3171dbeea69530d884672daa67a8fa837e83c3831269c7277c
+    "@cornerstonejs/core": 4.5.6
+    dicom-parser: 1.8.21
+  checksum: 10c0/2617c5567e3c2931f71d8f483e6b998753c6332368641f4d05a30c52a15e32e7d5d7833e380013a80f1f115511ed9698104fe029a72f98bf22924c76c6476380
   languageName: node
   linkType: hard
 
-"@cornerstonejs/tools@npm:^3.32.10":
-  version: 3.32.10
-  resolution: "@cornerstonejs/tools@npm:3.32.10"
+"@cornerstonejs/tools@npm:^4":
+  version: 4.5.6
+  resolution: "@cornerstonejs/tools@npm:4.5.6"
   dependencies:
     "@types/offscreencanvas": "npm:2019.7.3"
-    comlink: "npm:^4.4.1"
-    lodash.get: "npm:^4.4.2"
+    comlink: "npm:4.4.2"
+    lodash.get: "npm:4.4.2"
   peerDependencies:
-    "@cornerstonejs/core": ^3.32.10
+    "@cornerstonejs/core": 4.5.6
     "@kitware/vtk.js": 32.12.1
-    "@types/d3-array": ^3.0.4
-    "@types/d3-interpolate": ^3.0.1
-    d3-array: ^3.2.3
-    d3-interpolate: ^3.0.1
-    gl-matrix: ^3.4.3
-  checksum: 10c0/dbf71fdccd2b283143b93760d73e10e661b139eee3f8f3cef5ff8e8408d6872ce9ac48dbda777bd571f3376e718cc8ec632621133040a9ce887ef30c64ff44e1
+    "@types/d3-array": 3.2.1
+    "@types/d3-interpolate": 3.0.4
+    d3-array: 3.2.4
+    d3-interpolate: 3.0.1
+    gl-matrix: 3.4.3
+  checksum: 10c0/135cb771f9b4885a98e07f09b0db94f634110032ac8105f5fde45f4f7d28f6bef429228c87c36da1fb3c967cb02f74f03445e7cdf758af88433739006a2c9c6f
   languageName: node
   linkType: hard
 
@@ -2939,7 +2939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"comlink@npm:^4.4.1":
+"comlink@npm:4.4.2":
   version: 4.4.2
   resolution: "comlink@npm:4.4.2"
   checksum: 10c0/38aa1f455cf08e94aaa8fc494fd203cc0ef02ece6c21404b7931ce17567e8a72deacddab98aa5650cfd78332ff24c34610586f6fb27fd19dc77e753ed1980deb
@@ -3275,7 +3275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dicom-parser@npm:^1.8.21, dicom-parser@npm:^1.8.9":
+"dicom-parser@npm:1.8.21, dicom-parser@npm:^1.8.21":
   version: 1.8.21
   resolution: "dicom-parser@npm:1.8.21"
   checksum: 10c0/d80cab18457bcd378eda4dde8d51790566dd883102adbec204d0b6d8d352bbf4cc7fc2c5618cfb7b56b6f4c1bffdb0b73634e046917a3e2d69c86d7c8f887171
@@ -4669,7 +4669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gl-matrix@npm:^3.4.3, gl-matrix@npm:^3.4.4":
+"gl-matrix@npm:^3.4.4":
   version: 3.4.4
   resolution: "gl-matrix@npm:3.4.4"
   checksum: 10c0/9aa022ffac0d158212ad0cd29939864ad919ac31cd5dc5a5d35e9d66bb62679ddf152ff7b2173ded20131045e40572b87f31b26a920be2a7583a1516b13b5b4b
@@ -5369,7 +5369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jpeg-lossless-decoder-js@npm:^2.1.0":
+"jpeg-lossless-decoder-js@npm:2.1.2":
   version: 2.1.2
   resolution: "jpeg-lossless-decoder-js@npm:2.1.2"
   dependencies:
@@ -5557,7 +5557,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.get@npm:^4.4.2":
+"lodash.get@npm:4.4.2":
   version: 4.4.2
   resolution: "lodash.get@npm:4.4.2"
   checksum: 10c0/48f40d471a1654397ed41685495acb31498d5ed696185ac8973daef424a749ca0c7871bf7b665d5c14f5cc479394479e0307e781f61d5573831769593411be6e
@@ -5588,7 +5588,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loglevel@npm:^1.9.2":
+"loglevel@npm:1.9.2":
   version: 1.9.2
   resolution: "loglevel@npm:1.9.2"
   checksum: 10c0/1e317fa4648fe0b4a4cffef6de037340592cee8547b07d4ce97a487abe9153e704b98451100c799b032c72bb89c9366d71c9fb8192ada8703269263ae77acdc7
@@ -6160,17 +6160,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pako@npm:2.1.0":
+  version: 2.1.0
+  resolution: "pako@npm:2.1.0"
+  checksum: 10c0/8e8646581410654b50eb22a5dfd71159cae98145bd5086c9a7a816ec0370b5f72b4648d08674624b3870a521e6a3daffd6c2f7bc00fdefc7063c9d8232ff5116
+  languageName: node
+  linkType: hard
+
 "pako@npm:^1.0.5":
   version: 1.0.11
   resolution: "pako@npm:1.0.11"
   checksum: 10c0/86dd99d8b34c3930345b8bbeb5e1cd8a05f608eeb40967b293f72fe469d0e9c88b783a8777e4cc7dc7c91ce54c5e93d88ff4b4f060e6ff18408fd21030d9ffbe
-  languageName: node
-  linkType: hard
-
-"pako@npm:^2.0.4":
-  version: 2.1.0
-  resolution: "pako@npm:2.1.0"
-  checksum: 10c0/8e8646581410654b50eb22a5dfd71159cae98145bd5086c9a7a816ec0370b5f72b4648d08674624b3870a521e6a3daffd6c2f7bc00fdefc7063c9d8232ff5116
   languageName: node
   linkType: hard
 
@@ -6837,12 +6837,12 @@ __metadata:
   resolution: "scanhub-ui@workspace:."
   dependencies:
     "@cornerstonejs/codec-charls": "npm:^1.2.3"
-    "@cornerstonejs/codec-libjpeg-turbo-8bit": "npm:1.2.2"
+    "@cornerstonejs/codec-libjpeg-turbo-8bit": "npm:^1.2.2"
     "@cornerstonejs/codec-openjpeg": "npm:^1.2.4"
     "@cornerstonejs/codec-openjph": "npm:^2.4.7"
-    "@cornerstonejs/core": "npm:^3.32.10"
-    "@cornerstonejs/dicom-image-loader": "npm:^3.32.10"
-    "@cornerstonejs/tools": "npm:^3.32.10"
+    "@cornerstonejs/core": "npm:^4"
+    "@cornerstonejs/dicom-image-loader": "npm:^4"
+    "@cornerstonejs/tools": "npm:^4"
     "@emotion/react": "npm:^11.11.1"
     "@emotion/styled": "npm:^11.11.0"
     "@fontsource/roboto": "npm:^5.0.5"
@@ -7750,7 +7750,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0.0":
+"uuid@npm:9.0.1":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:

@@ -87,11 +87,6 @@ export const tools: ToolDefinition[] = [
 ];
 
 export function registerDefaultTools() {
-
-  //   cornerstoneTools.toolStyle.setToolWidth(2)
-  //   cornerstoneTools.toolColors.setToolColor('#2196f3')
-  //   cornerstoneTools.toolColors.setActiveColor('#4dabf5')
-
   addTool(CrosshairsTool);
   addTool(ReferenceLinesTool);
   tools.forEach(({Tool}) => ( addTool(Tool) ))
@@ -143,17 +138,6 @@ export function getLinkedToolGroup() {
   // Overlay/sync tools enabled
   // toolGroup.setToolEnabled(ReferenceLinesTool.toolName);
   // toolGroup.setToolEnabled(CrosshairsTool.toolName);
-
-
-  // const styles = {
-  //   global: {
-  //     color: '#6c757d',
-  //     colorActive: '#0d6efd',
-  //     lineWidth: '2',
-  //   }
-  // };
-  // annotation.config.style.setToolGroupToolStyles(TOOL_GROUP_ID, styles);
-
 
   return toolGroup;
 }

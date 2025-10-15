@@ -23,6 +23,29 @@ import { Alerts } from '../../interfaces/components.interface'
 const RENDERING_ENGINE_ID = 're-min';
 const VIEWPORT_ID = 'vp-min';
 
+
+
+const VIEW_LAYOUTS = {
+  '1x1': [
+    { id: 'single', orientation: null },
+  ],
+  '1x3': [
+    { id: 'axial', orientation: Enums.OrientationAxis.AXIAL },
+    { id: 'sagittal', orientation: Enums.OrientationAxis.SAGITTAL },
+    { id: 'coronal', orientation: Enums.OrientationAxis.CORONAL },
+  ],
+  '2x2': [
+    { id: 'axial', orientation: Enums.OrientationAxis.AXIAL },
+    { id: 'sagittal', orientation: Enums.OrientationAxis.SAGITTAL },
+    { id: 'coronal', orientation: Enums.OrientationAxis.CORONAL },
+    { id: 'volume3D', orientation: null }, // 3D rendering
+  ],
+};
+
+
+
+
+
 /**
  * Minimal single-viewport DICOM viewer:
  * - Initializes Cornerstone3D once (uses your existing initCornerstone3D)
@@ -33,13 +56,13 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
   const [user] = React.useContext(LoginContext);
   const [ready, setReady] = React.useState(false);
   const [viewportReady, setViewportReady] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const [layout, setLayout] = React.useState<'1x1' | '1x3' | '2x2'>('1x1');
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const engineRef = React.useRef<RenderingEngine | null>(null);
-  
+
   const numberOfFrames = useNumberOfFrames(imageIds, ready);
-
-
-  // Init Cornerstone once
+  
+  // Initialize Cornerstone
   React.useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -52,125 +75,161 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
   }, [user?.access_token]);
 
 
-  // Create engine + viewport (STACK for small/1 frame; ORTHOGRAPHIC for many)
+  // Create and configure rendering engine
   React.useEffect(() => {
     if (!ready || !containerRef.current) return;
 
-    // clean previous
-    getRenderingEngine(RENDERING_ENGINE_ID)?.destroy();
+    let engine: RenderingEngine | null = null;
+    let cancelled = false;
+    
+    const setup = async () => {
+      // Fully destroy any previous engine
+      const prev = getRenderingEngine(RENDERING_ENGINE_ID);
+      if (prev) {
+        try {
+          for (const v of Object.keys(prev.getViewports?.() ?? {})) {
+            prev.disableElement(v);
+          }
+          prev.destroy();
+        } catch (err) {
+          console.warn('Failed to destroy previous rendering engine', err);
+        }
+      }
 
-    const engine = new RenderingEngine(RENDERING_ENGINE_ID);
-    engineRef.current = engine;
-  
-    const viewportType = numberOfFrames > 1 ? Enums.ViewportType.ORTHOGRAPHIC : Enums.ViewportType.STACK;
+      // Create new engine
+      engine = new RenderingEngine(RENDERING_ENGINE_ID);
+      engineRef.current = engine;
 
-    (async () => {
-      await engine.enableElement({
-        viewportId: VIEWPORT_ID,
-        element: containerRef.current!,
-        type: viewportType,
-        defaultOptions: { background: [0, 0, 0] },
-      });
+      const currentLayout = VIEW_LAYOUTS[layout];
+      for (const view of currentLayout) {
+        const el = containerRef.current!.querySelector(`#viewport-${view.id}`) as HTMLDivElement;
+
+        // Determine viewport type
+        const viewportType =
+          layout === '1x1' ? (numberOfFrames > 1 ? Enums.ViewportType.ORTHOGRAPHIC : Enums.ViewportType.STACK)
+            : (view.orientation ? Enums.ViewportType.ORTHOGRAPHIC : Enums.ViewportType.VOLUME_3D);
+
+        await engine.enableElement({
+          viewportId: view.id,
+          element: el,
+          type: viewportType,
+          defaultOptions: { background: [0, 0, 0] },
+        });
+
+      }
       setViewportReady(true);
-    })();
+
+      getLinkedToolGroup();
+      attachViewportsToLinkedGroup(RENDERING_ENGINE_ID, VIEW_LAYOUTS[layout].map(view => view.id));
+    };
+
+    setup();
 
     return () => {
       setViewportReady(false);
-      try {
+      cancelled = true;
+      const engine = getRenderingEngine(RENDERING_ENGINE_ID);
+      if (engine) {
+        for (const v of VIEW_LAYOUTS[layout]) {
+          try {
+            engine.disableElement(v.id);
+          } catch {}
+        }
         engine.destroy();
-      } catch (err) {
-        // Intentionally ignore: engine may already be destroyed
-        // console.debug('engine.destroy failed', err);
-      } finally {
-        engineRef.current = null;
       }
+      destroyLinkedToolGroup();
     };
-  }, [ready, numberOfFrames]);
+  }, [ready, layout, numberOfFrames]);
 
-
-  // Attach tools only after the viewport exists
+  
+  // Load and assign volume(s)
   React.useEffect(() => {
     if (!viewportReady) return;
-    getLinkedToolGroup();
-    attachViewportsToLinkedGroup(RENDERING_ENGINE_ID, [VIEWPORT_ID]);
-    return () => destroyLinkedToolGroup();
-  }, [viewportReady]);
-
-
-  // Load data and render
-  React.useEffect(() => {
-    console.log('Trying to load the following imageIDs: ', imageIds)
-    if (!viewportReady || !numberOfFrames) return;
-
     (async () => {
-      const engine = engineRef.current;
-      if (!engine) return;  
+      const engine = engineRef.current!;
+      const currentLayout = VIEW_LAYOUTS[layout];
 
-      // Get viewport
-      const vp = engine.getViewport(VIEWPORT_ID) as Types.IStackViewport | Types.IVolumeViewport;
-
-      try {
-        if ('setVolumes' in vp && numberOfFrames > 1) {
-          console.log('Using volume loader...')
-
-          // Create volume image ids -> add ?frame=1...N
-          const volumeId = `cornerstoneStreamingImageVolume:${Date.now()}`;
-          const volumeImageIds = Array.from({ length: numberOfFrames }, (_, i) => `${imageIds[0]}?frame=${i + 1}`);
-          // Create and cache volume image ids for volume id
-          const volume = await volumeLoader.createAndCacheVolume(volumeId, { imageIds: volumeImageIds });
-          // Load volume
-          await volume.load();
-          // Set volume in viewport
-          await (vp as Types.IVolumeViewport).setVolumes([{ volumeId }]);
-
-        } else {
-          console.log('Using stack viewport...')
-          // If 2D 
-          await (vp as Types.IStackViewport).setStack(imageIds);
-        }
+      // For 2D stack-only data
+      if (layout === '1x1' && numberOfFrames <= 1) {
+        const vp = engine.getViewport('single') as Types.IStackViewport;
+        await vp.setStack(imageIds);
         await vp.render();
-      } catch (e) {
-        console.error('Viewport load failed; forcing stack path', e);
-        try {
-          await (vp as Types.IStackViewport).setStack(imageIds);
-          await vp.render();
-        } catch (e2) {
-          console.error('Stack fallback failed', e2);
-        }
+        return;
       }
+
+      // Create volume image ids -> add ?frame=1...N
+      const volumeId = `cornerstoneStreamingImageVolume:${Date.now()}`;
+      const volumeImageIds = Array.from({ length: numberOfFrames }, (_, i) => `${imageIds[0]}?frame=${i + 1}`);
+      // Create and cache volume image ids for volume id
+      const volume = await volumeLoader.createAndCacheVolume(volumeId, { imageIds: volumeImageIds });
+      // Load volume
+      await volume.load();
+      // Set volume in viewports
+      for (const view of currentLayout) {
+        // Get viewport by ID and set volume
+        const vp = engine.getViewport(view.id) as Types.IVolumeViewport;
+        await vp.setVolumes([{ volumeId }]);
+        // Set orientation
+        if (view.orientation) {
+          vp.setOrientation(view.orientation)
+        }
+        // Render viewport
+        await vp.render();
+      }
+  
     })();
-  }, [viewportReady, imageIds]);
+  }, [viewportReady, layout, imageIds, numberOfFrames]);
 
-
-  if (imageIds.length == 0 || !numberOfFrames) {
+  if (imageIds.length === 0 || !numberOfFrames) {
     return (
       <Container maxWidth={false} sx={{ width: '50%', mt: 5, justifyContent: 'center' }}>
-        <AlertItem title='Please select a reconstruction or processing task with a result to show a DICOM image.' type={Alerts.Info} />
+        <AlertItem
+          title="Please select a reconstruction or processing task with a result to show a DICOM image."
+          type={Alerts.Info}
+        />
       </Container>
-    )
+    );
   }
+
+  // Grid configuration
+  const gridTemplate =
+    layout === '1x1'
+      ? 'repeat(1, 1fr) / repeat(1, 1fr)'
+      : layout === '1x3'
+      ? 'repeat(1, 1fr) / repeat(3, 1fr)'
+      : 'repeat(2, 1fr) / repeat(2, 1fr)';
 
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height))', p: 1, gap: 1}}>
-      < DiconViewerToolbar />
-      <Card variant="plain" color="neutral" sx={{ p: 0.5, bgcolor: '#000', height: '100%', border: '5px solid' }}>
-        <div 
+      <DiconViewerToolbar onLayoutChange={setLayout} currentLayout={layout}/>
+      <Card
+        variant="plain"
+        color="neutral"
+        sx={{ p: 0.5, bgcolor: '#000', height: '100%', border: '5px solid' }}
+      >
+        <div
           ref={containerRef}
-          id="dicomViewport"
-          onContextMenu={(e) => {
-            e.preventDefault();
-            e.stopPropagation(); // optional, keeps it from bubbling into the page
-          }}
-          style={{ 
+          style={{
+            display: 'grid',
+            gridTemplate,
             width: '100%',
             height: '100%',
-            background: 'black',
-            borderRadius: 8,
-            overscrollBehavior: 'contain',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            WebkitTouchCallout: 'none',
-          }} />
+            gap: '4px',
+          }}
+        >
+          {VIEW_LAYOUTS[layout].map((v) => (
+            <div
+              key={v.id}
+              id={`viewport-${v.id}`}
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'black',
+                borderRadius: 8,
+              }}
+            />
+          ))}
+        </div>
       </Card>
     </Stack>
   );
