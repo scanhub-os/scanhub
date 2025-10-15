@@ -46,7 +46,7 @@ export function RouteConfiguration() {
               '--Form-maxWidth': '700px',
               '--Transition-duration': '0.4s', // set to `none` to disable transition
               '--Sidebar-width': '360px',
-              '--Navigation-height': '60px',
+              '--Navigation-height': '50px',
               '--Status-height': '22px',
             },
           }}

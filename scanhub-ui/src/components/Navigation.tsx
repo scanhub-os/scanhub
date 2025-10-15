@@ -121,7 +121,7 @@ export default function Navigation() {
           <img
             src={ScanhubLogo}
             alt=''
-            height='40'
+            height='30'
             className='d-inline-block'
           />
         </a>
@@ -166,6 +166,7 @@ export default function Navigation() {
         <MenuButton
           slots={{root: IconButton}}
           sx={{ ml: 2 }}
+          size='sm'
         >
           <Avatar variant='soft' color='primary' />
         </MenuButton>
