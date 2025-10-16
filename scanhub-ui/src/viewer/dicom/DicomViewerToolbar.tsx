@@ -14,7 +14,9 @@ import Stack from '@mui/joy/Stack';
 import Tooltip from '@mui/joy/Tooltip';
 import Divider from '@mui/joy/Divider';
 import { Enums } from '@cornerstonejs/tools';
-import { getLinkedToolGroup, tools } from './cornerstone/toolgroups';
+import { getToolGroup, tools } from './cornerstone/toolgroups';
+import { ViewLayout } from './cornerstone/viewLayouts';
+import { GridIcon } from './icons/LayoutIcons';
 
 
 // Layout icons (you can pick from @mui/icons-material or any other)
@@ -24,8 +26,8 @@ import ViewComfyRoundedIcon from '@mui/icons-material/ViewComfyRounded';
 
 
 interface DicomViewerToolbarProps {
-  onLayoutChange: (layout: '1x1' | '1x3' | '2x2') => void;
-  currentLayout: '1x1' | '1x3' | '2x2';
+  onLayoutChange: (layout: ViewLayout) => void;
+  currentLayout: ViewLayout;
 }
 
 
@@ -33,7 +35,7 @@ interface DicomViewerToolbarProps {
 function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarProps) {
   const [activeTool, setActiveTool] = React.useState<string | null>(null)
 
-	const toolGroup = React.useMemo(() => getLinkedToolGroup(), [])
+	const toolGroup = React.useMemo(() => getToolGroup(), [])
 
   React.useEffect(() => {
     if (activeTool && toolGroup) {
@@ -54,24 +56,24 @@ function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarP
         variant="plain"
         spacing={0.5}
         value={currentLayout}
-        onChange={(_event, layout: '1x1' | '1x3' | '2x2' | null) => {
+        onChange={(_event, layout: ViewLayout | null) => {
           if (layout) onLayoutChange(layout);
         }}
         aria-label="layout selection"
       >
-        <Tooltip title="Single View (1×1)" variant="soft">
+        <Tooltip title="Single view" variant="soft">
           <IconButton value="1x1" aria-label="1x1 Layout">
-            <GridViewRoundedIcon fontSize="small" />
+            <GridIcon rows={1} cols={1} fontSize='small'/>
           </IconButton>
         </Tooltip>
-        <Tooltip title="Three Orthogonal Views (1×3)" variant="soft">
+        <Tooltip title="Three orthogonal views" variant="soft">
           <IconButton value="1x3" aria-label="1x3 Layout">
-            <ViewComfyRoundedIcon fontSize="small" />
+            <GridIcon rows={1} cols={3} fontSize='small'/>
           </IconButton>
         </Tooltip>
-        <Tooltip title="MPR + 3D (2×2)" variant="soft">
+        <Tooltip title="MPR + 3D" variant="soft">
           <IconButton value="2x2" aria-label="2x2 Layout">
-            <ViewModuleRoundedIcon fontSize="small" />
+            <GridIcon rows={2} cols={2} fontSize='small'/>
           </IconButton>
         </Tooltip>
       </ToggleButtonGroup>

@@ -10,8 +10,10 @@ import {
 import { initCornerstone } from './cornerstone/init';
 import { useNumberOfFrames } from './hooks/useNumberOfFrames';
 import LoginContext from '../../LoginContext';
-import { getLinkedToolGroup, destroyLinkedToolGroup, attachViewportsToLinkedGroup, TOOL_GROUP_ID } from './cornerstone/toolgroups';
+import { attachToolGroupsForLayout, destroyToolGroups} from './cornerstone/toolgroups';
 import DiconViewerToolbar from './DicomViewerToolbar';
+import { VIEW_LAYOUTS, VIEW_LAYOUT_META, ViewportId, ViewLayout } from './cornerstone/viewLayouts';
+import { useViewportResize } from './hooks/useViewportResize';
 
 import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
@@ -21,23 +23,6 @@ import { Alerts } from '../../interfaces/components.interface'
 
 // Constants:
 const RENDERING_ENGINE_ID = 're-min';
-
-const VIEW_LAYOUTS = {
-  '1x1': [
-    { id: 'single', orientation: null },
-  ],
-  '1x3': [
-    { id: 'axial', orientation: Enums.OrientationAxis.AXIAL },
-    { id: 'sagittal', orientation: Enums.OrientationAxis.SAGITTAL },
-    { id: 'coronal', orientation: Enums.OrientationAxis.CORONAL },
-  ],
-  '2x2': [
-    { id: 'axial', orientation: Enums.OrientationAxis.AXIAL },
-    { id: 'sagittal', orientation: Enums.OrientationAxis.SAGITTAL },
-    { id: 'coronal', orientation: Enums.OrientationAxis.CORONAL },
-    { id: 'volume3D', orientation: null }, // 3D rendering
-  ],
-};
 
 
 // Helper function to obtain deterministic volume ID
@@ -54,18 +39,20 @@ function makeVolumeId(imageIds: string[]) {
  * - Loads imageIds for the given task and displays them
  */
 export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
+
+  // References
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const engineRef = React.useRef<RenderingEngine | null>(null);
+  const engineViewportIdsRef = React.useRef<ViewportId[]>([]);  // Save current engine viewport IDs
+  const volumeIdRef = React.useRef<string | null>(null);  // Save current volume ID
+
   // Hooks
   const [user] = React.useContext(LoginContext);
   const [ready, setReady] = React.useState(false);
   const [viewportReady, setViewportReady] = React.useState(false);
-  const [layout, setLayout] = React.useState<'1x1' | '1x3' | '2x2'>('1x1');
+  const [layout, setLayout] = React.useState<ViewLayout>(ViewLayout.Single);
   const numberOfFrames = useNumberOfFrames(imageIds, ready);
-
-  // References
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const engineRef = React.useRef<RenderingEngine | null>(null);
-  const engineViewportIdsRef = React.useRef<string[]>([]);  // Save current engine viewport IDs
-  const volumeIdRef = React.useRef<string | null>(null);  // Save current volume ID
+  useViewportResize(engineRef, layout, containerRef);
 
 
   // Create engine once (mount -> unmount)
@@ -82,6 +69,7 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
       // Full cleanup on unmount only
       try {
         engineRef.current?.destroy();
+        destroyToolGroups()
       } finally {
         engineRef.current = null;
       }
@@ -106,28 +94,24 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
   React.useEffect(() => {
     if (!ready || !containerRef.current || !engineRef.current) return;
 
-
     const engine = engineRef.current;
-    const current = VIEW_LAYOUTS[layout].map(v => v.id);
-    const prev = engineViewportIdsRef.current;
+    const layoutViewportIds = VIEW_LAYOUTS[layout].map(v => v.id);
 
     // Disable removed viewports
-    for (const id of prev) {
-      if (!current.includes(id)) {
+    for (const id of engineViewportIdsRef.current) {
+      if (!layoutViewportIds.includes(id)) {
         try { engine.disableElement(id); } catch {}
       }
     }
 
-
-  // Enable new/current viewports
+  // Enable viewports
   (async () => {
     for (const view of VIEW_LAYOUTS[layout]) {
+
       const element = containerRef.current!.querySelector(`#viewport-${view.id}`) as HTMLDivElement;
-
-      const type = layout === '1x1' ? (numberOfFrames > 1 ? Enums.ViewportType.ORTHOGRAPHIC : Enums.ViewportType.STACK)
-        : (view.orientation ? Enums.ViewportType.ORTHOGRAPHIC : Enums.ViewportType.VOLUME_3D);
-
       const engineVpIds = Object.keys(engine.getViewports?.() ?? {});
+      const type = numberOfFrames === 1 ? Enums.ViewportType.STACK
+        : (view.is3D ? Enums.ViewportType.VOLUME_3D : Enums.ViewportType.ORTHOGRAPHIC)
 
       if (!engineVpIds.includes(view.id)) {
         await engine.enableElement({
@@ -151,11 +135,21 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
       }
     }
 
-    engineViewportIdsRef.current = current;
+    // Enginge resize after layout change
+    requestAnimationFrame(() => {
+      const engine = engineRef.current;
+      if (!engine) return
+      // Resize with keep camera = true
+      engine.resize(false, true);
+      // Fit all active viewports to their container
+      engine.getViewports().forEach(vp => vp?.resetCamera?.());
+      engine.render();
+    });
+
+    engineViewportIdsRef.current = layoutViewportIds;
     setViewportReady(true);
   })();
 
-  // no engine destroy here!
 }, [ready, layout, numberOfFrames]);
 
 
@@ -168,8 +162,9 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
       const currentLayout = VIEW_LAYOUTS[layout];
 
       // For 2D stack-only data
-      if (layout === '1x1' && numberOfFrames <= 1) {
+      if (layout === ViewLayout.Single && numberOfFrames <= 1) {
         const vp = engine.getViewport('single') as Types.IStackViewport;
+        if (!vp) return
         await vp.setStack(imageIds);
         await vp.render();
         return;
@@ -192,6 +187,7 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
       for (const view of currentLayout) {
         // Get viewport by ID and set volume
         const vp = engine.getViewport(view.id) as Types.IVolumeViewport;
+        if (!vp) continue
         await vp.setVolumes([{ volumeId }]);
         // Set orientation
         if (view.orientation) {
@@ -201,8 +197,12 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
         // Render viewport
         await vp.render();
       }
-  
+
+      // Add enabled viewports to toolGroup
+      await attachToolGroupsForLayout(VIEW_LAYOUTS[layout], RENDERING_ENGINE_ID)
+
     })();
+
   }, [viewportReady, layout, imageIds, numberOfFrames]);
 
   if (imageIds.length === 0 || !numberOfFrames) {
@@ -217,12 +217,8 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
   }
 
   // Grid configuration
-  const gridTemplate =
-    layout === '1x1'
-      ? 'repeat(1, 1fr) / repeat(1, 1fr)'
-      : layout === '1x3'
-      ? 'repeat(1, 1fr) / repeat(3, 1fr)'
-      : 'repeat(2, 1fr) / repeat(2, 1fr)';
+  const { rows, cols } = VIEW_LAYOUT_META[layout];
+  const gridTemplate = `repeat(${rows}, 1fr) / repeat(${cols}, 1fr)`;
 
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height) - var(--Status-height))', p: 1, gap: 1}}>
@@ -239,7 +235,7 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
             gridTemplate,
             width: '100%',
             height: '100%',
-            gap: '4px',
+            // gap: '1px',
           }}
         >
           {VIEW_LAYOUTS[layout].map((v) => (
@@ -250,7 +246,8 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
                 width: '100%',
                 height: '100%',
                 background: 'black',
-                borderRadius: 8,
+                borderRadius: 5,
+                overflow: 'hidden',
               }}
             />
           ))}
