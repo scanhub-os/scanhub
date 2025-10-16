@@ -5,6 +5,8 @@ import {
   getRenderingEngine,
   Enums,
   volumeLoader,
+  utilities,
+  cache,
   type Types,
 } from '@cornerstonejs/core';
 import { initCornerstone } from './cornerstone/init';
@@ -14,6 +16,7 @@ import { attachToolGroupsForLayout, destroyToolGroups} from './cornerstone/toolg
 import DiconViewerToolbar from './DicomViewerToolbar';
 import { VIEW_LAYOUTS, VIEW_LAYOUT_META, ViewportId, ViewLayout } from './cornerstone/viewLayouts';
 import { useViewportResize } from './hooks/useViewportResize';
+import { customPreset } from './cornerstone/volumePreset';
 
 import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
@@ -188,12 +191,103 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
         // Get viewport by ID and set volume
         const vp = engine.getViewport(view.id) as Types.IVolumeViewport;
         if (!vp) continue
+
         await vp.setVolumes([{ volumeId }]);
         // Set orientation
-        if (view.orientation) {
-          vp.setOrientation(view.orientation)
-        }
+        if (view.orientation) vp.setOrientation(view.orientation)
+        // Reset camera
         await vp.resetCamera(); // ensure proper frustum after setVolumes/orientation
+
+        
+        // TODO: Properly display the 3D rendered volume
+        // if (vp.type === Enums.ViewportType.VOLUME_3D) {
+        //   // Set preset for volume rendering
+        //   // const actorEntry = vp.getDefaultActor();
+        //   // if (!actorEntry) return;
+        //   // // const vtkActor = actorEntry.actor as any; // vtkVolume
+        //   // // const preset = CONSTANTS.VIEWPORT_PRESETS[22];  // 22 = MR-Default
+        //   // // if (!preset) return;
+        //   // // console.log("Applying preset: ", preset.name)
+
+        //   // // utilities.applyPreset(actorEntry.actor as any, customPreset);
+        //   // const property = (actorEntry.actor as any).getProperty();
+        //   // const opacityFunc = property.getScalarOpacity(0);
+        //   // opacityFunc.removeAllPoints();
+
+        //   // // Define mapping: (intensity, opacity)
+        //   // opacityFunc.addPoint(0, 0.0);       // black = fully transparent
+        //   // opacityFunc.addPoint(1000, 0.0);      // near black still transparent
+        //   // // opacityFunc.addPoint(600, 0.1);     // start fading in
+        //   // // opacityFunc.addPoint(1000, 0.8);     // mostly opaque
+        //   // opacityFunc.addPoint(2000, 1.0);    // fully opaque
+
+        //   const actorEntry = vp.getDefaultActor();
+        //   if (!actorEntry) return;
+
+        //   // const preset = CONSTANTS.VIEWPORT_PRESETS[22];  // 22 = MR-Default
+        //   // if (!preset) return;
+        //   // console.log("Applying preset: ", preset.name)
+
+        //   // get the volume to read spacing & intensity range
+        //   const vol = cache.getVolume(volumeId);
+        //   const scalars = vol?.imageData?.getPointData().getScalars();
+        //   let minI = 0, maxI = 1;
+        //   if (scalars) {
+        //     // vtkDataArray provides a getRange() method
+        //     const [minVal, maxVal] = scalars.getRange();
+        //     minI = minVal;
+        //     maxI = maxVal;
+        //   }
+        //   const [sx, sy, sz] = vol?.spacing ?? [1, 1, 1];
+
+        //   // a good unit distance ~ voxel diagonal (in mm)
+        //   const unitDistance = Math.sqrt(sx * sx + sy * sy + sz * sz);
+
+        //   const vtkVolume = actorEntry.actor as any;
+        //   const prop = vtkVolume.getProperty();
+        //   const mapper = vtkVolume.getMapper();
+
+        //   // Ensure composite blending (not MIP) for “see-through black”
+        //   if (mapper.setBlendModeToComposite) mapper.setBlendModeToComposite();
+
+        //   // Critical: set how opacity accumulates per mm along the ray
+        //   if (prop.setScalarOpacityUnitDistance) {
+        //     prop.setScalarOpacityUnitDistance(0, unitDistance);
+        //   }
+
+        //   // Reasonable ray step (smaller = sharper, slower)
+        //   if (mapper.setSampleDistance) {
+        //     mapper.setSampleDistance(unitDistance * 0.5);
+        //   }
+
+        //   // Build a transfer function that truly zeros-out “black”
+        //   // const threshold = Math.max(minI,  /* your threshold */ 500);
+        //   const threshold = maxI * 0.4
+
+        //   // Scalar opacity (intensity → opacity)
+        //   const of = prop.getScalarOpacity(0);
+        //   of.removeAllPoints();
+        //   of.addPoint(minI, 0.0);               // everything near min is transparent
+        //   of.addPoint(threshold - 1, 0.0);      // still transparent below threshold
+        //   of.addPoint(threshold + 50, 0.10);    // start to fade in
+        //   of.addPoint((threshold + maxI) * 0.5, 0.80);
+        //   of.addPoint(maxI, 1.0);               // dense stuff fully opaque
+
+        //   // Grayscale color transfer (optional but good to reset)
+        //   const ctf = prop.getRGBTransferFunction(0);
+        //   ctf.removeAllPoints();
+        //   ctf.addRGBPoint(minI, 0, 0, 0);
+        //   ctf.addRGBPoint(maxI, 1, 1, 1);
+
+        //   // Nice lighting
+        //   prop.setShade(true);
+        //   prop.setAmbient(0.25);
+        //   prop.setDiffuse(0.7);
+        //   prop.setSpecular(0.1);
+        //   prop.setSpecularPower(10);
+               
+        // }
+
         // Render viewport
         await vp.render();
       }
