@@ -73,6 +73,7 @@ class WebSocketHandler:
                 "Device-Token": str(self.device_token),
             },
             ssl=ssl.create_default_context(cafile=self.ca_file),
+            max_size=None,
         )
         self.logger.info("WebSocket connection established.")
 
