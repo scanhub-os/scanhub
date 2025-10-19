@@ -170,7 +170,7 @@
                     
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="using_scanhub.html">
-    Using ScanHub (the UI)
+    Using the ScanHub Web UI
   </a>
 </li>
 
@@ -354,7 +354,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="using_scanhub.html">
-    Using ScanHub (the UI)
+    Using the ScanHub Web UI
   </a>
 </li>
 
@@ -517,30 +517,45 @@
                   
   <section id="what-is-scanhub">
 <h1>What is ScanHub?<a class="headerlink" href="#what-is-scanhub" title="Link to this heading">#</a></h1>
-<p><strong>ScanHub</strong> is an open-source, cloud-oriented <strong>multimodal acquisition platform</strong> for medical imaging workflows, with a current focus on <strong>MRI</strong>. It integrates device management, exam planning, sequence management, workflow execution and cloud-based reconstruction/processing into one coherent platform and UI.</p>
+<p><strong>ScanHub</strong> is an open-source, cloud-oriented <strong>multimodal acquisition platform</strong> for medical imaging workflows (currently focused on <strong>MRI</strong>). It integrates device management, exam planning, sequence management, workflow execution, and cloud-based reconstruction/processing into one coherent platform and UI.</p>
+<section id="repository-layout">
+<h2>Repository layout<a class="headerlink" href="#repository-layout" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Microservices</strong> (backend): <code class="docutils literal notranslate"><span class="pre">services/*</span></code>
+- <code class="docutils literal notranslate"><span class="pre">services/device-manager</span></code> — register/select devices and handle device comms
+- <code class="docutils literal notranslate"><span class="pre">services/exam-manager</span></code> — plan, schedule, track, and review exams
+- <code class="docutils literal notranslate"><span class="pre">services/mri/sequence-manager</span></code> — manage MRI sequences (inspect, configure)
+- <code class="docutils literal notranslate"><span class="pre">services/patient-manager</span></code> — patient and study metadata
+- <code class="docutils literal notranslate"><span class="pre">services/user-login-manager</span></code> — authentication and session handling
+- <code class="docutils literal notranslate"><span class="pre">services/workflow-manager</span></code> — orchestration of reconstruction/processing jobs</p></li>
+<li><p><strong>Web UI</strong> (frontend): <code class="docutils literal notranslate"><span class="pre">scanhub-ui</span></code> — single entry point for operators/researchers</p></li>
+</ul>
+</section>
 <section id="why-it-exists">
 <h2>Why it exists<a class="headerlink" href="#why-it-exists" title="Link to this heading">#</a></h2>
-<p>Traditional MRI console workflows are costly to scale, hard to extend, and often siloed. ScanHub shifts reconstruction and processing tasks into a cloud-ready, modular architecture, enabling:</p>
+<p>Traditional MRI console workflows are costly to scale, hard to extend, and siloed. ScanHub shifts reconstruction and processing tasks into a cloud-ready, modular architecture, enabling:</p>
 <ul class="simple">
-<li><p><strong>Scalability &amp; flexibility</strong> – run heavier workloads in the cloud, plug in your own microservices.</p></li>
+<li><p><strong>Scalability &amp; flexibility</strong> – heavy workloads run in the cloud; services can be swapped or extended.</p></li>
 <li><p><strong>Open innovation</strong> – avoid vendor lock-in; build on transparent, community-driven components.</p></li>
-<li><p><strong>Collaboration &amp; sharing</strong> – central data handling and standard formats encourage teamwork.</p></li>
-<li><p><strong>Interoperability</strong> – sequence, device and workflow managers target open standards and cross-manufacturer use.</p></li>
+<li><p><strong>Collaboration &amp; sharing</strong> – central data handling and standard formats support teamwork.</p></li>
+<li><p><strong>Interoperability</strong> – open interfaces across device, exam, and sequence managers.</p></li>
 </ul>
 </section>
 <section id="key-building-blocks">
 <h2>Key building blocks<a class="headerlink" href="#key-building-blocks" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Device Manager</strong> – register/select devices (incl. simulated devices).</p></li>
-<li><p><strong>Exam Manager</strong> – plan acquisitions and review completed results.</p></li>
-<li><p><strong>MRI Sequences Manager</strong> – manage and inspect sequences.</p></li>
-<li><p><strong>Workflow Engine</strong> – orchestrates reconstruction/processing jobs.</p></li>
-<li><p><strong>Web UI (scanhub-ui)</strong> – single entry point for operators and researchers.</p></li>
+<li><p><strong>Device Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/device-manager</span></code>)</p></li>
+<li><p><strong>Exam Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/exam-manager</span></code>)</p></li>
+<li><p><strong>MRI Sequence Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/mri/sequence-manager</span></code>)</p></li>
+<li><p><strong>Patient Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/patient-manager</span></code>)</p></li>
+<li><p><strong>User Login Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/user-login-manager</span></code>)</p></li>
+<li><p><strong>Workflow Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/workflow-manager</span></code>)</p></li>
+<li><p><strong>Web UI</strong> (<code class="docutils literal notranslate"><span class="pre">scanhub-ui</span></code>)</p></li>
 </ul>
 </section>
 <section id="licensing">
 <h2>Licensing<a class="headerlink" href="#licensing" title="Link to this heading">#</a></h2>
-<p>ScanHub is <strong>dual-licensed</strong>: GPLv3 <strong>or</strong> a commercial license from BRAIN-LINK UG. Choose GPLv3 for open-source use; choose commercial to embed without copyleft obligations and to obtain premium services. (See the “ScanHub” page for details.)</p>
+<p>ScanHub is <strong>dual-licensed</strong>: GPLv3 <strong>or</strong> a commercial license from BRAIN-LINK UG. Choose GPLv3 for open-source use; choose commercial to embed without copyleft obligations and to obtain premium services.</p>
 </section>
 </section>
 
@@ -591,6 +606,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-layout">Repository layout</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-exists">Why it exists</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-building-blocks">Key building blocks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licensing">Licensing</a></li>

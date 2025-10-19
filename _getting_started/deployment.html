@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Troubleshooting &amp; FAQs" href="troubleshooting.html" />
-    <link rel="prev" title="Using ScanHub (the UI)" href="using_scanhub.html" />
+    <link rel="prev" title="Using the ScanHub Web UI" href="using_scanhub.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -170,7 +170,7 @@
                     
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="using_scanhub.html">
-    Using ScanHub (the UI)
+    Using the ScanHub Web UI
   </a>
 </li>
 
@@ -354,7 +354,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="using_scanhub.html">
-    Using ScanHub (the UI)
+    Using the ScanHub Web UI
   </a>
 </li>
 
@@ -521,9 +521,9 @@
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>A Linux server (on-prem or cloud) with Docker &amp; Docker Compose.</p></li>
-<li><p>A <strong>domain</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">scanhub.example.org</span></code>).</p></li>
-<li><p>A <strong>valid TLS certificate</strong> and <strong>private key</strong> for that domain.</p></li>
+<li><p>Linux server with Docker &amp; Docker Compose</p></li>
+<li><p>Domain (e.g., <code class="docutils literal notranslate"><span class="pre">scanhub.example.org</span></code>)</p></li>
+<li><p>Valid TLS certificate + private key</p></li>
 </ul>
 </section>
 <section id="steps-high-level">
@@ -531,51 +531,48 @@
 <section id="provision-server-and-dns">
 <h3>1) Provision server and DNS<a class="headerlink" href="#provision-server-and-dns" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Point your domain (A/AAAA) to the server.</p></li>
-<li><p>Ensure outbound internet access for pulling images.</p></li>
+<li><p>Point A/AAAA records to your server.</p></li>
 </ul>
 </section>
 <section id="configure-tls-and-secrets">
 <h3>2) Configure TLS and secrets<a class="headerlink" href="#configure-tls-and-secrets" title="Link to this heading">#</a></h3>
-<p>Replace the development defaults with your own:</p>
 <ul class="simple">
-<li><p>Put your <strong>private key</strong> and <strong>certificate</strong> in the appropriate secrets paths.</p></li>
-<li><p><strong>Do not</strong> commit these to version control.</p></li>
+<li><p>Place your <strong>private key</strong> and <strong>certificate</strong> under <code class="docutils literal notranslate"><span class="pre">secrets/</span></code> (do <strong>not</strong> commit).</p></li>
 </ul>
 </section>
 <section id="update-hostnames-and-cors">
 <h3>3) Update hostnames and CORS<a class="headerlink" href="#update-hostnames-and-cors" title="Link to this heading">#</a></h3>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">localhost</span></code> with your real domain in:</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">localhost</span></code> with your domain in:</p>
 <ul class="simple">
-<li><p><strong>NGINX config</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">infrastructure/nginx_config.conf</span></code>: <cite>server_name</cite> and HTTP→HTTPS redirect)</p></li>
-<li><p><strong>UI URLs</strong> (e.g., in the UI URL utility)</p></li>
-<li><p><strong>Allowed origins</strong> in API services (e.g., device/exam/patient/sequence managers)</p></li>
+<li><p><strong>NGINX</strong>: <code class="docutils literal notranslate"><span class="pre">infrastructure/nginx_config.conf</span></code> (<code class="docutils literal notranslate"><span class="pre">server_name</span></code>, HTTP→HTTPS redirect)</p></li>
+<li><p><strong>UI base URLs</strong>: <code class="docutils literal notranslate"><span class="pre">scanhub-ui/src/utils/Urls.tsx</span></code></p></li>
+<li><p><strong>Allowed origins</strong> in API services:
+- <code class="docutils literal notranslate"><span class="pre">services/device-manager/app/main.py</span></code>
+- <code class="docutils literal notranslate"><span class="pre">services/exam-manager/app/main.py</span></code>
+- <code class="docutils literal notranslate"><span class="pre">services/mri/sequence-manager/app/main.py</span></code>
+- <code class="docutils literal notranslate"><span class="pre">services/patient-manager/app/main.py</span></code>
+- <code class="docutils literal notranslate"><span class="pre">services/user-login-manager/app/main.py</span></code>
+- <code class="docutils literal notranslate"><span class="pre">services/workflow-manager/app/main.py</span></code></p></li>
 </ul>
 </section>
-<section id="start-services">
-<h3>4) Start services<a class="headerlink" href="#start-services" title="Link to this heading">#</a></h3>
-<ul>
-<li><p>Build/pull images and bring up the stack:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">compose</span> <span class="n">build</span>
-<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
-</pre></div>
-</div>
-</li>
-</ul>
+<section id="build-start">
+<h3>4) Build &amp; start<a class="headerlink" href="#build-start" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>::</dt><dd><p>docker compose build
+docker compose up -d</p>
+</dd>
+</dl>
 </section>
 <section id="create-users">
 <h3>5) Create users<a class="headerlink" href="#create-users" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Use the UI to create admin and operator accounts with strong passwords.</p></li>
-</ul>
+<p>Use the UI to create admin/operator accounts with strong passwords.</p>
 </section>
 </section>
 <section id="security-notes">
 <h2>Security notes<a class="headerlink" href="#security-notes" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Limit exposure of admin endpoints.</p></li>
-<li><p>Consider a reverse proxy or WAF, backups, central logging, and secrets management.</p></li>
-<li><p>Review data protection requirements applicable to your use case.</p></li>
+<li><p>Limit admin endpoints; consider a reverse proxy/WAF, backups, logging, and secrets management.</p></li>
+<li><p>Review data protection requirements for your use case.</p></li>
 </ul>
 </section>
 </section>
@@ -596,7 +593,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Using ScanHub (the UI)</p>
+        <p class="prev-next-title">Using the ScanHub Web UI</p>
       </div>
     </a>
     <a class="right-next"
@@ -632,7 +629,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#provision-server-and-dns">1) Provision server and DNS</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-tls-and-secrets">2) Configure TLS and secrets</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#update-hostnames-and-cors">3) Update hostnames and CORS</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-services">4) Start services</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-start">4) Build &amp; start</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-users">5) Create users</a></li>
 </ul>
 </li>

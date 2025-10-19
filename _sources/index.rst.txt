@@ -11,8 +11,8 @@ Developed in response to the limitations of traditional MRI infrastructure — s
 ScanHub enables efficient management and utilization of MRI data. By relocating image reconstruction and storage to the cloud, it reduces operational cost, 
 enhances scalability, and fosters collaboration across MRI research and clinical domains.
 
-Documentation Overview
-----------------------
+Overview
+--------
 
 .. toctree::
    :maxdepth: 1

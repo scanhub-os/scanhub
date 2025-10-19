@@ -1,44 +1,58 @@
 .. Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
    SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 
-=========================
-Using ScanHub (the UI)
-=========================
+=============================
+Using the ScanHub Web UI
+=============================
 
-This hands-on tour shows the typical first workflow.
+All user interaction with **ScanHub** happens through its **Web UI**, a browser-based interface that provides access to the complete imaging workflow — from planning to viewing results.
 
-1) Sign in / Create admin user
-==============================
-
-- On first run, create the initial user in the UI. 
-- Subsequent logins use your credentials.
-
-2) Register or select a device
-==============================
-
-- Open **Device Manager**.
-- For a quick trial, select a **simulation device** if available (e.g., a KomaMRI-backed device).
-
-3) Inspect sequences
+Accessing the Web UI
 ====================
+After starting the system with ``docker compose up -d``, open your browser at:
 
-- Open **MRI Sequences Manager**.
-- Browse and inspect available sequences; confirm parameters match your intended test.
+   **https://localhost/**
 
-4) Plan and run an exam
-=======================
+For production deployments, replace *localhost* with your configured domain.
 
-- Open **Exam Manager** and create a new exam for a demo patient.
-- Select the device and sequence, then **start acquisition** (or run a simulation on the virtual scanner).
+First login
+===========
+When the system runs for the first time, the Web UI will prompt you to create an administrator account.  
+Use a strong password (at least 12 characters). You can later add standard user accounts under *Settings → User Management*.
 
-5) View results (DICOM)
-=======================
+Typical workflow
+================
 
-- When processing completes, open the exam results to **view the reconstructed DICOM** objects in the UI.
-- Confirm metadata and basic image quality; iterate if necessary.
+1. **Login**  
+   Sign in using your administrator or user credentials.
 
-Tips
-====
+2. **Plan an exam**  
+   Define a new exam by specifying the subject, study details, and imaging sequence.  
+   (In the development setup, simulated devices and test sequences are preconfigured.)
 
-- Use simulated devices to validate pipelines before connecting real scanners.
-- Keep an eye on logs (`docker compose logs -f`) if a job stalls.
+3. **Run the acquisition or simulation**  
+   Start the exam. Data will be acquired or simulated and processed automatically in the background.  
+   No additional configuration or manual processing steps are required.
+
+4. **Inspect results**  
+   Once processing completes, you can view and download reconstructed DICOM images directly from the Web UI.
+
+5. **Manage data**  
+   Review previous exams, manage subjects, and organize studies from the dashboard.
+
+Monitoring
+==========
+To observe background activity or troubleshoot technical issues, you can follow the logs of all running services::
+
+   docker compose logs -f
+
+Shutdown
+========
+To stop all containers and services safely::
+
+   docker compose down
+
+Notes
+=====
+- The Web UI encapsulates all backend functionality — users never interact with the individual services directly.  
+- For development and debugging, internal microservices reside under the ``services/`` directory, but they remain transparent to end users.
