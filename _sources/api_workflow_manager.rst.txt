@@ -1,24 +1,24 @@
 .. Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
    SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 
-Exam Manager
-============
+Workflow Manager
+================
 
 Introduction
 ------------
 
-The Exam Manager API is designed to manage the complete lifecycle of exams, procedures, jobs, and records within the healthcare system.
-This comprehensive API allows users to perform essential operations on these entities and offers the following key endpoints:
+The Workflow Manager API provided by ScanHub is specifically designed to manage the workflows within a scanning and imaging environment.
+It plays a crucial role in creating, updating, retrieving, and deleting workflows, as well as handling the uploading of results related to specific records. The key endpoints in this API are:
 
 Web API
 -------
 
-.. openapi:: ./_openapi/exam_openapi.json
+.. openapi:: ./_openapi/workflow_manager_openapi.json
 
 License
 -------
 
-Exam Manager, including all its source code and associated documentation (collectively, the "Software"), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.
+Workflow Manager, including all its source code and associated documentation (collectively, the "Software"), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.
 
 Open Source License
 ~~~~~~~~~~~~~~~~~~~

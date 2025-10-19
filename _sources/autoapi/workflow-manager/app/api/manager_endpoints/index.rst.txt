@@ -137,7 +137,7 @@ Module Contents
        Could not trigger DAG
 
 
-.. py:function:: callback_results_ready(result_id: uuid.UUID | str, access_token: Annotated[str, Depends(oauth2_scheme)], success: bool = Body(..., embed=True)) -> dict[str, Any]
+.. py:function:: callback_results_ready(task_id: uuid.UUID | str, result_id: uuid.UUID | str, access_token: Annotated[str, Depends(oauth2_scheme)]) -> dict[str, Any]
    :async:
 
 

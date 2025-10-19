@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>MRI Acquisition Manager &#8212; ScanHub Documentation</title>
+    <title>User Login Manager &#8212; ScanHub Documentation</title>
   
   
   
@@ -43,12 +43,12 @@
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_mri_acquisition';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_user_login_manager';</script>
     <link rel="icon" href="_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MRI Sequences Manager" href="api_mri_sequences.html" />
-    <link rel="prev" title="Workflow Manager" href="api_workflow.html" />
+    <link rel="next" title="Workflow Manager" href="api_workflow_manager.html" />
+    <link rel="prev" title="UI Patient Manager" href="api_patient_manager.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -140,26 +140,78 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="scanhub_api.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/what_is_scanhub.html">
+    What is ScanHub?
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/quickstart.html">
+    Quickstart (5–10 minutes)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/installation.html">
+    Installation (detailed, local)
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="_getting_started/using_scanhub.html">
+    Using ScanHub (the UI)
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="_getting_started/deployment.html">
+    Deployment (production)
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="_getting_started/troubleshooting.html">
+    Troubleshooting & FAQs
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="scanhub_techdoc.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="autoapi/index.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="autoapi/index.html">
     Code Documentation
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -279,6 +331,48 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/what_is_scanhub.html">
+    What is ScanHub?
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/quickstart.html">
+    Quickstart (5–10 minutes)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/installation.html">
+    Installation (detailed, local)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/using_scanhub.html">
+    Using ScanHub (the UI)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/deployment.html">
+    Deployment (production)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="_getting_started/troubleshooting.html">
+    Troubleshooting & FAQs
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
@@ -366,12 +460,11 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="api_ui_patient_manager.html">UI Patient Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_device.html">Device Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">MRI Acquisition Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_mri_sequences.html">MRI Sequences Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_device_manager.html">Device Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_exam_manager.html">Exam Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_patient_manager.html">UI Patient Manager</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">User Login Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_workflow_manager.html">Workflow Manager</a></li>
 </ul>
 </div>
 </nav></div>
@@ -415,7 +508,7 @@
     
     <li class="breadcrumb-item"><a href="scanhub_api.html" class="nav-link">Web API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MRI Acquisition Manager</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">User Login Manager</span></li>
   </ul>
 </nav>
 </div>
@@ -432,49 +525,352 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="mri-acquisition-manager">
-<h1>MRI Acquisition Manager<a class="headerlink" href="#mri-acquisition-manager" title="Link to this heading">#</a></h1>
+  <section id="user-login-manager">
+<h1>User Login Manager<a class="headerlink" href="#user-login-manager" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>The Acquisition Manager API provides a streamlined interface for managing the MRI acquisition process, bridging the gap between the scanning devices and the user-facing components.
-Its straightforward design ensures that the initiation and monitoring of scans are conducted efficiently and transparently, enhancing the overall workflow of medical imaging procedures.</p>
+<p>The User Login Manager API provided by ScanHub is specifically designed to manage user authentication and authorization within the system.
+It plays a crucial role in creating, updating, retrieving, and deleting user login sessions, as well as handling the uploading of results related to specific records. The key endpoints in this API are:</p>
 </section>
 <section id="web-api">
 <h2>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h2>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-userlogin-getcurrentuser">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/getcurrentuser</span></span><a class="headerlink" href="#get--api-v1-userlogin-getcurrentuser" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Current User</strong></p>
+<p>Get current user from access_token. May be called as an endpoint or used in FastAPI with Depends.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>access_token</dt><dd><p>User token as previously obtained trough a call to /login
+Submit via HTTP header “Authorization: Bearer &lt;access_token&gt;”</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>User pydantic model, the user data of the current user.</p>
+</div></blockquote>
+</section>
+<section id="raises">
+<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>401: Unauthorized if the token is invalid or outdated.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
 <dl class="http post">
-<dt class="sig sig-object http" id="post--api-v1-mri-acquisitioncontrol-start-scan">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/acquisitioncontrol/start-scan</span></span><a class="headerlink" href="#post--api-v1-mri-acquisitioncontrol-start-scan" title="Link to this definition">#</a></dt>
-<dd><p><strong>Start Scan</strong></p>
-<p>Receives a job. Create a record id, trigger scan with it and returns it.</p>
+<dt class="sig sig-object http" id="post--api-v1-userlogin-loginfromcookie">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/loginfromcookie</span></span><a class="headerlink" href="#post--api-v1-userlogin-loginfromcookie" title="Link to this definition">#</a></dt>
+<dd><p><strong>Loginfromcookie</strong></p>
+<p>Login endpoint for login with cookie.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>access_token</dt><dd><p>User token as previously obtained trough a call to /login
+Submit via HTTP cookie.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>User pydantic model, the user data in case of a successful login.</p>
+</div></blockquote>
+</section>
+<section id="id3">
+<h3>Raises<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>401: Unauthorized if the username or password is wrong.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-userlogin-login">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/login</span></span><a class="headerlink" href="#post--api-v1-userlogin-login" title="Link to this definition">#</a></dt>
+<dd><p><strong>Login</strong></p>
+<p>Login endpoint.</p>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>form_data</dt><dd><p>Http form data for OAuth2 compliant login with username and password.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>User pydantic model, the user data in case of a successful login.</p>
+</div></blockquote>
+</section>
+<section id="id6">
+<h3>Raises<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>401: Unauthorized if the username or password is wrong.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-userlogin-logout">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/logout</span></span><a class="headerlink" href="#post--api-v1-userlogin-logout" title="Link to this definition">#</a></dt>
+<dd><p><strong>Logout</strong></p>
+<p>Logout endpoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Status Codes<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="http post">
-<dt class="sig sig-object http" id="post--api-v1-mri-acquisitioncontrol-forward-status">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/acquisitioncontrol/forward-status</span></span><a class="headerlink" href="#post--api-v1-mri-acquisitioncontrol-forward-status" title="Link to this definition">#</a></dt>
-<dd><p><strong>Forward Status</strong></p>
-<p>Receives status for a job. Forwards it to the ui and returns ok.</p>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-userlogin-getallusers">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/getallusers</span></span><a class="headerlink" href="#get--api-v1-userlogin-getallusers" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get User List</strong></p>
+<p>Get all users endpoint (only admins).</p>
+<section id="id7">
+<h3>Returns<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>List of all users. The access_token and token_type properties are set to “” for all of them.</p>
+</div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Status Codes<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
-<li><p><span><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
-</ul>
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
 </dd>
 </dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-userlogin-checknousers">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/checknousers</span></span><a class="headerlink" href="#get--api-v1-userlogin-checknousers" title="Link to this definition">#</a></dt>
+<dd><p><strong>Check No Users</strong></p>
+<p>Check if there are no users in the database.</p>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>True, if there are no users in the database.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-userlogin-createuser">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/createuser</span></span><a class="headerlink" href="#post--api-v1-userlogin-createuser" title="Link to this definition">#</a></dt>
+<dd><p><strong>Create User</strong></p>
+<p>Create user database entry (only admins).</p>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>new_user</dt><dd><p>pydantic base model of new user, token_type should be “password” and
+access_token should contain the password of the new user.
+The password of the new user should at least be 12 characters long.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 201<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-userlogin-createfirstuser">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/createfirstuser</span></span><a class="headerlink" href="#post--api-v1-userlogin-createfirstuser" title="Link to this definition">#</a></dt>
+<dd><p><strong>Create First User</strong></p>
+<p>Create first user.</p>
+<section id="id10">
+<h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>first_user</dt><dd><p>pydantic base model of the first user, token_type should be “password” and
+access_token should contain the password of the new user.
+The password of the new user should at least be 12 characters long.
+The role should be admin.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 201<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http delete">
+<dt class="sig sig-object http" id="delete--api-v1-userlogin-deleteuser">
+<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/deleteuser</span></span><a class="headerlink" href="#delete--api-v1-userlogin-deleteuser" title="Link to this definition">#</a></dt>
+<dd><p><strong>User Delete</strong></p>
+<p>Delete an existing user (requires admin priviledges).</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>username_to_delete</dt><dd><p>Name of the user to delete.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h3>Raises<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Not found</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">query string username_to_delete<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Required)</p>
+</dd>
+<dt class="field-even">status 204<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http put">
+<dt class="sig sig-object http" id="put--api-v1-userlogin-updateuser">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/updateuser</span></span><a class="headerlink" href="#put--api-v1-userlogin-updateuser" title="Link to this definition">#</a></dt>
+<dd><p><strong>Update User</strong></p>
+<p>Update the first_name, last_name, email and role of an existing user.</p>
+<section id="id13">
+<h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>updated_user</dt><dd><p>The attribute username identifies the user to modify.
+The attributes first_name, last_name, email and role are set for this user.</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Returns<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id15">
+<h3>Raises<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Not found if user not found.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http put">
+<dt class="sig sig-object http" id="put--api-v1-userlogin-changepassword">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/changepassword</span></span><a class="headerlink" href="#put--api-v1-userlogin-changepassword" title="Link to this definition">#</a></dt>
+<dd><p><strong>Change Password</strong></p>
+<p>Change password of a user. Only administrators may change passwords of other users.</p>
+<section id="id16">
+<h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>password_update_request</dt><dd><p>.password_of_requester: the password of the requester
+.username_to_change_password_for: the username for whom to change the password
+.newpassword: the new password</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h3>Returns<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="id18">
+<h3>Raises<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>400: New Password must have at least 12 characters. Old Password must be correct.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-userlogin-health-readiness">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/userlogin/health/readiness</span></span><a class="headerlink" href="#get--api-v1-userlogin-health-readiness" title="Link to this definition">#</a></dt>
+<dd><p><strong>Readiness</strong></p>
+<p>Readiness health endpoint.</p>
+<section id="id19">
+<h3>Returns<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Status dictionary</p>
+</div></blockquote>
+</section>
+<section id="id20">
+<h3>Raises<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>500: User table does not exist</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
-<p>MRI Acquisition Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
+<p>User Login Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
 <section id="open-source-license">
 <h3>Open Source License<a class="headerlink" href="#open-source-license" title="Link to this heading">#</a></h3>
 <p>If you want to use the Software under the terms of the GPLv3, you may do so for free. Under the GPLv3, you are allowed to modify and distribute the Software, but any derivative works that you distribute must also be licensed under the GPLv3. For the precise terms and conditions, please refer to the text of the GPLv3, which is included with the Software and can also be found at: <a class="reference external" href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
@@ -507,20 +903,20 @@ Its straightforward design ensures that the initiation and monitoring of scans a
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_workflow.html"
+       href="api_patient_manager.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Workflow Manager</p>
+        <p class="prev-next-title">UI Patient Manager</p>
       </div>
     </a>
     <a class="right-next"
-       href="api_mri_sequences.html"
+       href="api_workflow_manager.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">MRI Sequences Manager</p>
+        <p class="prev-next-title">Workflow Manager</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -559,7 +955,7 @@ Its straightforward design ensures that the initiation and monitoring of scans a
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/api_mri_acquisition.rst.txt"
+      <li><a href="_sources/api_user_login_manager.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

@@ -13,7 +13,7 @@ This API allows you to perform essential operations such as reading the device h
 Web API
 -------
 
-.. openapi:: ./_openapi/device_openapi.json
+.. openapi:: ./_openapi/device_manager_openapi.json
 
 License
 -------

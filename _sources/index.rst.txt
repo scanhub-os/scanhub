@@ -4,18 +4,32 @@
 ScanHub Documentation
 #####################
 
-Welcome to the online documentation of ScanHub, an open-source multimodal acquisition platform dedicated to workflows of medical imaging. Focusing prominently on MRI technology, ScanHub addresses the nuanced challenges of image acquisition, processing, and sharing by seamlessly integrating cloud-based solutions.
+Welcome to the online documentation of **ScanHub**, an open-source multimodal acquisition platform dedicated to workflows of medical imaging. 
+Focusing prominently on **MRI technology**, ScanHub addresses the nuanced challenges of image acquisition, processing, and sharing by seamlessly integrating cloud-based solutions.
 
-Developed in response to the challenges in traditional MRI infrastructure, such as scalability, cost-efficiency, and collaborative limitations, ScanHub emerges as a solution, ensuring the management and utilization of MRI data. By relocating image reconstruction and storage to the cloud, it not only aims to reduce associated costs but also enhances scalability and collaboration across various spectrums of MRI research and clinical applications.
+Developed in response to the limitations of traditional MRI infrastructure — such as scalability, cost-efficiency, and collaborative restrictions — 
+ScanHub enables efficient management and utilization of MRI data. By relocating image reconstruction and storage to the cloud, it reduces operational cost, 
+enhances scalability, and fosters collaboration across MRI research and clinical domains.
 
-Getting started
----------------
+Documentation Overview
+----------------------
 
 .. toctree::
    :maxdepth: 1
    :caption: About ScanHub
 
    introduction
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Getting Started
+
+   _getting_started/what_is_scanhub
+   _getting_started/quickstart
+   _getting_started/installation
+   _getting_started/using_scanhub
+   _getting_started/deployment
+   _getting_started/troubleshooting
 
 .. toctree::
    :maxdepth: 1

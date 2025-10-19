@@ -14,7 +14,7 @@ Here's a brief look at the main endpoints:
 Web API
 -------
 
-.. openapi:: ./_openapi/ui_patient_manager_openapi.json
+.. openapi:: ./_openapi/patient_manager_openapi.json
 
 License
 -------
