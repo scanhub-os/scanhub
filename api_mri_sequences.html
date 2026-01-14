@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Workflow Manager &#8212; ScanHub Documentation</title>
+    <title>MRI Sequences Manager &#8212; ScanHub Documentation</title>
   
   
   
@@ -41,14 +41,14 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_workflow_manager';</script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_mri_sequences';</script>
     <link rel="icon" href="_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Technical Documentation" href="scanhub_techdoc.html" />
-    <link rel="prev" title="User Login Manager" href="api_user_login_manager.html" />
+    <link rel="prev" title="MRI Acquisition Manager" href="api_mri_acquisition.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -140,78 +140,26 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" current active">
-  <a class="nav-link dropdown-item nav-internal" href="scanhub_api.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="autoapi/index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -331,48 +279,6 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
@@ -460,11 +366,12 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="api_device_manager.html">Device Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_exam_manager.html">Exam Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_patient_manager.html">UI Patient Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_user_login_manager.html">User Login Manager</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_ui_patient_manager.html">UI Patient Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_device.html">Device Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_mri_acquisition.html">MRI Acquisition Manager</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MRI Sequences Manager</a></li>
 </ul>
 </div>
 </nav></div>
@@ -508,7 +415,7 @@
     
     <li class="breadcrumb-item"><a href="scanhub_api.html" class="nav-link">Web API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Workflow Manager</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MRI Sequences Manager</span></li>
   </ul>
 </nav>
 </div>
@@ -525,31 +432,31 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="workflow-manager">
-<h1>Workflow Manager<a class="headerlink" href="#workflow-manager" title="Link to this heading">#</a></h1>
+  <section id="mri-sequences-manager">
+<h1>MRI Sequences Manager<a class="headerlink" href="#mri-sequences-manager" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>The Workflow Manager API provided by ScanHub is specifically designed to manage the workflows within a scanning and imaging environment.
-It plays a crucial role in creating, updating, retrieving, and deleting workflows, as well as handling the uploading of results related to specific records. The key endpoints in this API are:</p>
+<p>The MRI Sequence Manager API is designed to handle the creation, retrieval, modification, and deletion of MRI sequences within a medical imaging environment.
+Leveraging MongoDB for storage, this API provides a comprehensive set of endpoints to manage various aspects of MRI sequences. Below is an overview of the key endpoints:</p>
 </section>
 <section id="web-api">
 <h2>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h2>
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-workflowmanager-health-readiness">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflowmanager/health/readiness</span></span><a class="headerlink" href="#get--api-v1-workflowmanager-health-readiness" title="Link to this definition">#</a></dt>
-<dd><p><strong>Readiness</strong></p>
-<p>Readiness health endpoint.</p>
-<p>Inspects sqlalchemy engine and check if workflow table exists.</p>
+<dt class="sig sig-object http" id="get--api-v1-mri-sequences-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/</span></span><a class="headerlink" href="#get--api-v1-mri-sequences-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Mri Sequences Endpoint</strong></p>
+<p>Retrieve a list of all MRI sequences from the database.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
+</dd>
+</dl>
+</section>
 <section id="returns">
 <h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Status docstring</p>
-</div></blockquote>
-</section>
-<section id="raises">
-<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>HTTPException</dt><dd><p>500: Workflow table does not exist</p>
+<dt>List[MRISequence]</dt><dd><p>The list of MRI sequences.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -561,21 +468,91 @@ It plays a crucial role in creating, updating, retrieving, and deleting workflow
 </dd></dl>
 
 <dl class="http post">
-<dt class="sig sig-object http" id="post--api-v1-workflowmanager-trigger_task-task_id-">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflowmanager/trigger_task/{task_id}/</span></span><a class="headerlink" href="#post--api-v1-workflowmanager-trigger_task-task_id-" title="Link to this definition">#</a></dt>
-<dd><p><strong>Trigger Task</strong></p>
-<p>Endpoint to trigger a task in the orchestration engine.</p>
+<dt class="sig sig-object http" id="post--api-v1-mri-sequences-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/</span></span><a class="headerlink" href="#post--api-v1-mri-sequences-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Create Mri Sequence Endpoint</strong></p>
+<p>Create a new MRI sequence and store it in the database.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>Args:</dt><dd><p>task_id (str): The ID of the DAG to be triggered.</p>
+<dt>mri_sequence<span class="classifier">MRISequence</span></dt><dd><p>The MRI sequence data to store.</p>
+</dd>
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
 </dd>
 </dl>
-<section id="id1">
-<h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>dict: A dictionary containing the response from the orchestration engine.</p>
-</div></blockquote>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>MRISequence</dt><dd><p>The created MRI sequence.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
-<dt class="field-odd">param string task_id<span class="colon">:</span></dt>
+<dt class="field-odd">status 201<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-mri-sequences-upload">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/upload</span></span><a class="headerlink" href="#post--api-v1-mri-sequences-upload" title="Link to this definition">#</a></dt>
+<dd><p><strong>Upload Mri Sequence File</strong></p>
+<p>Upload an MRI sequence file and store it with the provided metadata.</p>
+<section id="id3">
+<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>mri_sequence<span class="classifier">MRISequenceCreate</span></dt><dd><p>The MRI sequence metadata.</p>
+</dd>
+<dt>file<span class="classifier">UploadFile</span></dt><dd><p>The MRI sequence file to store.</p>
+</dd>
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>MRISequence</dt><dd><p>The stored MRI sequence with the uploaded file.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">status 201<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+<dt class="field-even">status 422<span class="colon">:</span></dt>
+<dd class="field-even"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-mri-sequences-mri_sequence_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/{mri_sequence_id}</span></span><a class="headerlink" href="#get--api-v1-mri-sequences-mri_sequence_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Mri Sequence By Id Endpoint</strong></p>
+<p>Retrieve an MRI sequence by its ID.</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>mri_sequence_id<span class="classifier">str</span></dt><dd><p>The ID of the MRI sequence to retrieve.</p>
+</dd>
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>MRISequence</dt><dd><p>The retrieved MRI sequence.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param string mri_sequence_id<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
 <dt class="field-even">status 200<span class="colon">:</span></dt>
 <dd class="field-even"><p>Successful Response</p>
@@ -587,25 +564,99 @@ It plays a crucial role in creating, updating, retrieving, and deleting workflow
 </section>
 </dd></dl>
 
-<dl class="http post">
-<dt class="sig sig-object http" id="post--api-v1-workflowmanager-result_ready-task_id-result_id">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflowmanager/result_ready/{task_id}/{result_id}</span></span><a class="headerlink" href="#post--api-v1-workflowmanager-result_ready-task_id-result_id" title="Link to this definition">#</a></dt>
-<dd><p><strong>Callback Results Ready</strong></p>
-<p>Notify that results are ready via callback endpoint.</p>
+<dl class="http put">
+<dt class="sig sig-object http" id="put--api-v1-mri-sequences-mri_sequence_id">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/{mri_sequence_id}</span></span><a class="headerlink" href="#put--api-v1-mri-sequences-mri_sequence_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Update Mri Sequence Endpoint</strong></p>
+<p>Update an MRI sequence with new data.</p>
+<section id="id7">
+<h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>Args:</dt><dd><p>dag_id (str): The ID of the DAG.
-access_token (str): The access token for authentication.</p>
+<dt>mri_sequence_id<span class="classifier">str</span></dt><dd><p>The ID of the MRI sequence to update.</p>
+</dd>
+<dt>mri_sequence<span class="classifier">MRISequence</span></dt><dd><p>The updated MRI sequence data.</p>
+</dd>
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
 </dd>
 </dl>
-<section id="id2">
-<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>dict: A dictionary containing a success message.</p>
-</div></blockquote>
+</section>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>MRISequence</dt><dd><p>The updated MRI sequence.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
-<dt class="field-odd">param {‘string’, ‘uuid’} task_id<span class="colon">:</span></dt>
+<dt class="field-odd">param string mri_sequence_id<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
-<dt class="field-even">param {‘string’, ‘uuid’} result_id<span class="colon">:</span></dt>
+<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http delete">
+<dt class="sig sig-object http" id="delete--api-v1-mri-sequences-mri_sequence_id">
+<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/{mri_sequence_id}</span></span><a class="headerlink" href="#delete--api-v1-mri-sequences-mri_sequence_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Delete Mri Sequence Endpoint</strong></p>
+<p>Delete an MRI sequence by its ID.</p>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>mri_sequence_id<span class="classifier">str</span></dt><dd><p>The ID of the MRI sequence to delete.</p>
+</dd>
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>None</p>
+<dl class="field-list simple">
+<dt class="field-odd">param string mri_sequence_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 204<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-v1-mri-sequences-mri-sequence-file-mri_sequence_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/mri-sequence-file/{mri_sequence_id}</span></span><a class="headerlink" href="#get--api-v1-mri-sequences-mri-sequence-file-mri_sequence_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Mri Sequence File By Id Endpoint</strong></p>
+<p>Retrieve an MRI sequence file by its ID.</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>mri_sequence_id<span class="classifier">str</span></dt><dd><p>The ID of the MRI sequence to retrieve.</p>
+</dd>
+<dt>background_tasks<span class="classifier">BackgroundTasks</span></dt><dd><p>The background tasks to run.</p>
+</dd>
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the file to download.</p>
+</dd>
+<dt>database<span class="classifier">AsyncIOMotorDatabase</span></dt><dd><p>The MongoDB database handle.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h3>Returns<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>FileResponse</dt><dd><p>The retrieved MRI sequence file.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param string mri_sequence_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">query string name<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 <dt class="field-odd">status 200<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Successful Response</p>
@@ -618,15 +669,71 @@ access_token (str): The access token for authentication.</p>
 </dd></dl>
 
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-workflowmanager-tasks-">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/workflowmanager/tasks/</span></span><a class="headerlink" href="#get--api-v1-workflowmanager-tasks-" title="Link to this definition">#</a></dt>
-<dd><p><strong>List Available Tasks</strong></p>
-<p>Endpoint to list the available tasks from the orchestration engine.</p>
-<section id="id3">
-<h3>Returns<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<dt class="sig sig-object http" id="get--api-v1-mri-sequences-mri-sequence-plot-seq_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/sequences/mri-sequence-plot/{seq_id}</span></span><a class="headerlink" href="#get--api-v1-mri-sequences-mri-sequence-plot-seq_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Plot Mri Sequence</strong></p>
+<p>Generate plotly sequence plot data.</p>
+<section id="id13">
+<h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>seq_id</dt><dd><p>Id of the sequence to be plotted</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Returns<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>dict: A dictionary containing the list of available dagster jobs.</p>
+<div><p>List of plot data models for plotly</p>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">param string seq_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 201<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--health">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/health</span></span><a class="headerlink" href="#get--health" title="Link to this definition">#</a></dt>
+<dd><p><strong>Health Check</strong></p>
+<p>Perform a health check for the microservice.</p>
+<section id="id15">
+<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>is_db_connected: bool</dt><dd><p>The status of the database connection.</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h3>Returns<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>The status of the microservice.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">status 200<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Successful Response</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--readiness">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/readiness</span></span><a class="headerlink" href="#get--readiness" title="Link to this definition">#</a></dt>
+<dd><p><strong>Readiness Check</strong></p>
+<p>Perform a readiness check for the microservice.</p>
+<section id="id17">
+<h3>Returns<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>dict</dt><dd><p>The readiness status of the microservice.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">status 200<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Successful Response</p>
@@ -638,7 +745,7 @@ access_token (str): The access token for authentication.</p>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
-<p>Workflow Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
+<p>MRI Sequence Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
 <section id="open-source-license">
 <h3>Open Source License<a class="headerlink" href="#open-source-license" title="Link to this heading">#</a></h3>
 <p>If you want to use the Software under the terms of the GPLv3, you may do so for free. Under the GPLv3, you are allowed to modify and distribute the Software, but any derivative works that you distribute must also be licensed under the GPLv3. For the precise terms and conditions, please refer to the text of the GPLv3, which is included with the Software and can also be found at: <a class="reference external" href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
@@ -671,12 +778,12 @@ access_token (str): The access token for authentication.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_user_login_manager.html"
+       href="api_mri_acquisition.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">User Login Manager</p>
+        <p class="prev-next-title">MRI Acquisition Manager</p>
       </div>
     </a>
     <a class="right-next"
@@ -723,7 +830,7 @@ access_token (str): The access token for authentication.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/api_workflow_manager.rst.txt"
+      <li><a href="_sources/api_mri_sequences.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

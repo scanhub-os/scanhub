@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/device-manager/app/api/dal/index';</script>
     <link rel="icon" href="../../../../../_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -139,77 +139,25 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_api.html">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -325,48 +273,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../../introduction.html">
     ScanHub
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
   </a>
 </li>
 
@@ -552,7 +458,7 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial</p>
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="device-manager.app.api.dal.dal_create_device">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_create_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.DeviceCreationRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_create_device" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_create_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.DeviceCreationRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_create_device" title="Link to this definition">#</a></dt>
 <dd><p>Add a new device to the database.</p>
 <section id="arguments">
 <h3>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h3>
@@ -564,7 +470,7 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="device-manager.app.api.dal.dal_get_device">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_get_device" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_get_device" title="Link to this definition">#</a></dt>
 <dd><p>Fetch a device from database.</p>
 <section id="id1">
 <h3>Arguments<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
@@ -582,7 +488,7 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="device-manager.app.api.dal.dal_get_all_devices">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_get_all_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_get_all_devices" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_get_all_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_get_all_devices" title="Link to this definition">#</a></dt>
 <dd><p>Get a list of all existing devices.</p>
 <section id="id2">
 <h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
@@ -594,7 +500,7 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="device-manager.app.api.dal.dal_delete_device">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_delete_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_delete_device" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_delete_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_delete_device" title="Link to this definition">#</a></dt>
 <dd><p>Delete a device by identifier.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
@@ -612,7 +518,7 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="device-manager.app.api.dal.dal_update_device">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_update_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_update_device" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">device-manager.app.api.dal.</span></span><span class="sig-name descname"><span class="pre">dal_update_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../db/index.html#device-manager.app.api.db.Device" title="device-manager.app.api.db.Device"><span class="pre">app.api.db.Device</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#device-manager.app.api.dal.dal_update_device" title="Link to this definition">#</a></dt>
 <dd><p>Update an existing device in database.</p>
 <section id="id4">
 <h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>

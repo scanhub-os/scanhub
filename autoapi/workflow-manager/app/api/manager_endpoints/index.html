@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/workflow-manager/app/api/manager_endpoints/index';</script>
     <link rel="icon" href="../../../../../_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -139,77 +139,25 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_api.html">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -325,48 +273,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../../introduction.html">
     ScanHub
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
   </a>
 </li>
 
@@ -572,7 +478,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#workflow-manager.app.api.manager_endpoints.handle_dag_task_trigger" title="workflow-manager.app.api.manager_endpoints.handle_dag_task_trigger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_dag_task_trigger</span></code></a>(task, exam_id, access_token)</p></td>
 <td><p>Handle DAG trigger event.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#workflow-manager.app.api.manager_endpoints.callback_results_ready" title="workflow-manager.app.api.manager_endpoints.callback_results_ready"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callback_results_ready</span></code></a>(]) → dict[str, Any])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#workflow-manager.app.api.manager_endpoints.callback_results_ready" title="workflow-manager.app.api.manager_endpoints.callback_results_ready"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callback_results_ready</span></code></a>(], success, Any])</p></td>
 <td><p>Notify that results are ready via callback endpoint.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#workflow-manager.app.api.manager_endpoints.list_available_tasks" title="workflow-manager.app.api.manager_endpoints.list_available_tasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_available_tasks</span></code></a>()</p></td>
@@ -586,27 +492,27 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.EXAM_MANAGER_URI">
-<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">EXAM_MANAGER_URI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://exam-manager:8000/api/v1/exam'</span></em><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.EXAM_MANAGER_URI" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">EXAM_MANAGER_URI</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://exam-manager:8000/api/v1/exam'</span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.EXAM_MANAGER_URI" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.PATIENT_MANAGER_URI">
-<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">PATIENT_MANAGER_URI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://patient-manager:8100/api/v1/patient'</span></em><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.PATIENT_MANAGER_URI" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">PATIENT_MANAGER_URI</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://patient-manager:8100/api/v1/patient'</span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.PATIENT_MANAGER_URI" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.DEVICE_MANAGER_URI">
-<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">DEVICE_MANAGER_URI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://device-manager:8000/api/v1/device'</span></em><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.DEVICE_MANAGER_URI" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">DEVICE_MANAGER_URI</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://device-manager:8000/api/v1/device'</span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.DEVICE_MANAGER_URI" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.WORKFLOW_MANAGER_URI">
-<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">WORKFLOW_MANAGER_URI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://workflow-manager:8000/api/v1/workflowmanager'</span></em><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.WORKFLOW_MANAGER_URI" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">WORKFLOW_MANAGER_URI</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://workflow-manager:8000/api/v1/workflowmanager'</span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.WORKFLOW_MANAGER_URI" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.DICOM_BASE_URI">
-<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">DICOM_BASE_URI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://localhost:8443/api/v1/exam/dcm/'</span></em><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.DICOM_BASE_URI" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">DICOM_BASE_URI</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://localhost:8443/api/v1/exam/dcm/'</span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.DICOM_BASE_URI" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -631,7 +537,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.trigger_task">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">trigger_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">oauth2_scheme</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.trigger_task" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">trigger_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#workflow-manager.app.api.manager_endpoints.oauth2_scheme" title="workflow-manager.app.api.manager_endpoints.oauth2_scheme"><span class="pre">oauth2_scheme</span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.trigger_task" title="Link to this definition">#</a></dt>
 <dd><p>Endpoint to trigger a task in the orchestration engine.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>task_id (str): The ID of the DAG to be triggered.</p>
@@ -711,7 +617,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.callback_results_ready">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">callback_results_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">oauth2_scheme</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.callback_results_ready" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">callback_results_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#workflow-manager.app.api.manager_endpoints.oauth2_scheme" title="workflow-manager.app.api.manager_endpoints.oauth2_scheme"><span class="pre">oauth2_scheme</span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Body(...,</span> <span class="pre">embed=True)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.callback_results_ready" title="Link to this definition">#</a></dt>
 <dd><p>Notify that results are ready via callback endpoint.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>dag_id (str): The ID of the DAG.
@@ -728,7 +634,7 @@ access_token (str): The access token for authentication.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="workflow-manager.app.api.manager_endpoints.list_available_tasks">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">list_available_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.list_available_tasks" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">workflow-manager.app.api.manager_endpoints.</span></span><span class="sig-name descname"><span class="pre">list_available_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#workflow-manager.app.api.manager_endpoints.list_available_tasks" title="Link to this definition">#</a></dt>
 <dd><p>Endpoint to list the available tasks from the orchestration engine.</p>
 <section id="id6">
 <h3>Returns<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>

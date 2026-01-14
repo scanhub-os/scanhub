@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/exam-manager/app/dal/task_dal/index';</script>
     <link rel="icon" href="../../../../../_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -139,77 +139,25 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_api.html">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -325,48 +273,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../../introduction.html">
     ScanHub
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
   </a>
 </li>
 
@@ -553,7 +459,7 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.add_task_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">add_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseAcquisitionTask</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">scanhub_libraries.models.BaseDAGTask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creator</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.AcquisitionTask" title="exam-manager.app.db.postgres.AcquisitionTask"><span class="pre">app.db.postgres.AcquisitionTask</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.DAGTask" title="exam-manager.app.db.postgres.DAGTask"><span class="pre">app.db.postgres.DAGTask</span></a></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.add_task_data" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">add_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseAcquisitionTask</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">scanhub_libraries.models.BaseDAGTask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creator</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.AcquisitionTask" title="exam-manager.app.db.postgres.AcquisitionTask"><span class="pre">app.db.postgres.AcquisitionTask</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.DAGTask" title="exam-manager.app.db.postgres.DAGTask"><span class="pre">app.db.postgres.DAGTask</span></a></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.add_task_data" title="Link to this definition">#</a></dt>
 <dd><p>Add new task to database.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
@@ -574,7 +480,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.get_task_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">get_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.get_task_data" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">get_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.get_task_data" title="Link to this definition">#</a></dt>
 <dd><p>Get task by id.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
@@ -593,7 +499,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.get_all_task_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">get_all_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.get_all_task_data" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">get_all_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.get_all_task_data" title="Link to this definition">#</a></dt>
 <dd><p>Get a list of all tasks assigned to a certain workflow.</p>
 <section id="id3">
 <h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
@@ -612,7 +518,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.get_all_task_template_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">get_all_task_template_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.get_all_task_template_data" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">get_all_task_template_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.get_all_task_template_data" title="Link to this definition">#</a></dt>
 <dd><p>Get a list of all tasks assigned to a certain workflow.</p>
 <section id="id5">
 <h3>Parameters<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
@@ -631,7 +537,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.delete_task_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">delete_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.delete_task_data" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">delete_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.delete_task_data" title="Link to this definition">#</a></dt>
 <dd><p>Delete task by id.</p>
 <section id="id7">
 <h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
@@ -650,7 +556,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.update_task_data">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">update_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseAcquisitionTask</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">scanhub_libraries.models.BaseDAGTask</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.update_task_data" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">update_task_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseAcquisitionTask</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">scanhub_libraries.models.BaseDAGTask</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../db/postgres/index.html#exam-manager.app.db.postgres.Task" title="exam-manager.app.db.postgres.Task"><span class="pre">app.db.postgres.Task</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.update_task_data" title="Link to this definition">#</a></dt>
 <dd><p>Update existing task in database.</p>
 <section id="id9">
 <h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>

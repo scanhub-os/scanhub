@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>UI Patient Manager &#8212; ScanHub Documentation</title>
+    <title>Device Manager &#8212; ScanHub Documentation</title>
   
   
   
@@ -41,14 +41,14 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_patient_manager';</script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_device';</script>
     <link rel="icon" href="_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="User Login Manager" href="api_user_login_manager.html" />
-    <link rel="prev" title="Exam Manager" href="api_exam_manager.html" />
+    <link rel="next" title="Exam Manager" href="api_exam.html" />
+    <link rel="prev" title="UI Patient Manager" href="api_ui_patient_manager.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -140,78 +140,26 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" current active">
-  <a class="nav-link dropdown-item nav-internal" href="scanhub_api.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="autoapi/index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -331,48 +279,6 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
@@ -460,11 +366,12 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="api_device_manager.html">Device Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_exam_manager.html">Exam Manager</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">UI Patient Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_user_login_manager.html">User Login Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_workflow_manager.html">Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_ui_patient_manager.html">UI Patient Manager</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Device Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_mri_acquisition.html">MRI Acquisition Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_mri_sequences.html">MRI Sequences Manager</a></li>
 </ul>
 </div>
 </nav></div>
@@ -508,7 +415,7 @@
     
     <li class="breadcrumb-item"><a href="scanhub_api.html" class="nav-link">Web API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">UI Patient Manager</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Device Manager</span></li>
   </ul>
 </nav>
 </div>
@@ -525,31 +432,31 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="ui-patient-manager">
-<h1>UI Patient Manager<a class="headerlink" href="#ui-patient-manager" title="Link to this heading">#</a></h1>
+  <section id="device-manager">
+<h1>Device Manager<a class="headerlink" href="#device-manager" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>The Patient Manager API is a critical interface designed to manage patient information within ScanHub.
-It centralizes functionalities around the creation, retrieval, updating, and deletion of patient records, providing a streamlined approach to handle patient-related data.
-Here’s a brief look at the main endpoints:</p>
+<p>The Device Manager API provides a comprehensive interface to manage devices within the ScanHub system.
+This API allows you to perform essential operations such as reading the device health, retrieving, creating, updating, and deleting devices. Below are the key endpoints:</p>
 </section>
 <section id="web-api">
 <h2>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h2>
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-patient-health-readiness">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/health/readiness</span></span><a class="headerlink" href="#get--api-v1-patient-health-readiness" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object http" id="get--api-v1-device-health-readiness">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/device/health/readiness</span></span><a class="headerlink" href="#get--api-v1-device-health-readiness" title="Link to this definition">#</a></dt>
 <dd><p><strong>Readiness</strong></p>
 <p>Readiness health endpoint.</p>
+<p>Inspects sqlalchemy engine and check if workflow table exists.</p>
 <section id="returns">
 <h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Status dictionary</p>
+<div><p>Status docstring</p>
 </div></blockquote>
 </section>
 <section id="raises">
 <h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>HTTPException</dt><dd><p>500: Any of the exam-tree tables does not exist</p>
+<dt>HTTPException</dt><dd><p>500: Workflow table not found</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -561,14 +468,14 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-patient-">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/</span></span><a class="headerlink" href="#get--api-v1-patient-" title="Link to this definition">#</a></dt>
-<dd><p><strong>Get Patient List</strong></p>
-<p>Get all patients endpoint.</p>
+<dt class="sig sig-object http" id="get--api-v1-device-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/device/</span></span><a class="headerlink" href="#get--api-v1-device-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Devices</strong></p>
+<p>Get all devices endpoint.</p>
 <section id="id1">
 <h3>Returns<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>List of patient pydantic output models</p>
+<div><p>List of device pydantic output models</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">status 200<span class="colon">:</span></dt>
@@ -579,27 +486,27 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http post">
-<dt class="sig sig-object http" id="post--api-v1-patient-">
-<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/</span></span><a class="headerlink" href="#post--api-v1-patient-" title="Link to this definition">#</a></dt>
-<dd><p><strong>Create Patient</strong></p>
-<p>Create new patient database entry.</p>
+<dt class="sig sig-object http" id="post--api-v1-device-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/device/</span></span><a class="headerlink" href="#post--api-v1-device-" title="Link to this definition">#</a></dt>
+<dd><p><strong>Create Device</strong></p>
+<p>Create new device endpoint.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>payload</dt><dd><p>Patient pydantic base model</p>
+<dt>payload</dt><dd><p>Device pydantic base model</p>
 </dd>
 </dl>
 </section>
 <section id="id2">
 <h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Patient pydantic output model</p>
+<div><p>Device pydantic output model</p>
 </div></blockquote>
 </section>
 <section id="id3">
 <h3>Raises<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>HTTPException</dt><dd><p>404: Could not create patient</p>
+<dt>HTTPException</dt><dd><p>404: Creation unsuccessful</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -614,31 +521,70 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http get">
-<dt class="sig sig-object http" id="get--api-v1-patient-patient_id">
-<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/{patient_id}</span></span><a class="headerlink" href="#get--api-v1-patient-patient_id" title="Link to this definition">#</a></dt>
-<dd><p><strong>Get Patient</strong></p>
-<p>Get a patient from database by id.</p>
+<dt class="sig sig-object http" id="get--api-v1-device-device_id">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/v1/device/{device_id}</span></span><a class="headerlink" href="#get--api-v1-device-device_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Get Device</strong></p>
+<p>Get device endpoint.</p>
 <section id="id4">
 <h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>patient_id</dt><dd><p>Id of the requested patient</p>
+<dt>device_id</dt><dd><p>Id of requested device</p>
 </dd>
 </dl>
 </section>
 <section id="id5">
 <h3>Returns<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <blockquote>
-<div><p>Patient pydantic output model</p>
+<div><p>Device pydantic output model</p>
 </div></blockquote>
 </section>
 <section id="id6">
 <h3>Raises<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>HTTPException</dt><dd><p>404: Patient not found</p>
+<dt>HTTPException</dt><dd><p>404: Not found</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">param string patient_id<span class="colon">:</span></dt>
+<dt class="field-odd">param integer device_id<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful Response</p>
+</dd>
+<dt class="field-odd">status 422<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Validation Error</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="http put">
+<dt class="sig sig-object http" id="put--api-v1-device-device_id">
+<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/device/{device_id}</span></span><a class="headerlink" href="#put--api-v1-device-device_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Update Device</strong></p>
+<p>Update device endpoint.</p>
+<section id="id7">
+<h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>device_id</dt><dd><p>Id of device to be updated</p>
+</dd>
+<dt>payload</dt><dd><p>New device pydantic base model, contains new data</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h3>Returns<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>Updated device pydantic output model</p>
+</div></blockquote>
+</section>
+<section id="id9">
+<h3>Raises<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>HTTPException</dt><dd><p>404: Not found</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param integer device_id<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
 <dt class="field-even">status 200<span class="colon">:</span></dt>
 <dd class="field-even"><p>Successful Response</p>
@@ -651,66 +597,27 @@ Here’s a brief look at the main endpoints:</p>
 </dd></dl>
 
 <dl class="http delete">
-<dt class="sig sig-object http" id="delete--api-v1-patient-patient_id">
-<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/{patient_id}</span></span><a class="headerlink" href="#delete--api-v1-patient-patient_id" title="Link to this definition">#</a></dt>
-<dd><p><strong>Delete Patient</strong></p>
-<p>Delete patient from database.</p>
-<section id="id7">
-<h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>patient_id</dt><dd><p>Id of patient to be deleted</p>
-</dd>
-</dl>
-</section>
-<section id="id8">
-<h3>Raises<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>HTTPException</dt><dd><p>_description_</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">param string patient_id<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">status 204<span class="colon">:</span></dt>
-<dd class="field-even"><p>Successful Response</p>
-</dd>
-<dt class="field-odd">status 422<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Validation Error</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="http put">
-<dt class="sig sig-object http" id="put--api-v1-patient-patient_id">
-<span class="sig-name descname"><span class="pre">PUT</span> </span><span class="sig-name descname"><span class="pre">/api/v1/patient/{patient_id}</span></span><a class="headerlink" href="#put--api-v1-patient-patient_id" title="Link to this definition">#</a></dt>
-<dd><p><strong>Update Patient</strong></p>
-<p>Update existing patient endpoint.</p>
-<section id="id9">
-<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>patient_id</dt><dd><p>Id of the patient to be updated</p>
-</dd>
-<dt>payload</dt><dd><p>Patient data to be updated</p>
-</dd>
-</dl>
-</section>
+<dt class="sig sig-object http" id="delete--api-v1-device-device_id">
+<span class="sig-name descname"><span class="pre">DELETE</span> </span><span class="sig-name descname"><span class="pre">/api/v1/device/{device_id}</span></span><a class="headerlink" href="#delete--api-v1-device-device_id" title="Link to this definition">#</a></dt>
+<dd><p><strong>Delete Device</strong></p>
+<p>Delete device endpoint.</p>
 <section id="id10">
-<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
-<blockquote>
-<div><p>Updated patient pydantic output model</p>
-</div></blockquote>
+<h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>device_id</dt><dd><p>Id of device to be deleted</p>
+</dd>
+</dl>
 </section>
 <section id="id11">
 <h3>Raises<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt>HTTPException</dt><dd><p>404: Patient not found</p>
+<dt>HTTPException</dt><dd><p>404: Not found</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">param string patient_id<span class="colon">:</span></dt>
+<dt class="field-odd">param integer device_id<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
-<dt class="field-even">status 200<span class="colon">:</span></dt>
+<dt class="field-even">status 204<span class="colon">:</span></dt>
 <dd class="field-even"><p>Successful Response</p>
 </dd>
 <dt class="field-odd">status 422<span class="colon">:</span></dt>
@@ -723,7 +630,7 @@ Here’s a brief look at the main endpoints:</p>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
-<p>Patient Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
+<p>Device Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
 <section id="open-source-license">
 <h3>Open Source License<a class="headerlink" href="#open-source-license" title="Link to this heading">#</a></h3>
 <p>If you want to use the Software under the terms of the GPLv3, you may do so for free. Under the GPLv3, you are allowed to modify and distribute the Software, but any derivative works that you distribute must also be licensed under the GPLv3. For the precise terms and conditions, please refer to the text of the GPLv3, which is included with the Software and can also be found at: <a class="reference external" href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
@@ -756,20 +663,20 @@ Here’s a brief look at the main endpoints:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_exam_manager.html"
+       href="api_ui_patient_manager.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Exam Manager</p>
+        <p class="prev-next-title">UI Patient Manager</p>
       </div>
     </a>
     <a class="right-next"
-       href="api_user_login_manager.html"
+       href="api_exam.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">User Login Manager</p>
+        <p class="prev-next-title">Exam Manager</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -808,7 +715,7 @@ Here’s a brief look at the main endpoints:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/api_patient_manager.rst.txt"
+      <li><a href="_sources/api_device.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

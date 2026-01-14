@@ -312,6 +312,10 @@ Module Contents
       :type:  sqlalchemy.orm.Mapped[str]
 
 
+   .. py:attribute:: calibration
+      :type:  sqlalchemy.orm.Mapped[scanhub_libraries.models.CalibrationType]
+
+
    .. py:attribute:: device_id
       :type:  sqlalchemy.orm.Mapped[uuid.UUID]
 

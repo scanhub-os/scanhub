@@ -41,8 +41,8 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../../../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/exam-manager/app/api/workflow_api/index';</script>
     <link rel="icon" href="../../../../../_static/favicon-32x32.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
@@ -139,77 +139,25 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_api.html">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../../scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../../../index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -325,48 +273,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../../../introduction.html">
     ScanHub
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/what_is_scanhub.html">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../../../../_getting_started/troubleshooting.html">
-    Troubleshooting & FAQs
   </a>
 </li>
 
@@ -572,7 +478,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.create_workflow">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">create_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseWorkflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.create_workflow" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">create_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseWorkflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.create_workflow" title="Link to this definition">#</a></dt>
 <dd><p>Create new workflow.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
@@ -598,7 +504,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.create_workflow_from_template">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">create_workflow_from_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exam_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_workflow_is_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.create_workflow_from_template" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">create_workflow_from_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exam_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_workflow_is_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.create_workflow_from_template" title="Link to this definition">#</a></dt>
 <dd><p>Create new workflow from template.</p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
@@ -628,7 +534,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.get_workflow">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.get_workflow" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">get_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.get_workflow" title="Link to this definition">#</a></dt>
 <dd><p>Get a workflow.</p>
 <section id="id4">
 <h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
@@ -654,7 +560,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.get_all_exam_workflows">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">get_all_exam_workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exam_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.WorkflowOut</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.get_all_exam_workflows" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">get_all_exam_workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exam_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.WorkflowOut</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.get_all_exam_workflows" title="Link to this definition">#</a></dt>
 <dd><p>Get all existing workflows of a certain exam.</p>
 <section id="id7">
 <h3>Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
@@ -673,7 +579,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.get_all_workflow_templates">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">get_all_workflow_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.WorkflowOut</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.get_all_workflow_templates" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">get_all_workflow_templates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.WorkflowOut</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.get_all_workflow_templates" title="Link to this definition">#</a></dt>
 <dd><p>Get all workflow templates.</p>
 <section id="id9">
 <h3>Returns<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
@@ -685,7 +591,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.delete_workflow">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">delete_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.delete_workflow" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">delete_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.delete_workflow" title="Link to this definition">#</a></dt>
 <dd><p>Delete a workflow. Cascade delete the associated tasks.</p>
 <section id="id10">
 <h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
@@ -705,7 +611,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.workflow_api.update_workflow">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">update_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseWorkflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.update_workflow" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.workflow_api.</span></span><span class="sig-name descname"><span class="pre">update_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">scanhub_libraries.models.BaseWorkflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.WorkflowOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.workflow_api.update_workflow" title="Link to this definition">#</a></dt>
 <dd><p>Update an existing workflow.</p>
 <section id="id12">
 <h3>Parameters<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>

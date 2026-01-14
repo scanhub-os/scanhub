@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>What is ScanHub? &#8212; ScanHub Documentation</title>
+    <title>MRI Acquisition Manager &#8212; ScanHub Documentation</title>
   
   
   
@@ -27,28 +27,28 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=7e2203eb" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7e2203eb" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_getting_started/what_is_scanhub';</script>
-    <link rel="icon" href="../_static/favicon-32x32.png"/>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Quickstart (5–10 minutes)" href="quickstart.html" />
-    <link rel="prev" title="ScanHub" href="../introduction.html" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_mri_acquisition';</script>
+    <link rel="icon" href="_static/favicon-32x32.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MRI Sequences Manager" href="api_mri_sequences.html" />
+    <link rel="prev" title="Workflow Manager" href="api_workflow.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.0.1" />
@@ -70,7 +70,7 @@
   <dialog id="pst-search-dialog">
     
 <form class="bd-search d-flex align-items-center"
-      action="../search.html"
+      action="search.html"
       method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search"
@@ -106,7 +106,7 @@
     
   
 
-<a class="navbar-brand logo" href="../index.html">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -117,8 +117,8 @@
       
     
     
-    <img src="../_static/logo_brainlink.svg" class="logo__image only-light" alt="ScanHub Documentation - Home"/>
-    <img src="../_static/logo_brainlink.svg" class="logo__image only-dark pst-js-only" alt="ScanHub Documentation - Home"/>
+    <img src="_static/logo_brainlink.svg" class="logo__image only-light" alt="ScanHub Documentation - Home"/>
+    <img src="_static/logo_brainlink.svg" class="logo__image only-dark pst-js-only" alt="ScanHub Documentation - Home"/>
   
   
 </a></div>
@@ -134,84 +134,32 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../introduction.html">
+  <a class="nav-link nav-internal" href="introduction.html">
     ScanHub
   </a>
 </li>
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../scanhub_api.html">
+  <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../scanhub_techdoc.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../autoapi/index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
     Code Documentation
   </a>
 </li>
 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -325,70 +273,28 @@
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../introduction.html">
+  <a class="nav-link nav-internal" href="introduction.html">
     ScanHub
   </a>
 </li>
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    What is ScanHub?
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="quickstart.html">
-    Quickstart (5–10 minutes)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="installation.html">
-    Installation (detailed, local)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="using_scanhub.html">
-    Using the ScanHub Web UI
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="deployment.html">
-    Deployment (production)
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="troubleshooting.html">
-    Troubleshooting & FAQs
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../scanhub_api.html">
+  <a class="nav-link nav-internal" href="scanhub_api.html">
     Web API
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../scanhub_techdoc.html">
+  <a class="nav-link nav-internal" href="scanhub_techdoc.html">
     Technical Documentation
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../autoapi/index.html">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
     Code Documentation
   </a>
 </li>
@@ -459,7 +365,15 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api_ui_patient_manager.html">UI Patient Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_device.html">Device Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_exam.html">Exam Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_workflow.html">Workflow Manager</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MRI Acquisition Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_mri_sequences.html">MRI Sequences Manager</a></li>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -494,11 +408,14 @@
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
-      <a href="../index.html" class="nav-link" aria-label="Home">
+      <a href="index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">What is ScanHub?</span></li>
+    
+    <li class="breadcrumb-item"><a href="scanhub_api.html" class="nav-link">Web API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MRI Acquisition Manager</span></li>
   </ul>
 </nav>
 </div>
@@ -515,47 +432,67 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="what-is-scanhub">
-<h1>What is ScanHub?<a class="headerlink" href="#what-is-scanhub" title="Link to this heading">#</a></h1>
-<p><strong>ScanHub</strong> is an open-source, cloud-oriented <strong>multimodal acquisition platform</strong> for medical imaging workflows (currently focused on <strong>MRI</strong>). It integrates device management, exam planning, sequence management, workflow execution, and cloud-based reconstruction/processing into one coherent platform and UI.</p>
-<section id="repository-layout">
-<h2>Repository layout<a class="headerlink" href="#repository-layout" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Microservices</strong> (backend): <code class="docutils literal notranslate"><span class="pre">services/*</span></code>
-- <code class="docutils literal notranslate"><span class="pre">services/device-manager</span></code> — register/select devices and handle device comms
-- <code class="docutils literal notranslate"><span class="pre">services/exam-manager</span></code> — plan, schedule, track, and review exams
-- <code class="docutils literal notranslate"><span class="pre">services/mri/sequence-manager</span></code> — manage MRI sequences (inspect, configure)
-- <code class="docutils literal notranslate"><span class="pre">services/patient-manager</span></code> — patient and study metadata
-- <code class="docutils literal notranslate"><span class="pre">services/user-login-manager</span></code> — authentication and session handling
-- <code class="docutils literal notranslate"><span class="pre">services/workflow-manager</span></code> — orchestration of reconstruction/processing jobs</p></li>
-<li><p><strong>Web UI</strong> (frontend): <code class="docutils literal notranslate"><span class="pre">scanhub-ui</span></code> — single entry point for operators/researchers</p></li>
-</ul>
+  <section id="mri-acquisition-manager">
+<h1>MRI Acquisition Manager<a class="headerlink" href="#mri-acquisition-manager" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The Acquisition Manager API provides a streamlined interface for managing the MRI acquisition process, bridging the gap between the scanning devices and the user-facing components.
+Its straightforward design ensures that the initiation and monitoring of scans are conducted efficiently and transparently, enhancing the overall workflow of medical imaging procedures.</p>
 </section>
-<section id="why-it-exists">
-<h2>Why it exists<a class="headerlink" href="#why-it-exists" title="Link to this heading">#</a></h2>
-<p>Traditional MRI console workflows are costly to scale, hard to extend, and siloed. ScanHub shifts reconstruction and processing tasks into a cloud-ready, modular architecture, enabling:</p>
-<ul class="simple">
-<li><p><strong>Scalability &amp; flexibility</strong> – heavy workloads run in the cloud; services can be swapped or extended.</p></li>
-<li><p><strong>Open innovation</strong> – avoid vendor lock-in; build on transparent, community-driven components.</p></li>
-<li><p><strong>Collaboration &amp; sharing</strong> – central data handling and standard formats support teamwork.</p></li>
-<li><p><strong>Interoperability</strong> – open interfaces across device, exam, and sequence managers.</p></li>
+<section id="web-api">
+<h2>Web API<a class="headerlink" href="#web-api" title="Link to this heading">#</a></h2>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-mri-acquisitioncontrol-start-scan">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/acquisitioncontrol/start-scan</span></span><a class="headerlink" href="#post--api-v1-mri-acquisitioncontrol-start-scan" title="Link to this definition">#</a></dt>
+<dd><p><strong>Start Scan</strong></p>
+<p>Receives a job. Create a record id, trigger scan with it and returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Status Codes<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
 </ul>
-</section>
-<section id="key-building-blocks">
-<h2>Key building blocks<a class="headerlink" href="#key-building-blocks" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Device Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/device-manager</span></code>)</p></li>
-<li><p><strong>Exam Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/exam-manager</span></code>)</p></li>
-<li><p><strong>MRI Sequence Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/mri/sequence-manager</span></code>)</p></li>
-<li><p><strong>Patient Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/patient-manager</span></code>)</p></li>
-<li><p><strong>User Login Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/user-login-manager</span></code>)</p></li>
-<li><p><strong>Workflow Manager</strong> (<code class="docutils literal notranslate"><span class="pre">services/workflow-manager</span></code>)</p></li>
-<li><p><strong>Web UI</strong> (<code class="docutils literal notranslate"><span class="pre">scanhub-ui</span></code>)</p></li>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-v1-mri-acquisitioncontrol-forward-status">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/v1/mri/acquisitioncontrol/forward-status</span></span><a class="headerlink" href="#post--api-v1-mri-acquisitioncontrol-forward-status" title="Link to this definition">#</a></dt>
+<dd><p><strong>Forward Status</strong></p>
+<p>Receives status for a job. Forwards it to the ui and returns ok.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Status Codes<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> – Successful Response</p></li>
+<li><p><span><a class="reference external" href="https://www.rfc-editor.org/rfc/rfc4918#section-11.2">422 Unprocessable Entity</a></span> – Validation Error</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="licensing">
-<h2>Licensing<a class="headerlink" href="#licensing" title="Link to this heading">#</a></h2>
-<p>ScanHub is <strong>dual-licensed</strong>: GPLv3 <strong>or</strong> a commercial license from BRAIN-LINK UG. Choose GPLv3 for open-source use; choose commercial to embed without copyleft obligations and to obtain premium services.</p>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<p>MRI Acquisition Manager, including all its source code and associated documentation (collectively, the “Software”), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.</p>
+<section id="open-source-license">
+<h3>Open Source License<a class="headerlink" href="#open-source-license" title="Link to this heading">#</a></h3>
+<p>If you want to use the Software under the terms of the GPLv3, you may do so for free. Under the GPLv3, you are allowed to modify and distribute the Software, but any derivative works that you distribute must also be licensed under the GPLv3. For the precise terms and conditions, please refer to the text of the GPLv3, which is included with the Software and can also be found at: <a class="reference external" href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a></p>
+</section>
+<section id="commercial-license">
+<h3>Commercial License<a class="headerlink" href="#commercial-license" title="Link to this heading">#</a></h3>
+<p>If you wish to use the Software without the restrictions of the GPLv3, such as for the purpose of developing proprietary software that includes the Software without the obligation to disclose your source code, you may purchase a commercial license from BRAIN-LINK UG (haftungsbeschränkt).</p>
+<p>The commercial license grants you, the licensee, the rights to use, modify, and distribute the Software without the requirement of providing the source code of your proprietary software to the end users. The commercial license also includes access to premium support and services.</p>
+<p>For more information on the commercial license, including pricing, please contact us at <a class="reference external" href="mailto:info&#37;&#52;&#48;brain-link&#46;de">info<span>&#64;</span>brain-link<span>&#46;</span>de</a>.</p>
+</section>
+<section id="choice-of-license">
+<h3>Choice of License<a class="headerlink" href="#choice-of-license" title="Link to this heading">#</a></h3>
+<p>You may choose to use the Software under either the GPLv3 or the commercial license. If you choose to use the Software under the GPLv3, you must comply with all of the terms of the GPLv3. If you choose to use the Software under the commercial license, you must comply with all of the terms of the commercial license.</p>
+</section>
+<section id="disclaimer">
+<h3>Disclaimer<a class="headerlink" href="#disclaimer" title="Link to this heading">#</a></h3>
+<p>This is not a legal document. The exact terms of the GPLv3 and the commercial license are specified in their respective legal texts. This document is merely intended to provide a general overview of the dual licensing scheme.</p>
+</section>
 </section>
 </section>
 
@@ -570,20 +507,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../introduction.html"
+       href="api_workflow.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ScanHub</p>
+        <p class="prev-next-title">Workflow Manager</p>
       </div>
     </a>
     <a class="right-next"
-       href="quickstart.html"
+       href="api_mri_sequences.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Quickstart (5–10 minutes)</p>
+        <p class="prev-next-title">MRI Sequences Manager</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -606,10 +543,15 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repository-layout">Repository layout</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-exists">Why it exists</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-building-blocks">Key building blocks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licensing">Licensing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-api">Web API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#open-source-license">Open Source License</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commercial-license">Commercial License</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choice-of-license">Choice of License</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disclaimer">Disclaimer</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -617,7 +559,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/_getting_started/what_is_scanhub.rst.txt"
+      <li><a href="_sources/api_mri_acquisition.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
@@ -635,8 +577,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

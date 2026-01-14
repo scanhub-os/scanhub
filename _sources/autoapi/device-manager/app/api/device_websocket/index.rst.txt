@@ -27,7 +27,7 @@ Attributes
    device-manager.app.api.device_websocket.oauth2_scheme
    device-manager.app.api.device_websocket.router
    device-manager.app.api.device_websocket.dict_id_websocket
-   device-manager.app.api.device_websocket.dict_id_parameters
+   device-manager.app.api.device_websocket.device_last_seen
 
 
 Functions
@@ -35,8 +35,10 @@ Functions
 
 .. autoapisummary::
 
+   device-manager.app.api.device_websocket.send_json
    device-manager.app.api.device_websocket.start_scan_via_websocket
    device-manager.app.api.device_websocket.connection_with_valid_id_and_token
+   device-manager.app.api.device_websocket.monitor_devices
    device-manager.app.api.device_websocket.websocket_endpoint
    device-manager.app.api.device_websocket.handle_register
    device-manager.app.api.device_websocket.handle_status_update
@@ -60,8 +62,12 @@ Module Contents
 .. py:data:: dict_id_websocket
    :type:  Dict[uuid.UUID, fastapi.WebSocket]
 
-.. py:data:: dict_id_parameters
-   :type:  dict[uuid.UUID, dict]
+.. py:data:: device_last_seen
+   :type:  Dict[uuid.UUID, float]
+
+.. py:function:: send_json(websocket, payload: dict)
+   :async:
+
 
 .. py:function:: start_scan_via_websocket(task: scanhub_libraries.models.AcquisitionTaskOut, access_token: Annotated[str, Depends(oauth2_scheme)])
    :async:
@@ -81,6 +87,10 @@ Module Contents
 
 
    Check if the given device_id and device_token belong to an existing device in the database.
+
+
+.. py:function:: monitor_devices()
+   :async:
 
 
 .. py:function:: websocket_endpoint(websocket: fastapi.WebSocket)
@@ -106,7 +116,7 @@ Module Contents
    :async:
 
 
-   Handle device status updates.
+   Handle device status updates from the device SDK.
 
 
 .. py:function:: handle_file_transfer(websocket: fastapi.WebSocket, header: dict, device_id: uuid.UUID) -> None
