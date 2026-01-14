@@ -81,6 +81,16 @@ function TaskInfo({ data: task }: { data: AcquisitionTaskOut | DAGTaskOut }) {
         }
 
         {
+          task.task_type === TaskType.Acquisition && 'calibration' in task &&
+          <>
+            <Typography fontSize='sm'>Calibration</Typography>
+            <Typography level='body-sm' textColor='text.primary'>
+              {String(task.calibration)}
+            </Typography>
+          </>
+        }
+
+        {
           task.task_type === TaskType.Acquisition && 'acquisition_parameter' in task && task.acquisition_parameter &&
           <>
             <Typography fontSize='sm'>Acquisition parameter</Typography>

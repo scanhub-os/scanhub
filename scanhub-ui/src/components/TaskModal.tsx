@@ -34,7 +34,8 @@ import {
   ItemStatus,
   AcquisitionParameter,
   DAGTaskOut,
-  BaseDAGTask
+  BaseDAGTask,
+  CalibrationType
 } from '../openapi/generated-client/exam'
 
 import { DeviceOut } from '../openapi/generated-client/device/api'
@@ -62,6 +63,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
           is_template: props.createTemplate,        // eslint-disable-line camelcase
           device_id: undefined,
           sequence_id: '',
+          calibration: CalibrationType.No,
           acquisition_parameter: {
             fov_scaling: { x: 1., y: 1., z: 1. },
             fov_offset: { x: 0., y: 0., z: 0. },
@@ -157,6 +159,24 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
         <Stack spacing={4} direction={'row'}>
 
           <Stack spacing={1}>
+            <FormLabel>Calibration</FormLabel>
+            <Select
+              value={task.calibration}
+              defaultValue={CalibrationType.No}
+              size='sm'
+              onChange={(_, value) => {
+                if (value) { setTask({ ...task, 'calibration': value }) }
+              }}
+            >
+              <Option key={'no'} value={CalibrationType.No}>No calibration</Option>
+              <Option key={'all'} value={CalibrationType.All}>Full</Option>
+              <Option key={'frequency'} value={CalibrationType.Frequency}>Calibrate frequency</Option>
+              <Option key={'flipangle'} value={CalibrationType.FlipAngle}>Calibrate flip angle</Option>
+              <Option key={'shims'} value={CalibrationType.Shims}>Calibrate shims</Option>
+            </Select>
+          </Stack>
+
+          <Stack spacing={1}>
             <FormLabel>Sequence</FormLabel>
             <Select
               value={task.sequence_id ? task.sequence_id : null}
@@ -213,17 +233,18 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                   type="number"
                   size='sm'
                   slotProps={ {input: {min: -10000, max: 10000}} }
-                  value={task.acquisition_parameter.fov_offset?.[index] ?? 0}
+                  value={task.acquisition_parameter?.fov_offset?.[index] ?? 0}
                   endDecorator="px"
                   onChange={(event) => {
                     setTask(prevTask => ({
                       ...prevTask,
                       acquisition_parameter: {
-                        ...prevTask.acquisition_parameter,
+                        ...prevTask.acquisition_parameter!,
                         fov_offset: {
-                          x: index === 'x' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_offset.x,
-                          y: index === 'y' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_offset.y,
-                          z: index === 'z' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_offset.z,
+                          // Spread existing offset so we don't lose x, y, or z
+                          ...prevTask.acquisition_parameter!.fov_offset,
+                          // Update only the specific field (x, y, or z) dynamically
+                          [index]: event.target.valueAsNumber,
                         }
                       }
                     }))
@@ -245,17 +266,18 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                   type="number"
                   size='sm'
                   slotProps={ {input: {min: 0, max: 100}} }
-                  value={task.acquisition_parameter.fov_scaling?.[index] ?? 0}
+                  value={task.acquisition_parameter?.fov_scaling?.[index] ?? 0}
                   endDecorator="px"
                   onChange={(event) => {
                     setTask(prevTask => ({
                       ...prevTask,
                       acquisition_parameter: {
-                        ...prevTask.acquisition_parameter,
+                        ...prevTask.acquisition_parameter!,
                         fov_scaling: {
-                          x: index === 'x' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_scaling.x,
-                          y: index === 'y' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_scaling.y,
-                          z: index === 'z' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_scaling.z,
+                          // Spread existing scaling so we don't lose x, y, or z
+                          ...prevTask.acquisition_parameter!.fov_scaling,
+                          // Update only the specific field (x, y, or z) dynamically
+                          [index]: event.target.valueAsNumber,
                         }
                       }
                     }))
@@ -277,17 +299,18 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                   type="number"
                   size='sm'
                   slotProps={ {input: {min: 0, max: 360}} }
-                  value={task.acquisition_parameter.fov_rotation?.[index] ?? 0}
+                  value={task.acquisition_parameter?.fov_rotation?.[index] ?? 0}
                   endDecorator="px"
                   onChange={(event) => {
                     setTask(prevTask => ({
                       ...prevTask,
                       acquisition_parameter: {
-                        ...prevTask.acquisition_parameter,
+                        ...prevTask.acquisition_parameter!,
                         fov_rotation: {
-                          x: index === 'x' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_rotation.x,
-                          y: index === 'y' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_rotation.y,
-                          z: index === 'z' ? event.target.valueAsNumber : prevTask.acquisition_parameter.fov_rotation.z,
+                          // Spread existing rotation so we don't lose x, y, or z
+                          ...prevTask.acquisition_parameter!.fov_rotation,
+                          // Update only the specific field (x, y, or z) dynamically
+                          [index]: event.target.valueAsNumber,
                         }
                       }
                     }))

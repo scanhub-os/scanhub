@@ -77,6 +77,7 @@ function WorkflowForm(props: ModalPropsCreate | ModalPropsModify<WorkflowOut>) {
           name={'name'}
           onChange={(e) => setWorkflow({ ...workflow, [e.target.name]: e.target.value })}
           defaultValue={workflow.name}
+          placeholder='Name of the workflow'
         />
 
         <FormLabel>Description</FormLabel>
@@ -85,6 +86,7 @@ function WorkflowForm(props: ModalPropsCreate | ModalPropsModify<WorkflowOut>) {
           onChange={(e) => setWorkflow({ ...workflow, [e.target.name]: e.target.value })}
           defaultValue={workflow.description}
           required={true}
+          placeholder='Description of the workflow'
         />
 
         {
