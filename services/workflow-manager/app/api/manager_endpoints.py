@@ -34,6 +34,7 @@ from scanhub_libraries.models import (
     SetResult,
     TaskType,
     WorkflowOut,
+    CalibrationType,
 )
 from scanhub_libraries.resources import DAG_CONFIG_KEY
 from scanhub_libraries.resources.dag_config import DAGConfiguration
@@ -103,6 +104,11 @@ async def trigger_task(
     print(f"\n>>>>>\nPatient: {patient.__dict__}\n")
 
     if task.task_type == TaskType.ACQUISITION:
+        if task.calibration == CalibrationType.NONE and task.sequence_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_204_NO_CONTENT,
+                detail="Neither sequence nor calibration specified.",
+            )
         return handle_acquisition_task_trigger(task=task, patient=patient, access_token=access_token)
 
     if task.task_type == TaskType.DAG:
