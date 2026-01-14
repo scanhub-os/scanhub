@@ -143,16 +143,22 @@ export interface AcquisitionTaskOut {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {string}
+     * @type {CalibrationType}
      * @memberof AcquisitionTaskOut
      */
-    'sequence_id': string;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof AcquisitionTaskOut
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof AcquisitionTaskOut
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {string}
@@ -226,6 +232,31 @@ export interface AcquisitionTaskOutAcquisitionLimits {
 
 
 /**
+ * 
+ * @export
+ * @interface AcquisitionTaskOutAcquisitionParameter
+ */
+export interface AcquisitionTaskOutAcquisitionParameter {
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_scaling': XYZ;
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_offset': XYZ;
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_rotation': XYZ;
+}
+/**
  * Represents a task for data acquisition in the system.
  * @export
  * @interface BaseAcquisitionTask
@@ -287,16 +318,22 @@ export interface BaseAcquisitionTask {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {string}
+     * @type {CalibrationType}
      * @memberof BaseAcquisitionTask
      */
-    'sequence_id': string;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof BaseAcquisitionTask
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof BaseAcquisitionTask
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
 }
 
 
@@ -512,6 +549,23 @@ export interface BaseWorkflow {
      */
     'is_template': boolean;
 }
+
+
+/**
+ * Pydantic definition of calibration methods.
+ * @export
+ * @enum {string}
+ */
+
+export const CalibrationType = {
+    No: 'no',
+    All: 'all',
+    FlipAngle: 'flip-angle',
+    Frequency: 'frequency',
+    Shims: 'shims'
+} as const;
+
+export type CalibrationType = typeof CalibrationType[keyof typeof CalibrationType];
 
 
 /**
@@ -825,16 +879,22 @@ export interface GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInne
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {any}
+     * @type {CalibrationType}
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
-    'sequence_id': any;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1172,16 +1232,22 @@ export interface ResponseCreateTaskApiV1ExamTaskNewPost {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {any}
+     * @type {CalibrationType}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
-    'sequence_id': any;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1313,16 +1379,22 @@ export interface ResponseCreateTaskFromTemplateApiV1ExamTaskPost {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {any}
+     * @type {CalibrationType}
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
-    'sequence_id': any;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1454,16 +1526,22 @@ export interface ResponseGetTaskApiV1ExamTaskTaskIdGet {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {any}
+     * @type {CalibrationType}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
-    'sequence_id': any;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1595,16 +1673,22 @@ export interface ResponseUpdateTaskApiV1ExamTaskTaskIdPut {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {any}
+     * @type {CalibrationType}
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
-    'sequence_id': any;
+    'calibration'?: CalibrationType;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1755,6 +1839,13 @@ export type ResultType = typeof ResultType[keyof typeof ResultType];
  * @interface SeqFileExtension
  */
 export interface SeqFileExtension {
+}
+/**
+ * 
+ * @export
+ * @interface SequenceId
+ */
+export interface SequenceId {
 }
 /**
  * Update result model.
