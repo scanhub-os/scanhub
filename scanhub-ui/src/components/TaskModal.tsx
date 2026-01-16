@@ -21,6 +21,17 @@ import Stack from '@mui/joy/Stack'
 import Grid from '@mui/joy/Grid'
 import Textarea from '@mui/joy/Textarea'
 import Typography from '@mui/joy/Typography'
+import Sheet from '@mui/joy/Sheet';
+import Box from '@mui/joy/Box';
+import Chip from '@mui/joy/Chip';
+import ChipDelete from '@mui/joy/ChipDelete';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
+import ListItemContent from '@mui/joy/ListItemContent';
+// Icons
+import DeleteIcon from '@mui/icons-material/Delete';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import AddIcon from '@mui/icons-material/Add';
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
@@ -41,6 +52,7 @@ import {
 import { DeviceOut } from '../openapi/generated-client/device/api'
 import { ModalPropsCreate, ModalPropsModify } from '../interfaces/components.interface'
 import NotificationContext from '../NotificationContext'
+import { width } from '@mui/system';
 
 
 function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<AcquisitionTaskOut>)
@@ -63,7 +75,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
           is_template: props.createTemplate,        // eslint-disable-line camelcase
           device_id: undefined,
           sequence_id: '',
-          calibration: CalibrationType.No,
+          calibration: [],
           acquisition_parameter: {
             fov_scaling: { x: 1., y: 1., z: 1. },
             fov_offset: { x: 0., y: 0., z: 0. },
@@ -129,60 +141,76 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
 
   const title = props.modalType == 'modify' ? 'Update Acquisition Task' : 'Create New Acquisition Task'
 
+
+
+  // Helper: Add item to sequence
+  const addCalibration = (type: CalibrationType) => {
+    setTask((prev) => ({
+      ...prev,
+      calibration: [...(prev.calibration ?? []), type],
+    }));
+  };
+
+  // Helper: Remove item by index
+  const removeCalibration = (index: number) => {
+    setTask((prev) => ({...prev, calibration: (prev.calibration ?? []).filter((_, i) => i !== index)}));
+  };
+
+  // Helper: Handle Drag & Drop Reordering
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    e.dataTransfer.setData('draggedIndex', index.toString());
+  };
+
+  const getCalibrationName = (type: CalibrationType) => {
+    if (type === CalibrationType.FlipAngle) { return "Power calibration" }
+    if (type === CalibrationType.Frequency) { return "Frequency calibration" }
+    if (type === CalibrationType.Shims) { return "Shim calibration" }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+    const draggedIndex = parseInt(e.dataTransfer.getData('draggedIndex'));
+    if (draggedIndex === targetIndex) return;
+
+    const newCalibration = [...(task.calibration ?? [])];
+    const [draggedItem] = newCalibration.splice(draggedIndex, 1);
+    newCalibration.splice(targetIndex, 0, draggedItem);
+
+    setTask({ ...task, calibration: newCalibration });
+  };
+
+  const handleDragOver = (e: React.DragEvent) => e.preventDefault();
+
+
+
   return (
     <>
       <Typography id='basic-modal-dialog-title' component='h2' level='inherit' fontSize='1.25em' mb='0.25em'>
         {title}
       </Typography>
 
-      <Stack direction='column' spacing={4} useFlexGap sx={{ flexWrap: 'wrap' }}>
-        
-        <Stack spacing={1}>
-          <FormLabel>Name</FormLabel>
-          <Input
-            name={'name'}
-            onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
-            value={task.name}
-          />
-        </Stack>
-        
-        <Stack spacing={1}>
-          <FormLabel>Description</FormLabel>
-          <Textarea
-            minRows={2}
-            name={'description'}
-            onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
-            defaultValue={task.description}
-          />
-        </Stack>
-        
-        <Stack spacing={4} direction={'row'}>
+      <Grid container rowSpacing={2} columnSpacing={5}>
 
+        {/* Name */}
+        <Grid md={6}>
           <Stack spacing={1}>
-            <FormLabel>Calibration</FormLabel>
-            <Select
-              value={task.calibration}
-              defaultValue={CalibrationType.No}
-              size='sm'
-              onChange={(_, value) => {
-                if (value) { setTask({ ...task, 'calibration': value }) }
-              }}
-            >
-              <Option key={'no'} value={CalibrationType.No}>No calibration</Option>
-              <Option key={'all'} value={CalibrationType.All}>Full</Option>
-              <Option key={'frequency'} value={CalibrationType.Frequency}>Calibrate frequency</Option>
-              <Option key={'flipangle'} value={CalibrationType.FlipAngle}>Calibrate flip angle</Option>
-              <Option key={'shims'} value={CalibrationType.Shims}>Calibrate shims</Option>
-            </Select>
+            <FormLabel>Name</FormLabel>
+            <Input
+              name={'name'}
+              onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
+              value={task.name}
+            />
           </Stack>
+        </Grid>
 
+        {/* Sequence */}
+        <Grid md={6}>
           <Stack spacing={1}>
             <FormLabel>Sequence</FormLabel>
             <Select
               value={task.sequence_id ? task.sequence_id : null}
               placeholder={'Select a sequence...'}
               size='sm'
-              onChange={(event, value) => {
+              onChange={(_, value) => {
                 if (value) {
                   setTask({ ...task, 'sequence_id': value.toString() })
                 }
@@ -197,7 +225,23 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
               })}
             </Select>
           </Stack>
-          
+        </Grid>
+
+        {/* Description */}
+        <Grid md={6}>
+          <Stack spacing={1}>
+            <FormLabel>Description</FormLabel>
+            <Textarea
+              minRows={2}
+              name={'description'}
+              onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
+              defaultValue={task.description}
+            />
+          </Stack>
+        </Grid>
+
+        {/* Device */}
+        <Grid md={6}>
           <Stack spacing={1}>
             <FormLabel>Device</FormLabel>
             <Select
@@ -219,128 +263,220 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
               })}
             </Select>
           </Stack>
+        </Grid>
 
-        </Stack>
-
-        <Stack spacing={1}>
-          <FormLabel>Field of View Offset</FormLabel>
-          <Stack spacing={1} direction={'row'}>
-            {(['x', 'y', 'z'] as const).map((index) => (
-              <React.Fragment key={'FovOffset' + index}>
-                <FormLabel key={'FormLabelFovOffset' + index}>{index}</FormLabel>
-                <Input
-                  key={'InputFovOffset' + index}
-                  type="number"
-                  size='sm'
-                  slotProps={ {input: {min: -10000, max: 10000}} }
-                  value={task.acquisition_parameter?.fov_offset?.[index] ?? 0}
-                  endDecorator="px"
-                  onChange={(event) => {
-                    setTask(prevTask => ({
-                      ...prevTask,
-                      acquisition_parameter: {
-                        ...prevTask.acquisition_parameter!,
-                        fov_offset: {
-                          // Spread existing offset so we don't lose x, y, or z
-                          ...prevTask.acquisition_parameter!.fov_offset,
-                          // Update only the specific field (x, y, or z) dynamically
-                          [index]: event.target.valueAsNumber,
-                        }
-                      }
-                    }))
-                  }}
-                />
-              </React.Fragment>
-            ))}
+        <Grid md={6}>
+          <Stack spacing={1}>
+            <FormLabel>Calibration</FormLabel>
+            <Stack direction='row' spacing={3}>
+              {/* Buttons: Add calibration steps */}
+              <Stack direction="column" spacing={1}>
+                <Button 
+                  size="sm"
+                  startDecorator={<AddIcon />}
+                  onClick={() => addCalibration(CalibrationType.Frequency)}
+                >
+                  Frequency
+                </Button>
+                <Button 
+                  size="sm"
+                  startDecorator={<AddIcon />}
+                  onClick={() => addCalibration(CalibrationType.FlipAngle)}
+                >
+                  Flip Angle
+                </Button>
+                <Button 
+                  size="sm"
+                  startDecorator={<AddIcon />}
+                  onClick={() => addCalibration(CalibrationType.Shims)}
+                >
+                  Shims
+                </Button>
+              </Stack>
+            
+              {/* Vertical Drag+Drop Container */}
+              <Sheet
+                variant="outlined"
+                sx={{ 
+                  borderRadius: 'md', 
+                  p: 1.5, 
+                  height: 240,
+                  width: 300,
+                  display: 'flex',
+                  flexDirection: 'column', // Maintains the list structure
+                  gap: 1, // Vertical spacing between items
+                  overflowY: 'auto',
+                  // Style scrollbar
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: 'var(--joy-palette-neutral-outlinedBorder) transparent', // For Firefox
+                  '&::-webkit-scrollbar-track': {background: 'transparent'},
+                }}
+              >
+                {(task.calibration?.length ?? 0) === 0 && (
+                  <Typography level="body-sm" sx={{ m: 'auto', color: 'text.tertiary' }}>
+                    No calibrations added.
+                  </Typography>
+                )}
+                {(task.calibration ?? []).map((type, index) => (
+                  <Chip
+                    key={`${type}-${index}`}
+                    size="sm"
+                    draggable // The chip is now the drag handle
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, index)}
+                    endDecorator={
+                      <ChipDelete sx={{marginLeft: 1, marginRight: 0.1}} onDelete={() => removeCalibration(index)} />
+                    }
+                    sx={{
+                      width: '100%',
+                      flexShrink: 0,
+                      cursor: 'grab',
+                      '&:active': { cursor: 'grabbing' },
+                      px: 1.5,
+                      py: 0.5
+                    }}
+                  >
+                    <Typography level="title-sm">{index + 1}. {getCalibrationName(type)}</Typography>
+                  </Chip>
+                ))}
+              </Sheet>
+            </Stack>
           </Stack>
-        </Stack>
+        </Grid>
 
-        <Stack spacing={1}>
-          <FormLabel>Field of View Scaling</FormLabel>
-          <Stack spacing={1} direction={'row'}>
-            {(['x', 'y', 'z'] as const).map((index) => (
-              <React.Fragment key={'FovScaling' + index}>
-                <FormLabel key={'FormLabelFovScaling' + index}>{index}</FormLabel>
-                <Input
-                  key={'InputFovScaling' + index}
-                  type="number"
-                  size='sm'
-                  slotProps={ {input: {min: 0, max: 100}} }
-                  value={task.acquisition_parameter?.fov_scaling?.[index] ?? 0}
-                  endDecorator="px"
-                  onChange={(event) => {
-                    setTask(prevTask => ({
-                      ...prevTask,
-                      acquisition_parameter: {
-                        ...prevTask.acquisition_parameter!,
-                        fov_scaling: {
-                          // Spread existing scaling so we don't lose x, y, or z
-                          ...prevTask.acquisition_parameter!.fov_scaling,
-                          // Update only the specific field (x, y, or z) dynamically
-                          [index]: event.target.valueAsNumber,
-                        }
-                      }
-                    }))
-                  }}
-                />
-              </React.Fragment>
-            ))}
+        {/* FoV Configuration */}
+        <Grid md={6}>
+          <Stack spacing={2}>
+
+            {/* FoV Scaling */}
+            <Stack spacing={1}>
+              <FormLabel>Field of View Scaling</FormLabel>
+              <Stack spacing={1} direction={'row'}>
+                {(['x', 'y', 'z'] as const).map((index) => (
+                  <React.Fragment key={'FovScaling' + index}>
+                    <FormLabel key={'FormLabelFovScaling' + index}>{index}</FormLabel>
+                    <Input
+                      key={'InputFovScaling' + index}
+                      type="number"
+                      size='sm'
+                      slotProps={ {input: {min: 0, max: 100}} }
+                      value={task.acquisition_parameter?.fov_scaling?.[index] ?? 0}
+                      endDecorator="px"
+                      onChange={(event) => {
+                        setTask(prevTask => ({
+                          ...prevTask,
+                          acquisition_parameter: {
+                            ...prevTask.acquisition_parameter!,
+                            fov_scaling: {
+                              // Spread existing scaling so we don't lose x, y, or z
+                              ...prevTask.acquisition_parameter!.fov_scaling,
+                              // Update only the specific field (x, y, or z) dynamically
+                              [index]: event.target.valueAsNumber,
+                            }
+                          }
+                        }))
+                      }}
+                    />
+                  </React.Fragment>
+                ))}
+              </Stack>
+            </Stack>
+
+            {/* FoV Rotation */}
+            <Stack spacing={1}>
+              <FormLabel>Field of View Rotation</FormLabel>
+              <Stack spacing={1} direction={'row'}>
+                {(['x', 'y', 'z'] as const).map((index) => (
+                  <React.Fragment key={'FovRotation' + index}>
+                    <FormLabel key={'FormLabelFovRotation' + index}>{index}</FormLabel>
+                    <Input
+                      key={'InputFovRotation' + index}
+                      type="number"
+                      size='sm'
+                      slotProps={ {input: {min: 0, max: 360}} }
+                      value={task.acquisition_parameter?.fov_rotation?.[index] ?? 0}
+                      endDecorator="px"
+                      onChange={(event) => {
+                        setTask(prevTask => ({
+                          ...prevTask,
+                          acquisition_parameter: {
+                            ...prevTask.acquisition_parameter!,
+                            fov_rotation: {
+                              // Spread existing rotation so we don't lose x, y, or z
+                              ...prevTask.acquisition_parameter!.fov_rotation,
+                              // Update only the specific field (x, y, or z) dynamically
+                              [index]: event.target.valueAsNumber,
+                            }
+                          }
+                        }))
+                      }}
+                    />
+                  </React.Fragment>
+                ))}
+              </Stack>
+            </Stack>
+
+            {/* FoV Offset */}
+            <Stack spacing={1}>
+              <FormLabel>Field of View Offset</FormLabel>
+              <Stack spacing={1} direction={'row'}>
+                {(['x', 'y', 'z'] as const).map((index) => (
+                  <React.Fragment key={'FovOffset' + index}>
+                    <FormLabel key={'FormLabelFovOffset' + index}>{index}</FormLabel>
+                    <Input
+                      key={'InputFovOffset' + index}
+                      type="number"
+                      size='sm'
+                      slotProps={ {input: {min: -10000, max: 10000}} }
+                      value={task.acquisition_parameter?.fov_offset?.[index] ?? 0}
+                      endDecorator="px"
+                      onChange={(event) => {
+                        setTask(prevTask => ({
+                          ...prevTask,
+                          acquisition_parameter: {
+                            ...prevTask.acquisition_parameter!,
+                            fov_offset: {
+                              // Spread existing offset so we don't lose x, y, or z
+                              ...prevTask.acquisition_parameter!.fov_offset,
+                              // Update only the specific field (x, y, or z) dynamically
+                              [index]: event.target.valueAsNumber,
+                            }
+                          }
+                        }))
+                      }}
+                    />
+                  </React.Fragment>
+                ))}
+              </Stack>
+            </Stack>
           </Stack>
-        </Stack>
+        </Grid>
 
-        <Stack spacing={1}>
-          <FormLabel>Field of View Rotation</FormLabel>
-          <Stack spacing={1} direction={'row'}>
-            {(['x', 'y', 'z'] as const).map((index) => (
-              <React.Fragment key={'FovRotation' + index}>
-                <FormLabel key={'FormLabelFovRotation' + index}>{index}</FormLabel>
-                <Input
-                  key={'InputFovRotation' + index}
-                  type="number"
-                  size='sm'
-                  slotProps={ {input: {min: 0, max: 360}} }
-                  value={task.acquisition_parameter?.fov_rotation?.[index] ?? 0}
-                  endDecorator="px"
-                  onChange={(event) => {
-                    setTask(prevTask => ({
-                      ...prevTask,
-                      acquisition_parameter: {
-                        ...prevTask.acquisition_parameter!,
-                        fov_rotation: {
-                          // Spread existing rotation so we don't lose x, y, or z
-                          ...prevTask.acquisition_parameter!.fov_rotation,
-                          // Update only the specific field (x, y, or z) dynamically
-                          [index]: event.target.valueAsNumber,
-                        }
-                      }
-                    }))
-                  }}
-                />
-              </React.Fragment>
-            ))}
-          </Stack>
-        </Stack>
+        {/* Save button */}
+        <Grid md={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            size='sm'
+            sx={{ maxWidth: 120 }}
+            onClick={(event) => {
+              event.preventDefault()
+              if (task.name == '') {
+                showNotification({message: 'Task name must not be empty.', type: 'warning'})
+              }
+              else if (task.description == '') {
+                showNotification({message: 'Task description must not be empty.', type: 'warning'})
+              }
+              else {
+                mutation.mutate()
+                props.setOpen(false)
+              }
+            }}
+          >
+            Save
+          </Button>
+        </Grid>
 
-        <Button
-          size='sm'
-          sx={{ maxWidth: 120 }}
-          onClick={(event) => {
-            event.preventDefault()
-            if (task.name == '') {
-              showNotification({message: 'Task name must not be empty.', type: 'warning'})
-            }
-            else if (task.description == '') {
-              showNotification({message: 'Task description must not be empty.', type: 'warning'})
-            }
-            else {
-              mutation.mutate()
-              props.setOpen(false)
-            }
-          }}
-        >
-          Save
-        </Button>
-      </Stack>
+      </Grid>
     </>
   )
 }
@@ -363,7 +499,7 @@ function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>)
           status: ItemStatus.New,
           progress: 0,
           is_template: props.createTemplate,        // eslint-disable-line camelcase
-          dag_type: TaskType.Reconstruction,
+          dag_type: TaskType.Processing,
           dag_id: '',
         }
   );
@@ -443,122 +579,120 @@ function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>)
         {title}
       </Typography>
 
-
-      <Stack spacing={1}>
-        <Grid container rowSpacing={1.5} columnSpacing={5}>
-          <Grid md={12}>
-            <FormLabel>Name</FormLabel>
-            <Input
-              name={'name'}
-              onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
-              value={task.name}
-            />
-          </Grid>
-
-        
-          <Grid md={12}>
-            <FormLabel>Description</FormLabel>
-            <Textarea
-              minRows={2}
-              name={'description'}
-              onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
-              defaultValue={task.description}
-            />
-          </Grid>
-
-          <Grid md={4}>
-            <FormLabel>DAG</FormLabel>
-            <Select
-              value={task.dag_id ? task.dag_id : null}
-              placeholder={'Select a DAG...'}
-              size='sm'
-              onChange={(event, value) => {
-                if (value) {
-                  setTask({ ...task, 'dag_id': value })
-                }
-              }}
-            >
-              {jobs?.map((job) => {
-                return (
-                  <Option key={job.job_id} value={job.job_id}>
-                    {job.job_name}
-                  </Option>
-                )
-              })}
-            </Select>
-          </Grid>
-
-          <Grid md={4}>
-            <FormLabel>DAG Type</FormLabel>
-            <Select
-              value={task.dag_type ? task.dag_type : null}
-              defaultValue={TaskType.Reconstruction}
-              size='sm'
-              onChange={(_, value) => {
-                if (value) {
-                  setTask({ ...task, 'dag_type': value })
-                }
-              }}
-            >
-              <Option key={'reconstruction'} value={TaskType.Reconstruction}>Reconstruction</Option>
-              <Option key={'processing'} value={TaskType.Processing}>Processing</Option>
-            </Select>
-          </Grid>
-
-          <Grid md={4}>
-            <FormLabel>Input</FormLabel>
-            <Select
-              value={task.input_task_ids ? task.input_task_ids[0] : null}
-              placeholder={'Select an input...'}
-              size='sm'
-              onChange={(event, value) => {
-                if (value) {
-                  setTask({ ...task, 'input_task_ids': [value] })
-                }
-              }}
-            >
-              {inputTasks?.map((inputTask) => {
-                return (
-                  <Tooltip
-                    key={`tooltip-${inputTask.id}`}
-                    placement='right'
-                    variant='outlined'
-                    arrow
-                    title={<TaskInfo data={inputTask} />}
-                  >
-                    <Option key={`option-${inputTask.id}`} value={inputTask.id}>
-                      {inputTask.name}
-                    </Option>
-                  </Tooltip>
-                )
-              })}
-            </Select>
-          </Grid>
-        
-          <Grid md={12}>
-            <Button
-              size='sm'
-              sx={{ maxWidth: 120 }}
-              onClick={(event) => {
-                event.preventDefault()
-                if (task.name == '') {
-                  showNotification({message: 'Task name must not be empty.', type: 'warning'})
-                }
-                else if (task.description == '') {
-                  showNotification({message: 'Task description must not be empty.', type: 'warning'})
-                }
-                else {
-                  mutation.mutate()
-                  props.setOpen(false)
-                }
-              }}
-            >
-              Save
-            </Button>
-          </Grid>
-
+      <Grid container rowSpacing={2} columnSpacing={5}>
+        <Grid md={6}>
+          <FormLabel>Name</FormLabel>
+          <Input
+            name={'name'}
+            onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
+            value={task.name}
+          />
         </Grid>
-      </Stack>
+
+        <Grid md={6}>
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            minRows={2}
+            name={'description'}
+            onChange={(e) => setTask({ ...task, [e.target.name]: e.target.value })}
+            defaultValue={task.description}
+          />
+        </Grid>
+
+        {/* DAG selection */}
+        <Grid md={6}>
+          <FormLabel>DAG</FormLabel>
+          <Select
+            value={task.dag_id ? task.dag_id : null}
+            placeholder={'Select a DAG...'}
+            size='sm'
+            onChange={(event, value) => {
+              if (value) {
+                setTask({ ...task, 'dag_id': value })
+              }
+            }}
+          >
+            {jobs?.map((job) => {
+              return (
+                <Option key={job.job_id} value={job.job_id}>
+                  {job.job_name}
+                </Option>
+              )
+            })}
+          </Select>
+        </Grid>
+
+        {/* <Grid md={6}>
+          <FormLabel>DAG Type</FormLabel>
+          <Select
+            value={task.dag_type ? task.dag_type : null}
+            defaultValue={TaskType.Reconstruction}
+            size='sm'
+            onChange={(_, value) => {
+              if (value) {
+                setTask({ ...task, 'dag_type': value })
+              }
+            }}
+          >
+            <Option key={'reconstruction'} value={TaskType.Reconstruction}>Reconstruction</Option>
+            <Option key={'processing'} value={TaskType.Processing}>Processing</Option>
+          </Select>
+        </Grid> */}
+
+        <Grid md={6}>
+          <FormLabel>Input</FormLabel>
+          <Select
+            value={task.input_task_ids ? task.input_task_ids[0] : null}
+            placeholder={'Select an input...'}
+            size='sm'
+            onChange={(event, value) => {
+              if (value) {
+                setTask({ ...task, 'input_task_ids': [value] })
+              }
+            }}
+          >
+            {inputTasks?.map((inputTask) => {
+              return (
+                <Tooltip
+                  key={`tooltip-${inputTask.id}`}
+                  placement='right'
+                  variant='outlined'
+                  arrow
+                  title={<TaskInfo data={inputTask} />}
+                >
+                  <Option key={`option-${inputTask.id}`} value={inputTask.id}>
+                    {inputTask.name}
+                  </Option>
+                </Tooltip>
+              )
+            })}
+          </Select>
+        </Grid>
+      
+        {/* Save button */}
+        <Grid md={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            size='sm'
+            sx={{ maxWidth: 120 }}
+            onClick={(event) => {
+              event.preventDefault()
+              if (task.name == '') {
+                showNotification({message: 'Task name must not be empty.', type: 'warning'})
+              }
+              else if (task.description == '') {
+                showNotification({message: 'Task description must not be empty.', type: 'warning'})
+              }
+              else {
+                mutation.mutate()
+                props.setOpen(false)
+              }
+            }}
+          >
+            Save
+          </Button>
+        </Grid>
+
+      </Grid>
     </>
   )
 }
@@ -571,12 +705,12 @@ export default function TaskModal(props: ModalPropsCreate | ModalPropsModify<Acq
       open={props.isOpen}
       color='neutral'
       onClose={() => props.setOpen(false)}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}
     >
       <ModalDialog
         aria-labelledby='basic-modal-dialog-title'
         aria-describedby='basic-modal-dialog-description'
-        sx={{ width: '75vw', maxHeight: 'calc(100vh - 2 * var(--Navigation-height))', borderRadius: 'md', p: 5, overflow: 'auto'}}
+        sx={{ width: '60vw', maxHeight: 'calc(100vh - 2 * var(--Navigation-height))', height: '80vh', borderRadius: 'md', p: 5, overflow: 'auto'}}
       >
         <ModalClose
           sx={{
