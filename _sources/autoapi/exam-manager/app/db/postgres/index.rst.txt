@@ -313,7 +313,7 @@ Module Contents
 
 
    .. py:attribute:: calibration
-      :type:  sqlalchemy.orm.Mapped[scanhub_libraries.models.CalibrationType]
+      :type:  sqlalchemy.orm.Mapped[list[scanhub_libraries.models.CalibrationType]]
 
 
    .. py:attribute:: device_id
