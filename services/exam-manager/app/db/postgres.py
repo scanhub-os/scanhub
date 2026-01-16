@@ -9,9 +9,10 @@ import uuid
 from pydantic import BaseModel
 from scanhub_libraries.models import AcquisitionLimits, AcquisitionParameter, ItemStatus, ResultType, TaskType, CalibrationType
 from sqlalchemy import JSON, ForeignKey, String, create_engine, func
-from sqlalchemy.dialects.postgresql import ARRAY, UUID
+from sqlalchemy.dialects.postgresql import ARRAY, UUID, JSONB
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -155,7 +156,11 @@ class AcquisitionTask(Task):
         ForeignKey("task.id", ondelete="CASCADE"), primary_key=True, default=uuid.uuid4
     )
     sequence_id: Mapped[str] = mapped_column(nullable=True)
-    calibration: Mapped[CalibrationType] = mapped_column(nullable=False)
+    calibration: Mapped[list[CalibrationType]] = mapped_column(
+        type_=MutableList.as_mutable(JSONB),
+        nullable=False,
+        default=list,
+    )
     device_id: Mapped[uuid.UUID] = mapped_column(nullable=True)
     acquisition_parameter: Mapped[AcquisitionParameter] = mapped_column(type_=JSON, nullable=True)
     acquisition_limits: Mapped[AcquisitionLimits] = mapped_column(type_=JSON, nullable=True)
