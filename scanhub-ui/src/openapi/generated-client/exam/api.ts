@@ -143,10 +143,10 @@ export interface AcquisitionTaskOut {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {Array<CalibrationType>}
      * @memberof AcquisitionTaskOut
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: Array<CalibrationType>;
     /**
      * 
      * @type {SequenceId}
@@ -318,10 +318,10 @@ export interface BaseAcquisitionTask {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {Array<CalibrationType>}
      * @memberof BaseAcquisitionTask
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: Array<CalibrationType>;
     /**
      * 
      * @type {SequenceId}
@@ -558,8 +558,6 @@ export interface BaseWorkflow {
  */
 
 export const CalibrationType = {
-    No: 'no',
-    All: 'all',
     FlipAngle: 'flip-angle',
     Frequency: 'frequency',
     Shims: 'shims'
@@ -879,10 +877,10 @@ export interface GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInne
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {any}
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: any;
     /**
      * 
      * @type {SequenceId}
@@ -1232,10 +1230,10 @@ export interface ResponseCreateTaskApiV1ExamTaskNewPost {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {any}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: any;
     /**
      * 
      * @type {SequenceId}
@@ -1379,10 +1377,10 @@ export interface ResponseCreateTaskFromTemplateApiV1ExamTaskPost {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {any}
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: any;
     /**
      * 
      * @type {SequenceId}
@@ -1526,10 +1524,10 @@ export interface ResponseGetTaskApiV1ExamTaskTaskIdGet {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {any}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: any;
     /**
      * 
      * @type {SequenceId}
@@ -1673,10 +1671,10 @@ export interface ResponseUpdateTaskApiV1ExamTaskTaskIdPut {
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {CalibrationType}
+     * @type {any}
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
-    'calibration'?: CalibrationType;
+    'calibration'?: any;
     /**
      * 
      * @type {SequenceId}
