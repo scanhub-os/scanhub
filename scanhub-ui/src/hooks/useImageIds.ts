@@ -65,7 +65,14 @@ export function useImageIds(item: ItemSelection, resultId?: string) {
     () =>
       dicomUrls
         .filter((u): u is string => typeof u === 'string' && u.length > 0)
-        .map((u) => (u.startsWith('wadouri:') ? u : `wadouri:${u}`)),
+        .map((u) => {
+          let url = u;
+          // Dynamically replace localhost with current origin if accessing remotely
+          if (typeof window !== 'undefined' && url.includes('://localhost:8443')) {
+            url = url.replace(/https?:\/\/localhost:8443/, window.location.origin);
+          }
+          return (url.startsWith('wadouri:') ? url : `wadouri:${url}`);
+        }),
     [dicomUrls]
   );
 
