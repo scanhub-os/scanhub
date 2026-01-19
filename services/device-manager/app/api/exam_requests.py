@@ -180,3 +180,28 @@ def set_result(result_id: str, payload: SetResult, user_access_token: str) -> Re
     if update_result_response.status_code != 200:
         raise HTTPException(status_code=400, detail="Error updating result")
     return ResultOut(**update_result_response.json())
+
+
+def get_result(result_id: str, user_access_token: str) -> ResultOut:
+    """
+    Fetch result by ID from the exam manager service.
+
+    Args
+    ----
+        result_id (str): The unique identifier of the result to retrieve.
+        user_access_token (str): The user's access token for authentication.
+
+    Returns
+    -------
+        ResultOut | None: The result object if found and valid.
+
+    Raises
+    ------
+        HTTPException: If the result is not found (404).
+    """
+    headers = {"Authorization": "Bearer " + user_access_token}
+    get_result_response = requests.get(f"{RESULT_URI}/{result_id}", headers=headers, timeout=3)
+    if get_result_response.status_code != 200:
+        raise HTTPException(status_code=404, detail="Result not found")
+    return ResultOut(**get_result_response.json())
+
