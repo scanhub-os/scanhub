@@ -12,7 +12,7 @@ import {
 import { initCornerstone } from './cornerstone/init';
 import { useNumberOfFrames } from './hooks/useNumberOfFrames';
 import LoginContext from '../../LoginContext';
-import { attachToolGroupsForLayout, destroyToolGroups} from './cornerstone/toolgroups';
+import { attachToolGroupsForLayout, destroyToolGroups } from './cornerstone/toolgroups';
 import DiconViewerToolbar from './DicomViewerToolbar';
 import { VIEW_LAYOUTS, VIEW_LAYOUT_META, ViewportId, ViewLayout } from './cornerstone/viewLayouts';
 import { useViewportResize } from './hooks/useViewportResize';
@@ -22,7 +22,13 @@ import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
 import Container from '@mui/joy/Container';
 import AlertItem from '../../components/AlertItem';
+import { ITEM_UNSELECTED, ItemSelection } from '../../interfaces/components.interface'
 import { Alerts } from '../../interfaces/components.interface'
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
+import { useTaskResults } from './hooks/useTaskResults';
+import { useImageIds } from '../../hooks/useImageIds';
+
 
 // Constants:
 const RENDERING_ENGINE_ID = 're-min';
@@ -41,7 +47,26 @@ function makeVolumeId(imageIds: string[]) {
  * - Creates 1 viewport (STACK or ORTHOGRAPHIC for volume)
  * - Loads imageIds for the given task and displays them
  */
-export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
+export default function DicomViewer3D({ item }: { item: ItemSelection }) {
+
+  const { results } = useTaskResults(item);
+  const [selectedResultId, setSelectedResultId] = React.useState<string | undefined>(undefined);
+
+  // Automatically select newest result when available or updated
+  React.useEffect(() => {
+    setSelectedResultId(undefined); // Reset on item change
+  }, [item.itemId]);
+
+  React.useEffect(() => {
+    if (!results || results.length === 0) return;
+    // useTaskResults sorts by date already, so results[0] is newest.
+    // Only update if current selection is invalid or empty
+    if (!selectedResultId || !results.find(r => r.id === selectedResultId)) {
+      setSelectedResultId(results[0].id);
+    }
+  }, [results, selectedResultId]);
+
+  const { imageIds } = useImageIds(item, selectedResultId);
 
   // References
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -79,7 +104,7 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
     };
   }, [ready]);
 
-  
+
   // Initialize Cornerstone
   React.useEffect(() => {
     let cancelled = false;
@@ -97,79 +122,100 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
   React.useEffect(() => {
     if (!ready || !containerRef.current || !engineRef.current) return;
 
+    setViewportReady(false); // Block loading/rendering while reconfiguring viewports
+
+    let cancelled = false;
     const engine = engineRef.current;
     const layoutViewportIds = VIEW_LAYOUTS[layout].map(v => v.id);
 
     // Disable removed viewports
     for (const id of engineViewportIdsRef.current) {
       if (!layoutViewportIds.includes(id)) {
-        try { engine.disableElement(id); } catch {}
+        try { engine.disableElement(id); } catch { }
       }
     }
 
-  // Enable viewports
-  (async () => {
-    for (const view of VIEW_LAYOUTS[layout]) {
+    // Enable viewports
+    (async () => {
+      for (const view of VIEW_LAYOUTS[layout]) {
+        if (cancelled) return;
 
-      const element = containerRef.current!.querySelector(`#viewport-${view.id}`) as HTMLDivElement;
-      const engineVpIds = Object.keys(engine.getViewports?.() ?? {});
-      const type = numberOfFrames === 1 ? Enums.ViewportType.STACK
-        : (view.is3D ? Enums.ViewportType.VOLUME_3D : Enums.ViewportType.ORTHOGRAPHIC)
+        const element = containerRef.current!.querySelector(`#viewport-${view.id}`) as HTMLDivElement;
+        const engineVpIds = Object.keys(engine.getViewports?.() ?? {});
+        const type = numberOfFrames <= 1 ? Enums.ViewportType.STACK
+          : (view.is3D ? Enums.ViewportType.VOLUME_3D : Enums.ViewportType.ORTHOGRAPHIC)
 
-      if (!engineVpIds.includes(view.id)) {
-        await engine.enableElement({
-          viewportId: view.id,
-          element,
-          type,
-          defaultOptions: { background: [0, 0, 0] },
-        });
-      } else {
-        // Reattach if element changed (e.g., React re-rendered)
-        const vp = engine.getViewport(view.id);
-        if ((vp as any).element !== element) {
-          engine.disableElement(view.id);
+        if (!engineVpIds.includes(view.id)) {
           await engine.enableElement({
             viewportId: view.id,
             element,
             type,
             defaultOptions: { background: [0, 0, 0] },
           });
+        } else {
+          // Reattach if element changed (e.g., React re-rendered) OR if type changed (Stack <-> Volume)
+          const vp = engine.getViewport(view.id);
+          if ((vp as any).element !== element || vp.type !== type) {
+            engine.disableElement(view.id);
+            if (cancelled) return;
+            await engine.enableElement({
+              viewportId: view.id,
+              element,
+              type,
+              defaultOptions: { background: [0, 0, 0] },
+            });
+          }
         }
       }
-    }
 
-    // Enginge resize after layout change
-    requestAnimationFrame(() => {
-      const engine = engineRef.current;
-      if (!engine) return
-      // Resize with keep camera = true
-      engine.resize(false, true);
-      // Fit all active viewports to their container
-      engine.getViewports().forEach(vp => vp?.resetCamera?.());
-      engine.render();
-    });
+      if (cancelled) return;
 
-    engineViewportIdsRef.current = layoutViewportIds;
-    setViewportReady(true);
-  })();
+      // Enginge resize after layout change
+      requestAnimationFrame(() => {
+        if (cancelled) return;
+        const engine = engineRef.current;
+        if (!engine) return
+        // Resize with keep camera = true
+        engine.resize(false, true);
+        // Fit all active viewports to their container
+        engine.getViewports().forEach(vp => vp?.resetCamera?.());
+        engine.render();
+      });
 
-}, [ready, layout, numberOfFrames]);
+      engineViewportIdsRef.current = layoutViewportIds;
+      setViewportReady(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+
+  }, [ready, layout, numberOfFrames]);
 
 
   // Load and assign volume(s)
   React.useEffect(() => {
     if (!viewportReady || imageIds.length === 0) return;
 
+    let cancelled = false;
+
     (async () => {
       const engine = engineRef.current!;
       const currentLayout = VIEW_LAYOUTS[layout];
 
+      if (cancelled) return;
+
       // For 2D stack-only data
       if (layout === ViewLayout.Single && numberOfFrames <= 1) {
-        const vp = engine.getViewport('single') as Types.IStackViewport;
-        if (!vp) return
-        await vp.setStack(imageIds);
-        await vp.render();
+        const vp = engine.getViewport('single');
+        if (!vp) return;
+
+        if (vp.type === Enums.ViewportType.STACK) {
+          await (vp as Types.IStackViewport).setStack(imageIds);
+          if (!cancelled) await vp.render();
+        } else {
+          console.warn(`[DicomViewer] Mismatch: Expected Stack viewport for single frame, got ${vp.type}`);
+        }
         return;
       }
 
@@ -182,12 +228,16 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
       if (volumeIdRef.current !== volumeId) {
         // Create + cache once per series
         const vol = await volumeLoader.createAndCacheVolume(volumeId, { imageIds: volumeImageIds });
+        if (cancelled) return;
         await vol.load();
         volumeIdRef.current = volumeId;
       }
 
+      if (cancelled) return;
+
       // Set volume in viewports
       for (const view of currentLayout) {
+        if (cancelled) return;
         // Get viewport by ID and set volume
         const vp = engine.getViewport(view.id) as Types.IVolumeViewport;
         if (!vp) continue
@@ -198,106 +248,24 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
         // Reset camera
         await vp.resetCamera(); // ensure proper frustum after setVolumes/orientation
 
-        
-        // TODO: Properly display the 3D rendered volume
-        // if (vp.type === Enums.ViewportType.VOLUME_3D) {
-        //   // Set preset for volume rendering
-        //   // const actorEntry = vp.getDefaultActor();
-        //   // if (!actorEntry) return;
-        //   // // const vtkActor = actorEntry.actor as any; // vtkVolume
-        //   // // const preset = CONSTANTS.VIEWPORT_PRESETS[22];  // 22 = MR-Default
-        //   // // if (!preset) return;
-        //   // // console.log("Applying preset: ", preset.name)
-
-        //   // // utilities.applyPreset(actorEntry.actor as any, customPreset);
-        //   // const property = (actorEntry.actor as any).getProperty();
-        //   // const opacityFunc = property.getScalarOpacity(0);
-        //   // opacityFunc.removeAllPoints();
-
-        //   // // Define mapping: (intensity, opacity)
-        //   // opacityFunc.addPoint(0, 0.0);       // black = fully transparent
-        //   // opacityFunc.addPoint(1000, 0.0);      // near black still transparent
-        //   // // opacityFunc.addPoint(600, 0.1);     // start fading in
-        //   // // opacityFunc.addPoint(1000, 0.8);     // mostly opaque
-        //   // opacityFunc.addPoint(2000, 1.0);    // fully opaque
-
-        //   const actorEntry = vp.getDefaultActor();
-        //   if (!actorEntry) return;
-
-        //   // const preset = CONSTANTS.VIEWPORT_PRESETS[22];  // 22 = MR-Default
-        //   // if (!preset) return;
-        //   // console.log("Applying preset: ", preset.name)
-
-        //   // get the volume to read spacing & intensity range
-        //   const vol = cache.getVolume(volumeId);
-        //   const scalars = vol?.imageData?.getPointData().getScalars();
-        //   let minI = 0, maxI = 1;
-        //   if (scalars) {
-        //     // vtkDataArray provides a getRange() method
-        //     const [minVal, maxVal] = scalars.getRange();
-        //     minI = minVal;
-        //     maxI = maxVal;
-        //   }
-        //   const [sx, sy, sz] = vol?.spacing ?? [1, 1, 1];
-
-        //   // a good unit distance ~ voxel diagonal (in mm)
-        //   const unitDistance = Math.sqrt(sx * sx + sy * sy + sz * sz);
-
-        //   const vtkVolume = actorEntry.actor as any;
-        //   const prop = vtkVolume.getProperty();
-        //   const mapper = vtkVolume.getMapper();
-
-        //   // Ensure composite blending (not MIP) for “see-through black”
-        //   if (mapper.setBlendModeToComposite) mapper.setBlendModeToComposite();
-
-        //   // Critical: set how opacity accumulates per mm along the ray
-        //   if (prop.setScalarOpacityUnitDistance) {
-        //     prop.setScalarOpacityUnitDistance(0, unitDistance);
-        //   }
-
-        //   // Reasonable ray step (smaller = sharper, slower)
-        //   if (mapper.setSampleDistance) {
-        //     mapper.setSampleDistance(unitDistance * 0.5);
-        //   }
-
-        //   // Build a transfer function that truly zeros-out “black”
-        //   // const threshold = Math.max(minI,  /* your threshold */ 500);
-        //   const threshold = maxI * 0.4
-
-        //   // Scalar opacity (intensity → opacity)
-        //   const of = prop.getScalarOpacity(0);
-        //   of.removeAllPoints();
-        //   of.addPoint(minI, 0.0);               // everything near min is transparent
-        //   of.addPoint(threshold - 1, 0.0);      // still transparent below threshold
-        //   of.addPoint(threshold + 50, 0.10);    // start to fade in
-        //   of.addPoint((threshold + maxI) * 0.5, 0.80);
-        //   of.addPoint(maxI, 1.0);               // dense stuff fully opaque
-
-        //   // Grayscale color transfer (optional but good to reset)
-        //   const ctf = prop.getRGBTransferFunction(0);
-        //   ctf.removeAllPoints();
-        //   ctf.addRGBPoint(minI, 0, 0, 0);
-        //   ctf.addRGBPoint(maxI, 1, 1, 1);
-
-        //   // Nice lighting
-        //   prop.setShade(true);
-        //   prop.setAmbient(0.25);
-        //   prop.setDiffuse(0.7);
-        //   prop.setSpecular(0.1);
-        //   prop.setSpecularPower(10);
-               
-        // }
-
         // Render viewport
-        await vp.render();
+        if (!cancelled) await vp.render();
       }
 
       // Add enabled viewports to toolGroup
-      await attachToolGroupsForLayout(VIEW_LAYOUTS[layout], RENDERING_ENGINE_ID)
+      if (!cancelled) await attachToolGroupsForLayout(VIEW_LAYOUTS[layout], RENDERING_ENGINE_ID)
 
     })();
 
+    return () => {
+      cancelled = true;
+    };
+
   }, [viewportReady, layout, imageIds, numberOfFrames]);
+
+  // Grid configuration
+  const { rows, cols } = VIEW_LAYOUT_META[layout];
+  const gridTemplate = `repeat(${rows}, 1fr) / repeat(${cols}, 1fr)`;
 
   if (imageIds.length === 0 || !numberOfFrames) {
     return (
@@ -307,16 +275,33 @@ export default function DicomViewer3D({imageIds}: {imageIds: string[]}) {
           type={Alerts.Info}
         />
       </Container>
-    );
+    )
   }
 
-  // Grid configuration
-  const { rows, cols } = VIEW_LAYOUT_META[layout];
-  const gridTemplate = `repeat(${rows}, 1fr) / repeat(${cols}, 1fr)`;
-
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height) - var(--Status-height))', p: 1, gap: 1}}>
-      <DiconViewerToolbar onLayoutChange={setLayout} currentLayout={layout}/>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height) - var(--Status-height))', p: 1, gap: 1 }}>
+
+      {/* Result Selector and Toolbar */}
+      <Stack direction="row" gap={2} alignItems="center">
+        <Select
+          size="sm"
+          placeholder="Select Result"
+          value={selectedResultId ?? null}
+          onChange={(_, value) => value && setSelectedResultId(value)}
+          sx={{ minWidth: 200 }}
+        >
+          {results.map((r) => (
+            <Option key={r.id} value={r.id}>
+              {new Date(r.datetime_created).toLocaleString()}
+            </Option>
+          ))}
+        </Select>
+
+        <DiconViewerToolbar onLayoutChange={setLayout} currentLayout={layout} />
+
+      </Stack>
+
+
       <Card
         variant="plain"
         color="neutral"
