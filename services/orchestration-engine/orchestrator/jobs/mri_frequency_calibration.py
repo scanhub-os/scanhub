@@ -8,7 +8,8 @@ from dagster import OpExecutionContext, job, op
 from scanhub_libraries.resources.dag_config import DAGConfiguration
 from scanhub_libraries.resources.notifier import DeviceManagerNotifier
 
-from orchestrator.io.acquisition_data import AcquisitionData, acquisition_data_op
+from orchestrator.assets.acquisition_data import AcquisitionData
+from orchestrator.jobs.acquisition_data import acquisition_data_op
 from orchestrator.utils.snr import signal_to_noise_ratio
 
 

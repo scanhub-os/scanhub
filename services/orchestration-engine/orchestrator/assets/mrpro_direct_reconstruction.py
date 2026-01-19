@@ -5,28 +5,26 @@
 import mrpro
 from dagster import AssetIn, asset
 from scanhub_libraries.resources import IDATA_IO_KEY
-from scanhub_libraries.resources.dag_config import DAGConfiguration
+from mrpro.data import IData
 
-from orchestrator.io.acquisition_data import AcquisitionData, acquisition_data_asset
-from orchestrator.io.idata_io_manager import IDataContext
-
+from orchestrator.assets.acquisition_data import AcquisitionData, acquisition_data_asset
 
 @asset(
     group_name="reconstruction",
     description="MRpro direct reconstruction.",
     ins={"data": AssetIn(key=acquisition_data_asset.key)},
     io_manager_key=IDATA_IO_KEY,
+    required_resource_keys={"dag_config"},
 )
-def mrpro_direct_reconstruction(context, data: AcquisitionData, dag_config: DAGConfiguration) -> IDataContext:
+def mrpro_direct_reconstruction(context, data: AcquisitionData) -> IData:
     """Reconstruct an image from acquisition results using the direct reconstruction method from mrpro.
 
     Args:
         context: The execution context, typically used for logging and runtime information.
         data (AcquisitionData): The acquisition data containing the MRD file path and associated metadata.
-        dag_config (DAGConfiguration): The configuration for the directed acyclic graph (DAG) execution.
 
     Returns:
-        IDataContext: An object containing the reconstructed image data and the DAG configuration.
+        IData: The reconstructed image data.
 
     Workflow:
         1. Loads acquisition results using the DataLakeResource, providing the MRD path and metadata.
@@ -43,4 +41,4 @@ def mrpro_direct_reconstruction(context, data: AcquisitionData, dag_config: DAGC
     reconstruction = mrpro.algorithms.reconstruction.DirectReconstruction(kdata)
     context.log.info("Performing direct reconstruction using mrpro...")
     idata = reconstruction(kdata)
-    return IDataContext(data=idata, dag_config=dag_config)
+    return idata
