@@ -143,16 +143,22 @@ export interface AcquisitionTaskOut {
     'device_id'?: DeviceId1;
     /**
      * 
-     * @type {string}
+     * @type {Array<CalibrationType>}
      * @memberof AcquisitionTaskOut
      */
-    'sequence_id': string;
+    'calibration'?: Array<CalibrationType>;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof AcquisitionTaskOut
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof AcquisitionTaskOut
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {string}
@@ -223,6 +229,46 @@ export interface AcquisitionTaskOutAcquisitionLimits {
      */
     'patient_age': any;
 }
+
+
+/**
+ * 
+ * @export
+ * @interface AcquisitionTaskOutAcquisitionParameter
+ */
+export interface AcquisitionTaskOutAcquisitionParameter {
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_scaling': XYZ;
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_offset': XYZ;
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_rotation': XYZ;
+}
+/**
+ * Pydantic definition of calibration methods.
+ * @export
+ * @enum {string}
+ */
+
+export const CalibrationType = {
+    FlipAngle: 'flip-angle',
+    Frequency: 'frequency',
+    Shims: 'shims'
+} as const;
+
+export type CalibrationType = typeof CalibrationType[keyof typeof CalibrationType];
 
 
 /**
@@ -523,6 +569,13 @@ export const ResultType = {
 export type ResultType = typeof ResultType[keyof typeof ResultType];
 
 
+/**
+ * 
+ * @export
+ * @interface SequenceId
+ */
+export interface SequenceId {
+}
 /**
  * 
  * @export
