@@ -12,10 +12,11 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import { examApi } from '../api'
-import { ExamOut, WorkflowOut} from '../openapi/generated-client/exam'
+import { ExamOut, WorkflowOut } from '../openapi/generated-client/exam'
 import ExamModal from '../components/ExamModal'
-import ExamItem, {ExamMenu} from '../components/ExamItem'
-import WorkflowItem, {WorkflowMenu} from '../components/WorkflowItem'
+import ExamItem, { ExamMenu } from '../components/ExamItem'
+import WorkflowItem, { WorkflowMenu } from '../components/WorkflowItem'
+import Typography from '@mui/joy/Typography'
 import TaskItem from '../components/TaskItem'
 import { ITEM_UNSELECTED } from '../interfaces/components.interface'
 import WorkflowModal from '../components/WorkflowModal'
@@ -53,9 +54,18 @@ export default function TemplatesView() {
     <Stack direction="row" alignItems="flex-start" width='100vw'>
 
       <Stack direction='column' alignContent='center' flex={1} spacing={2} sx={{ p: 2 }}>
-        <Button startDecorator={<Add />} onClick={() => setExamModalOpen(true)}>
+        {/* <Button startDecorator={<Add />} onClick={() => setExamModalOpen(true)}>
           Create Exam Template
-        </Button>
+        </Button> */}
+        <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
+          <Typography level='title-md'>Exam Templates</Typography>
+          <Button
+            variant='outlined'
+            startDecorator={<Add sx={{ fontSize: 'var(--IconFontSize)' }} />}
+            onClick={() => setExamModalOpen(true)}>
+            Create Exam
+          </Button>
+        </Stack>
 
         <ExamModal
           isOpen={examModalOpen}
@@ -68,9 +78,9 @@ export default function TemplatesView() {
         {
           exams?.map((exam, index) => (
             <Stack direction="row" key={`exam-${exam.id}`} gap={1}>
-              <ExamItem 
+              <ExamItem
                 item={exam}
-                onClick={() => {selectedExam === index ? setSelectedExam(undefined) : setSelectedExam(index)}}
+                onClick={() => { selectedExam === index ? setSelectedExam(undefined) : setSelectedExam(index) }}
                 selection={selectedExam === index ? {
                   type: 'exam',
                   name: exams[index].name,
@@ -85,9 +95,20 @@ export default function TemplatesView() {
       </Stack>
 
       <Stack direction='column' alignContent='center' flex={1} spacing={2} sx={{ p: 2 }}>
-        <Button startDecorator={<Add />} onClick={() => setWorkflowModalOpen(true)} disabled={selectedExam === undefined}>
+        {/* <Button startDecorator={<Add />} onClick={() => setWorkflowModalOpen(true)} disabled={selectedExam === undefined}>
           Create Workflow Template
-        </Button>
+        </Button> */}
+        <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
+          <Typography level='title-md'>Workflow Templates</Typography>
+          <Button
+            variant='outlined'
+            startDecorator={<Add sx={{ fontSize: 'var(--IconFontSize)' }} />}
+            onClick={() => setWorkflowModalOpen(true)}
+            disabled={selectedExam === undefined}
+          >
+            Create Workflow
+          </Button>
+        </Stack>
 
         <WorkflowModal
           isOpen={workflowModalOpen}
@@ -100,15 +121,15 @@ export default function TemplatesView() {
         {
           exams && selectedExam !== undefined && exams[selectedExam]?.workflows?.map((workflow: WorkflowOut, index: number) => (
             <Stack direction="row" key={`workflow-${workflow.id}`}>
-              <WorkflowItem 
+              <WorkflowItem
                 item={workflow}
-                onClick={() => {selectedWorkflow === index ? setSelectedWorkflow(undefined) : setSelectedWorkflow(index)}}
-                selection={ selectedWorkflow === index ? {
+                onClick={() => { selectedWorkflow === index ? setSelectedWorkflow(undefined) : setSelectedWorkflow(index) }}
+                selection={selectedWorkflow === index ? {
                   type: 'workflow',
                   name: exams[selectedExam].workflows[index].name,
                   itemId: exams[selectedExam].workflows[index].id,
                   status: exams[selectedExam].workflows[index].status
-                } : ITEM_UNSELECTED }
+                } : ITEM_UNSELECTED}
               />
               <WorkflowMenu item={workflow} refetchParentData={refetchExams} />
             </Stack>
@@ -117,9 +138,20 @@ export default function TemplatesView() {
       </Stack>
 
       <Stack direction='column' alignContent='center' flex={1} spacing={2} sx={{ p: 2 }}>
-        <Button startDecorator={<Add />} onClick={() => setTaskModalOpen(true)} disabled={selectedWorkflow === undefined}>
+        {/* <Button startDecorator={<Add />} onClick={() => setTaskModalOpen(true)} disabled={selectedWorkflow === undefined}>
           Create Task Template
-        </Button>
+        </Button> */}
+        <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
+          <Typography level='title-md'>Task Templates</Typography>
+          <Button
+            variant='outlined'
+            startDecorator={<Add sx={{ fontSize: 'var(--IconFontSize)' }} />}
+            onClick={() => setTaskModalOpen(true)}
+            disabled={selectedWorkflow === undefined}
+          >
+            Create Task
+          </Button>
+        </Stack>
 
         <TaskModal
           isOpen={taskModalOpen}
@@ -131,11 +163,11 @@ export default function TemplatesView() {
         />
         {
           exams && selectedExam !== undefined && selectedWorkflow !== undefined && exams[selectedExam].workflows[selectedWorkflow]?.tasks?.map((task) => (
-            <TaskItem 
+            <TaskItem
               key={`task-${task.id}`}
               item={task}
               refetchParentData={refetchExams}
-              onClick={() => {}}
+              onClick={() => { }}
               selection={ITEM_UNSELECTED}
             />
           ))

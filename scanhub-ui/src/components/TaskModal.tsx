@@ -37,7 +37,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 
 import TaskInfo from './TaskInfo';
 import { deviceApi, sequenceApi, taskApi, workflowManagerApi } from '../api'
-import { 
+import {
   MRISequenceOut,
   BaseAcquisitionTask,
   AcquisitionTaskOut,
@@ -55,8 +55,7 @@ import NotificationContext from '../NotificationContext'
 import { width } from '@mui/system';
 
 
-function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<AcquisitionTaskOut>)
-{
+function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<AcquisitionTaskOut>) {
   // The form is in this separate component to make sure that the state is reset after closing the modal
 
   const [, showNotification] = React.useContext(NotificationContext)
@@ -65,46 +64,46 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
     props.modalType == 'modify'
       ? { ...(props.item as BaseAcquisitionTask), status: ItemStatus.Updated, task_type: 'ACQUISITION' }
       : {
-          workflow_id: props.parentId,              // eslint-disable-line camelcase
-          name: '',
-          description: '',
-          task_type: 'ACQUISITION',
-          destination: '',
-          status: ItemStatus.New,
-          progress: 0,
-          is_template: props.createTemplate,        // eslint-disable-line camelcase
-          device_id: undefined,
-          sequence_id: '',
-          calibration: [],
-          acquisition_parameter: {
-            fov_scaling: { x: 1., y: 1., z: 1. },
-            fov_offset: { x: 0., y: 0., z: 0. },
-            fov_rotation: { x: 0., y: 0., z: 0. },
-          } as AcquisitionParameter,
-        }
+        workflow_id: props.parentId,              // eslint-disable-line camelcase
+        name: '',
+        description: '',
+        task_type: 'ACQUISITION',
+        destination: '',
+        status: ItemStatus.New,
+        progress: 0,
+        is_template: props.createTemplate,        // eslint-disable-line camelcase
+        device_id: undefined,
+        sequence_id: '',
+        calibration: [],
+        acquisition_parameter: {
+          fov_scaling: { x: 1., y: 1., z: 1. },
+          fov_offset: { x: 0., y: 0., z: 0. },
+          fov_rotation: { x: 0., y: 0., z: 0. },
+        } as AcquisitionParameter,
+      }
   );
 
   // Post a new/modified task and reset
-  const mutation = 
+  const mutation =
     props.modalType == 'modify' ?
       useMutation({
         mutationFn: async () => {
           await taskApi.updateTaskApiV1ExamTaskTaskIdPut(props.item.id, task)
-          .then(() => {
-            props.onSubmit()
-            showNotification({message: 'Updated acquisition task.', type: 'success'})
-          })
+            .then(() => {
+              props.onSubmit()
+              showNotification({ message: 'Updated acquisition task.', type: 'success' })
+            })
         }
       })
-    :
+      :
       useMutation({
         mutationFn: async () => {
           await taskApi.createTaskApiV1ExamTaskNewPost(task)
-          .then(() => {
-            console.log('Created task', task)
-            props.onSubmit()
-            showNotification({message: 'Created acquisition ask.', type: 'success'})
-          })
+            .then(() => {
+              console.log('Created task', task)
+              props.onSubmit()
+              showNotification({ message: 'Created acquisition ask.', type: 'success' })
+            })
         }
       })
 
@@ -153,7 +152,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
 
   // Helper: Remove item by index
   const removeCalibration = (index: number) => {
-    setTask((prev) => ({...prev, calibration: (prev.calibration ?? []).filter((_, i) => i !== index)}));
+    setTask((prev) => ({ ...prev, calibration: (prev.calibration ?? []).filter((_, i) => i !== index) }));
   };
 
   // Helper: Handle Drag & Drop Reordering
@@ -271,35 +270,38 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
             <Stack direction='row' spacing={3}>
               {/* Buttons: Add calibration steps */}
               <Stack direction="column" spacing={1}>
-                <Button 
+                <Button
                   size="sm"
-                  startDecorator={<AddIcon />}
+                  variant="outlined"
+                  startDecorator={<AddIcon sx={{ fontSize: 'var(--IconFontSize)' }} />}
                   onClick={() => addCalibration(CalibrationType.Frequency)}
                 >
                   Frequency
                 </Button>
-                <Button 
+                <Button
                   size="sm"
-                  startDecorator={<AddIcon />}
+                  variant="outlined"
+                  startDecorator={<AddIcon sx={{ fontSize: 'var(--IconFontSize)' }} />}
                   onClick={() => addCalibration(CalibrationType.FlipAngle)}
                 >
                   Flip Angle
                 </Button>
-                <Button 
+                <Button
                   size="sm"
-                  startDecorator={<AddIcon />}
+                  variant="outlined"
+                  startDecorator={<AddIcon sx={{ fontSize: 'var(--IconFontSize)' }} />}
                   onClick={() => addCalibration(CalibrationType.Shims)}
                 >
                   Shims
                 </Button>
               </Stack>
-            
+
               {/* Vertical Drag+Drop Container */}
               <Sheet
                 variant="outlined"
-                sx={{ 
-                  borderRadius: 'md', 
-                  p: 1.5, 
+                sx={{
+                  borderRadius: 'md',
+                  p: 1.5,
                   height: 240,
                   width: 300,
                   display: 'flex',
@@ -309,7 +311,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                   // Style scrollbar
                   scrollbarWidth: 'thin',
                   scrollbarColor: 'var(--joy-palette-neutral-outlinedBorder) transparent', // For Firefox
-                  '&::-webkit-scrollbar-track': {background: 'transparent'},
+                  '&::-webkit-scrollbar-track': { background: 'transparent' },
                 }}
               >
                 {(task.calibration?.length ?? 0) === 0 && (
@@ -321,12 +323,13 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                   <Chip
                     key={`${type}-${index}`}
                     size="sm"
+                    color="primary"
                     draggable // The chip is now the drag handle
                     onDragStart={(e) => handleDragStart(e, index)}
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, index)}
                     endDecorator={
-                      <ChipDelete sx={{marginLeft: 1, marginRight: 0.1}} onDelete={() => removeCalibration(index)} />
+                      <ChipDelete sx={{ marginLeft: 1, marginRight: 0.1 }} onDelete={() => removeCalibration(index)} />
                     }
                     sx={{
                       width: '100%',
@@ -360,7 +363,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                       key={'InputFovScaling' + index}
                       type="number"
                       size='sm'
-                      slotProps={ {input: {min: 0, max: 100}} }
+                      slotProps={{ input: { min: 0, max: 100 } }}
                       value={task.acquisition_parameter?.fov_scaling?.[index] ?? 0}
                       endDecorator="px"
                       onChange={(event) => {
@@ -394,7 +397,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                       key={'InputFovRotation' + index}
                       type="number"
                       size='sm'
-                      slotProps={ {input: {min: 0, max: 360}} }
+                      slotProps={{ input: { min: 0, max: 360 } }}
                       value={task.acquisition_parameter?.fov_rotation?.[index] ?? 0}
                       endDecorator="px"
                       onChange={(event) => {
@@ -428,7 +431,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
                       key={'InputFovOffset' + index}
                       type="number"
                       size='sm'
-                      slotProps={ {input: {min: -10000, max: 10000}} }
+                      slotProps={{ input: { min: -10000, max: 10000 } }}
                       value={task.acquisition_parameter?.fov_offset?.[index] ?? 0}
                       endDecorator="px"
                       onChange={(event) => {
@@ -461,10 +464,10 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
             onClick={(event) => {
               event.preventDefault()
               if (task.name == '') {
-                showNotification({message: 'Task name must not be empty.', type: 'warning'})
+                showNotification({ message: 'Task name must not be empty.', type: 'warning' })
               }
               else if (task.description == '') {
-                showNotification({message: 'Task description must not be empty.', type: 'warning'})
+                showNotification({ message: 'Task description must not be empty.', type: 'warning' })
               }
               else {
                 mutation.mutate()
@@ -482,8 +485,7 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
 }
 
 
-function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>)
-{
+function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>) {
   // The form is in this separate component to make sure that the state is reset after closing the modal
   const [, showNotification] = React.useContext(NotificationContext)
 
@@ -491,40 +493,40 @@ function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>)
     props.modalType == 'modify'
       ? { ...(props.item as BaseDAGTask), status: ItemStatus.Updated, task_type: 'DAG' }
       : {
-          workflow_id: props.parentId,              // eslint-disable-line camelcase
-          name: '',
-          description: '',
-          task_type: 'DAG',
-          destination: '',
-          status: ItemStatus.New,
-          progress: 0,
-          is_template: props.createTemplate,        // eslint-disable-line camelcase
-          dag_type: TaskType.Processing,
-          dag_id: '',
-        }
+        workflow_id: props.parentId,              // eslint-disable-line camelcase
+        name: '',
+        description: '',
+        task_type: 'DAG',
+        destination: '',
+        status: ItemStatus.New,
+        progress: 0,
+        is_template: props.createTemplate,        // eslint-disable-line camelcase
+        dag_type: TaskType.Processing,
+        dag_id: '',
+      }
   );
 
   // Post a new/modified task and reset
-  const mutation = 
+  const mutation =
     props.modalType == 'modify' ?
       useMutation({
         mutationFn: async () => {
           await taskApi.updateTaskApiV1ExamTaskTaskIdPut(props.item.id, task)
-          .then(() => {
-            props.onSubmit()
-            showNotification({message: 'Updated DAG task.', type: 'success'})
-          })
+            .then(() => {
+              props.onSubmit()
+              showNotification({ message: 'Updated DAG task.', type: 'success' })
+            })
         }
       })
-    :
+      :
       useMutation({
         mutationFn: async () => {
           await taskApi.createTaskApiV1ExamTaskNewPost(task)
-          .then(() => {
-            console.log('Created task', task)
-            props.onSubmit()
-            showNotification({message: 'Created DAG task.', type: 'success'})
-          })
+            .then(() => {
+              console.log('Created task', task)
+              props.onSubmit()
+              showNotification({ message: 'Created DAG task.', type: 'success' })
+            })
         }
       })
 
@@ -668,7 +670,7 @@ function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>)
             })}
           </Select>
         </Grid>
-      
+
         {/* Save button */}
         <Grid md={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
@@ -677,10 +679,10 @@ function DagTaskForm(props: ModalPropsCreate | ModalPropsModify<DAGTaskOut>)
             onClick={(event) => {
               event.preventDefault()
               if (task.name == '') {
-                showNotification({message: 'Task name must not be empty.', type: 'warning'})
+                showNotification({ message: 'Task name must not be empty.', type: 'warning' })
               }
               else if (task.description == '') {
-                showNotification({message: 'Task description must not be empty.', type: 'warning'})
+                showNotification({ message: 'Task description must not be empty.', type: 'warning' })
               }
               else {
                 mutation.mutate()
@@ -705,12 +707,12 @@ export default function TaskModal(props: ModalPropsCreate | ModalPropsModify<Acq
       open={props.isOpen}
       color='neutral'
       onClose={() => props.setOpen(false)}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <ModalDialog
         aria-labelledby='basic-modal-dialog-title'
         aria-describedby='basic-modal-dialog-description'
-        sx={{ width: '60vw', maxHeight: 'calc(100vh - 2 * var(--Navigation-height))', height: '80vh', borderRadius: 'md', p: 5, overflow: 'auto'}}
+        sx={{ width: '60vw', maxHeight: 'calc(100vh - 2 * var(--Navigation-height))', height: '80vh', borderRadius: 'md', p: 5, overflow: 'auto' }}
       >
         <ModalClose
           sx={{
@@ -721,34 +723,34 @@ export default function TaskModal(props: ModalPropsCreate | ModalPropsModify<Acq
           }}
         />
         {
-          props.modalType === 'modify' && 'item' in props ? 
+          props.modalType === 'modify' && 'item' in props ?
             (props.item.task_type === TaskType.Acquisition ?
               <AcquisitionTaskForm {...props as ModalPropsModify<AcquisitionTaskOut>} /> :
               (props.item.task_type === TaskType.Dag && <DagTaskForm {...props as ModalPropsModify<DAGTaskOut>} />)) :
-          <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
-            <TabList
-              disableUnderline
-              sx={{
-                p: 0.5,
-                gap: 0.5,
-                borderRadius: 'xl',
-                bgcolor: 'background.level1',
-                [`& .${tabClasses.root}[aria-selected="true"]`]: {
-                  boxShadow: 'sm',
-                  bgcolor: 'background.surface',
-                },
-              }}
-            >
-              <Tab disableIndicator>Acquisition task</Tab>
-              <Tab disableIndicator>DAG task</Tab>
-            </TabList>
-            <TabPanel value={0}>
-              <AcquisitionTaskForm {...props as ModalPropsCreate} />
-            </TabPanel>
-            <TabPanel value={1}>
-              <DagTaskForm {...props as ModalPropsCreate} />
-            </TabPanel>
-          </Tabs>
+            <Tabs aria-label="tabs" defaultValue={0} sx={{ bgcolor: 'transparent' }}>
+              <TabList
+                disableUnderline
+                sx={{
+                  p: 0.5,
+                  gap: 0.5,
+                  borderRadius: 'xl',
+                  bgcolor: 'background.level1',
+                  [`& .${tabClasses.root}[aria-selected="true"]`]: {
+                    boxShadow: 'sm',
+                    bgcolor: 'background.surface',
+                  },
+                }}
+              >
+                <Tab disableIndicator>Acquisition task</Tab>
+                <Tab disableIndicator>DAG task</Tab>
+              </TabList>
+              <TabPanel value={0}>
+                <AcquisitionTaskForm {...props as ModalPropsCreate} />
+              </TabPanel>
+              <TabPanel value={1}>
+                <DagTaskForm {...props as ModalPropsCreate} />
+              </TabPanel>
+            </Tabs>
         }
       </ModalDialog>
     </Modal>

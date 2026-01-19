@@ -9,9 +9,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
 
 import AdminPanelSettingsSharpIcon from '@mui/icons-material/AdminPanelSettingsSharp'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt'
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import TripOriginRoundedIcon from '@mui/icons-material/TripOriginRounded';
 import LineStyleIcon from '@mui/icons-material/LineStyle'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import Divider from '@mui/joy/Divider';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
@@ -48,11 +53,11 @@ function ColorSchemeToggle() {
   const { mode, setMode } = useColorScheme()
   const { setMode: setMuiMode } = useMaterialColorScheme()
 
-  let modeicon = <BrightnessAutoIcon />
+  let modeicon = <BrightnessAutoIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
   if (mode === 'light') {
-    modeicon = <LightModeRoundedIcon />
+    modeicon = <LightModeRoundedIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
   } else if (mode === 'dark') {
-    modeicon = <DarkModeRoundedIcon />
+    modeicon = <DarkModeRoundedIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
   }
 
   return (
@@ -89,14 +94,15 @@ export default function Navigation() {
 
   // Menu elements
   const menuItems = [
-    { id: 0, text: 'Patients', link: '/', icon: <RecentActorsSharpIcon /> },
-    { id: 1, text: 'Library', link: '/4', icon: <ListAltIcon /> },
+    // { id: 0, text: 'Patients', link: '/', icon: <RecentActorsSharpIcon sx={{ fontSize: 'var(--IconFontSize)' }} /> },
+    { id: 0, text: 'Patients', link: '/', icon: <TaskAltIcon sx={{ fontSize: 'var(--IconFontSize)' }} /> },
+    { id: 1, text: 'Library', link: '/library', icon: <DesignServicesIcon sx={{ fontSize: 'var(--IconFontSize)' }} /> },
     // { id: 1, text: 'Templates', link: '/templates', icon: <ListAltIcon /> },
     // { id: 2, text: 'Devices', link: '/devices', icon: <TripOriginRoundedIcon /> },
     // { id: 3, text: 'Sequences', link: '/sequences', icon: <LineStyleIcon /> },
   ]
   if (user && user.role == UserRole.Admin) {
-    menuItems.push({ id: 4, text: 'Users', link: '/users', icon: <Person2SharpIcon /> })
+    menuItems.push({ id: 4, text: 'Users', link: '/users', icon: <ManageAccountsIcon /> })
   }
 
   return (
@@ -130,7 +136,7 @@ export default function Navigation() {
         </a>
       </IconButton>
 
-      <Typography level='h4' sx={{ mr: 2, ml: 1 }}>
+      <Typography level='h4' sx={{ mr: 6, ml: 2 }}>
         ScanHub
       </Typography>
 
@@ -147,15 +153,16 @@ export default function Navigation() {
             key={item.id}
             sx={{ display: 'inline-flex' }}
           >
-            {item.text}
+            <Typography level='body-sm'>{item.text}</Typography>
           </Button>
         ))}
       </>
 
-      <Box sx={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', width: '100%', gap: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', width: '100%', gap: 2 }}>
         <ColorSchemeToggle />
         <ManagerStatus />
         <DeviceStatus />
+        <Divider orientation="vertical" />
         <Chip
           variant='soft'
           color='warning'
@@ -169,11 +176,13 @@ export default function Navigation() {
       {/* User menu */}
       <Dropdown>
         <MenuButton
+          color='primary'
           slots={{ root: IconButton }}
           sx={{ ml: 2 }}
           size='sm'
         >
-          <Avatar variant='soft' color='primary' />
+          {/* <Avatar variant='soft' color='primary' sx={{ fontSize: 'var(--IconFontSize)' }} /> */}
+          <AccountCircleIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
         </MenuButton>
 
         <Menu

@@ -49,6 +49,7 @@ export function RouteConfiguration() {
               '--Sidebar-width': '360px',
               '--Navigation-height': '50px',
               '--Status-height': '22px',
+              '--IconFontSize': '22px',
             },
           }}
         />

@@ -130,8 +130,8 @@ export default function DeviceStatus() {
                     onMouseLeave={() => setTooltipHovered(false)}
                 >
                     {
-                        anyError ? <ErrorOutlineIcon sx={{ fontSize: 'calc(var(--Status-height) - 1)' }} /> :
-                            <TripOriginRoundedIcon sx={{ fontSize: 'calc(var(--Status-height) - 1)' }} />
+                        anyError ? <ErrorOutlineIcon sx={{ fontSize: 'var(--IconFontSize)' }} /> :
+                            <TripOriginRoundedIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
                     }
                 </IconButton>
             </Tooltip>

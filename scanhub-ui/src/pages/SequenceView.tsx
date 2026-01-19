@@ -6,7 +6,8 @@
  */
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
+import Add from '@mui/icons-material/Add'
+import Button from '@mui/joy/Button'
 import IconButton from '@mui/joy/IconButton'
 import AddSharpIcon from '@mui/icons-material/AddSharp'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
@@ -128,10 +129,10 @@ export default function SequenceView() {
         />,
       ]
     },
-    { field: '_id', headerName: 'ID', width: 100, editable: false },
-    { field: 'name', headerName: 'Name', width: 200, editable: true },
-    { field: 'description', headerName: 'Description', width: 500, editable: true },
-    { field: 'sequence_type', headerName: 'Type', width: 200, editable: true },
+    { field: '_id', headerName: 'ID', width: 50, editable: false },
+    { field: 'name', headerName: 'Name', width: 120, editable: true },
+    { field: 'description', headerName: 'Description', width: 300, editable: true },
+    { field: 'sequence_type', headerName: 'Type', width: 100, editable: true },
     {
       field: 'created_at', headerName: 'Added', width: 150, editable: false,
       valueFormatter: (value) => (value ? new Date(value).toLocaleString() : '')
@@ -155,7 +156,7 @@ export default function SequenceView() {
   ]
 
   return (
-    <Box sx={{ p: 3, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ p: 2, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <SequenceUpload
         isOpen={dialogOpen}
         setOpen={setDialogOpen}
@@ -164,11 +165,17 @@ export default function SequenceView() {
         }}
       />
 
-      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 2 }}>
+      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
         <Typography level='title-md'>List of Sequences</Typography>
-        <IconButton size='sm' variant='outlined'>
+        {/* <IconButton size='sm' variant='outlined'>
           <AddSharpIcon onClick={() => setDialogOpen(true)} />
-        </IconButton>
+        </IconButton> */}
+        <Button
+          variant='outlined'
+          startDecorator={<Add sx={{ fontSize: 'var(--IconFontSize)' }} />}
+          onClick={() => setDialogOpen(true)}>
+          Create Sequence
+        </Button>
       </Stack>
 
       <div style={{ flex: 1, minHeight: 0, width: '100%' }}>

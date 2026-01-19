@@ -11,6 +11,7 @@ import Input from '@mui/joy/Input'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
 import React, { useState } from 'react'
+import logo from '../media/logo.png'
 
 import { loginApi, userApi } from '../api'
 import UserCreateModal from '../components/UserCreateModal'
@@ -36,26 +37,26 @@ function Login(props: { onLogin: (user: User) => void }) {
 
   function checknousers() {
     userApi
-    .checkNoUsersApiV1UserloginChecknousersGet()
-    .then((result) => {
-      setNoUsersInDB(result.data)
-    })
+      .checkNoUsersApiV1UserloginChecknousersGet()
+      .then((result) => {
+        setNoUsersInDB(result.data)
+      })
   }
 
   React.useEffect(() => {
     console.log('Try autologin with cookie.')
     setLoginRequestInProgress(true)
     loginApi
-    .loginfromcookieApiV1UserloginLoginfromcookiePost()
-    .then((result) => {
-      setLoginRequestInProgress(false)
-      props.onLogin(result.data)
-    })
-    .catch(() => {
-      console.log('Autologin not successfull.')
-      setLoginRequestInProgress(false)
-      checknousers()
-    })
+      .loginfromcookieApiV1UserloginLoginfromcookiePost()
+      .then((result) => {
+        setLoginRequestInProgress(false)
+        props.onLogin(result.data)
+      })
+      .catch(() => {
+        console.log('Autologin not successfull.')
+        setLoginRequestInProgress(false)
+        checknousers()
+      })
   }, [])
 
   return (
@@ -67,6 +68,15 @@ function Login(props: { onLogin: (user: User) => void }) {
         onSubmit={checknousers}
         modalType={'createFirstUser'}
       />
+
+      <a href='https://github.com/scanhub-os' target='_blank' rel="noreferrer noopener">
+        <img
+          src={logo}
+          alt=''
+          height='100'
+          className='d-inline-block'
+        />
+      </a>
 
       <Typography level='title-lg' style={{ textAlign: 'center' }}>
         ScanHub

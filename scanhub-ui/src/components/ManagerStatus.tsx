@@ -124,8 +124,8 @@ export default function StatusBar() {
           onMouseLeave={() => setTooltipHovered(false)}
         >
           {
-            anyUnhealthy ? <ErrorOutlineIcon sx={{ fontSize: 'calc(var(--Status-height) - 1)' }} /> :
-              <LinkIcon sx={{ fontSize: 'calc(var(--Status-height) - 1)' }} />
+            anyUnhealthy ? <ErrorOutlineIcon sx={{ fontSize: 'var(--IconFontSize)' }} /> :
+              <LinkIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
           }
         </IconButton>
       </Tooltip>

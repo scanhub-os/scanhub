@@ -21,7 +21,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
-    origin: 'https://localhost:8443',
+    // origin: 'https://localhost:8443', // Removed to allow access from other hosts
     // headers: {
     //   'Cross-Origin-Opener-Policy': 'same-origin',
     //   'Cross-Origin-Embedder-Policy': 'require-corp',
@@ -29,7 +29,7 @@ export default defineConfig({
     // },
     // If you proxy through HTTPS:8443 (nginx), HMR may need these:
     hmr: {
-      protocol: 'wss', host: 'localhost', clientPort: 8443, // browser connects to 8443 (nginx), NOT Vite
+      protocol: 'wss', clientPort: 8443, // browser connects to 8443 (nginx), NOT Vite
     },
   },
 

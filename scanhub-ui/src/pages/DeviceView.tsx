@@ -8,6 +8,7 @@ import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import Box from '@mui/joy/Box'
+import Add from '@mui/icons-material/Add'
 import IconButton from '@mui/joy/IconButton'
 import AddSharpIcon from '@mui/icons-material/AddSharp'
 import LinearProgress from '@mui/joy/LinearProgress'
@@ -156,10 +157,10 @@ export default function DeviceView() {
         />,
       ]
     },
-    { field: 'id', headerName: 'ID', width: 40, editable: false },
-    { field: 'name', headerName: 'Connection name', width: 40, editable: false },
-    { field: 'description', headerName: 'Description', width: 40, editable: false },
-    { field: 'status', headerName: 'Status', width: 150, editable: false },
+    { field: 'id', headerName: 'ID', width: 50, editable: false },
+    { field: 'name', headerName: 'Connection name', width: 150, editable: false },
+    { field: 'description', headerName: 'Description', width: 200, editable: false },
+    { field: 'status', headerName: 'Status', width: 100, editable: false },
     { field: 'device_name', headerName: 'Device name', width: 150, editable: false },
     { field: 'serial_number', headerName: 'Serial No.', width: 100, editable: false },
     { field: 'manufacturer', headerName: 'Manufacturer', width: 150, editable: false },
@@ -192,7 +193,7 @@ export default function DeviceView() {
   ]
 
   return (
-    <Box sx={{ p: 3, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ p: 2, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <DeviceCreateModal
         isOpen={deviceCreateModalOpen}
         setOpen={setDeviceCreateModalOpen}
@@ -201,11 +202,17 @@ export default function DeviceView() {
         }}
       />
 
-      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 2 }}>
+      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
         <Typography level='title-md'>List of Devices</Typography>
-        <IconButton size='sm' variant='outlined'>
+        {/* <IconButton size='sm' variant='outlined'>
           <AddSharpIcon onClick={() => setDeviceCreateModalOpen(true)} />
-        </IconButton>
+        </IconButton> */}
+        <Button
+          variant='outlined'
+          startDecorator={<Add sx={{ fontSize: 'var(--IconFontSize)' }} />}
+          onClick={() => setDeviceCreateModalOpen(true)}>
+          Create Device
+        </Button>
       </Stack>
 
       <div style={{ flex: 1, minHeight: 0, width: '100%' }}>

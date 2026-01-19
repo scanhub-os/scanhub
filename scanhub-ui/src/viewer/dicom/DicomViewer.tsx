@@ -5,8 +5,6 @@ import {
   getRenderingEngine,
   Enums,
   volumeLoader,
-  utilities,
-  cache,
   type Types,
 } from '@cornerstonejs/core';
 import { initCornerstone } from './cornerstone/init';
@@ -16,7 +14,6 @@ import { attachToolGroupsForLayout, destroyToolGroups } from './cornerstone/tool
 import DiconViewerToolbar from './DicomViewerToolbar';
 import { VIEW_LAYOUTS, VIEW_LAYOUT_META, ViewportId, ViewLayout } from './cornerstone/viewLayouts';
 import { useViewportResize } from './hooks/useViewportResize';
-import { customPreset } from './cornerstone/volumePreset';
 
 import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
@@ -25,7 +22,7 @@ import IconButton from '@mui/joy/IconButton';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import AlertItem from '../../components/AlertItem';
 import Divider from '@mui/joy/Divider';
-import { ITEM_UNSELECTED, ItemSelection } from '../../interfaces/components.interface'
+import { ItemSelection } from '../../interfaces/components.interface'
 import { Alerts } from '../../interfaces/components.interface'
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
