@@ -32,19 +32,19 @@ interface DicomViewerToolbarProps {
 
 
 
-function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarProps) {
+function DiconViewerToolbar({ onLayoutChange, currentLayout }: DicomViewerToolbarProps) {
   const [activeTool, setActiveTool] = React.useState<string | null>(null)
 
-	const toolGroup = React.useMemo(() => getToolGroup(), [])
+  const toolGroup = React.useMemo(() => getToolGroup(), [])
 
   React.useEffect(() => {
     if (activeTool && toolGroup) {
       // Set all tools passive
-      tools.forEach(({ Tool }) => toolGroup.setToolPassive(Tool.toolName, {removeAllBindings: [{ mouseButton: Enums.MouseBindings.Primary }]}));
+      tools.forEach(({ Tool }) => toolGroup.setToolPassive(Tool.toolName, { removeAllBindings: [{ mouseButton: Enums.MouseBindings.Primary }] }));
       // Activate selected tool
       toolGroup.setToolActive(activeTool, {
-				bindings: [{ mouseButton: Enums.MouseBindings.Primary }],
-			});
+        bindings: [{ mouseButton: Enums.MouseBindings.Primary }],
+      });
     }
   }, [activeTool, toolGroup])
 
@@ -63,22 +63,22 @@ function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarP
       >
         <Tooltip title="Single view" variant="soft">
           <IconButton value="1x1" aria-label="1x1 Layout">
-            <GridIcon rows={1} cols={1} fontSize='small'/>
+            <GridIcon rows={1} cols={1} fontSize='small' padding={4} />
           </IconButton>
         </Tooltip>
         <Tooltip title="Three orthogonal views" variant="soft">
           <IconButton value="1x3" aria-label="1x3 Layout">
-            <GridIcon rows={1} cols={3} fontSize='small'/>
+            <GridIcon rows={1} cols={3} fontSize='small' padding={4} />
           </IconButton>
         </Tooltip>
         <Tooltip title="MPR + 3D" variant="soft">
           <IconButton value="2x2" aria-label="2x2 Layout">
-            <GridIcon rows={2} cols={2} fontSize='small'/>
+            <GridIcon rows={2} cols={2} fontSize='small' padding={4} />
           </IconButton>
         </Tooltip>
       </ToggleButtonGroup>
 
-      <Divider orientation="vertical"/>
+      <Divider orientation="vertical" />
 
       <ToggleButtonGroup
         variant="plain"
@@ -95,8 +95,9 @@ function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarP
             value={Tool.toolName}
             aria-label={label ?? Tool.toolName}
             title={label ?? Tool.toolName}
+            size='sm'
           >
-            <Icon fontSize="small"/>
+            <Icon fontSize="small" />
           </IconButton>
         ))}
       </ToggleButtonGroup>
@@ -105,7 +106,7 @@ function DiconViewerToolbar({onLayoutChange, currentLayout}: DicomViewerToolbarP
   )
 }
 
-      {/* <IconButton value='Pan' aria-label='Pan image'>
+{/* <IconButton value='Pan' aria-label='Pan image'>
         <PanToolSharpIcon sx={{ p: 0.5 }} />
       </IconButton>
 

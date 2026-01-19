@@ -21,13 +21,17 @@ import { customPreset } from './cornerstone/volumePreset';
 import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
 import Container from '@mui/joy/Container';
+import IconButton from '@mui/joy/IconButton';
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import AlertItem from '../../components/AlertItem';
+import Divider from '@mui/joy/Divider';
 import { ITEM_UNSELECTED, ItemSelection } from '../../interfaces/components.interface'
 import { Alerts } from '../../interfaces/components.interface'
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import { useTaskResults } from './hooks/useTaskResults';
 import { useImageIds } from '../../hooks/useImageIds';
+import { dataApi } from '../../api';
 
 
 // Constants:
@@ -278,11 +282,58 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
     )
   }
 
+  // Handle DICOM download
+  async function handleDownload() {
+    const engine = engineRef.current;
+    if (!engine) return;
+
+    const viewportId = VIEW_LAYOUTS[layout][0].id;
+    const viewport = engine.getViewport(viewportId);
+
+    if (!viewport) return;
+
+    try {
+      // Try to get current image ID
+      // Cast to any because getCurrentImageId is not on base IViewport but exists on Stack/Volume viewports
+      const imageId = (viewport as any).getCurrentImageId?.();
+
+      if (imageId) {
+        // imageId is typically "wadouri:http://..."
+        const url = imageId.replace(/^wadouri:/, '').split('?')[0];
+
+        // Extract params from URL structure: .../dcm/{workflowId}/{taskId}/{resultId}/{filename}
+        const parts = url.split('/');
+        const filename = parts.pop();
+        const resultId = parts.pop();
+        const taskId = parts.pop();
+        const workflowId = parts.pop();
+
+        if (workflowId && taskId && resultId && filename) {
+          const response = await dataApi.getDicom(workflowId, taskId, resultId, filename, { responseType: 'blob' });
+
+          // Create link from blob
+          const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+
+          // Cleanup
+          link.parentNode?.removeChild(link);
+          window.URL.revokeObjectURL(blobUrl);
+        }
+      }
+    } catch (e) {
+      console.error("Failed to download DICOM", e);
+    }
+  }
+
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height) - var(--Status-height))', p: 1, gap: 1 }}>
 
       {/* Result Selector and Toolbar */}
-      <Stack direction="row" gap={2} alignItems="center">
+      <Stack direction="row" gap={3} alignItems="center">
         <Select
           size="sm"
           placeholder="Select Result"
@@ -297,7 +348,18 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
           ))}
         </Select>
 
+
         <DiconViewerToolbar onLayoutChange={setLayout} currentLayout={layout} />
+
+        <Divider orientation="vertical" />
+
+        <IconButton
+          size='sm'
+          onClick={handleDownload}
+          title="Download DICOM"
+        >
+          <DownloadRoundedIcon fontSize='small' />
+        </IconButton>
 
       </Stack>
 
