@@ -58,41 +58,41 @@ export default function SequenceView() {
   const delteMutation = useMutation<unknown, unknown, MRISequenceOut>({
     mutationFn: async (sequence) => {
       await sequenceApi.deleteMriSequenceEndpointApiV1ExamSequenceSequenceIdDelete(sequence._id)
-      .then(() => {
-        showNotification({message: 'Deleted sequence ' + sequence.name, type: 'success'})
-        refetch()
-      })
-      .catch((err) => {
-        let errorMessage = null
-        if (err?.response?.data?.detail) {
-          errorMessage = 'Could not delete sequence. Detail: ' + err.response.data.detail
-        } else {
-          errorMessage = 'Could not delete sequence.'
-        }
-        showNotification({message: errorMessage, type: 'warning'})
-      })
+        .then(() => {
+          showNotification({ message: 'Deleted sequence ' + sequence.name, type: 'success' })
+          refetch()
+        })
+        .catch((err) => {
+          let errorMessage = null
+          if (err?.response?.data?.detail) {
+            errorMessage = 'Could not delete sequence. Detail: ' + err.response.data.detail
+          } else {
+            errorMessage = 'Could not delete sequence.'
+          }
+          showNotification({ message: errorMessage, type: 'warning' })
+        })
     }
   })
 
   const updateMutation = useMutation<unknown, unknown, MRISequenceOut>({
     mutationFn: async (sequence) => {
       await sequenceApi.updateMriSequenceEndpointApiV1ExamSequenceSequenceIdPut(sequence._id, sequence as BaseMRISequence)
-      .then(() => {
-        showNotification({message: 'Modified sequence ' + sequence.name, type: 'success'})
-        setIsUpdating(false)
-        refetch()
-      })
-      .catch((err) => {
-        let errorMessage = null
-        if (err?.response?.data?.detail) {
-          errorMessage = 'Could not update sequence. Detail: ' + err.response.data.detail
-        } else {
-          errorMessage = 'Could not update sequence.'
-        }
-        setIsUpdating(false)
-        refetch()
-        showNotification({message: errorMessage, type: 'warning'})
-      })
+        .then(() => {
+          showNotification({ message: 'Modified sequence ' + sequence.name, type: 'success' })
+          setIsUpdating(false)
+          refetch()
+        })
+        .catch((err) => {
+          let errorMessage = null
+          if (err?.response?.data?.detail) {
+            errorMessage = 'Could not update sequence. Detail: ' + err.response.data.detail
+          } else {
+            errorMessage = 'Could not update sequence.'
+          }
+          setIsUpdating(false)
+          refetch()
+          showNotification({ message: errorMessage, type: 'warning' })
+        })
     }
   })
 
@@ -155,7 +155,7 @@ export default function SequenceView() {
   ]
 
   return (
-    <Box sx={{ p: 3, width: '100%'}}>
+    <Box sx={{ p: 3, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <SequenceUpload
         isOpen={dialogOpen}
         setOpen={setDialogOpen}
@@ -164,22 +164,22 @@ export default function SequenceView() {
         }}
       />
 
-      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 2 }}> 
+      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 2 }}>
         <Typography level='title-md'>List of Sequences</Typography>
         <IconButton size='sm' variant='outlined'>
           <AddSharpIcon onClick={() => setDialogOpen(true)} />
         </IconButton>
       </Stack>
 
-      <div style={{ height:'80vh', width: '100%'}}>
+      <div style={{ flex: 1, minHeight: 0, width: '100%' }}>
         <DataGrid
           rows={sequences}
           columns={columns}
           getRowId={(sequence) => sequence._id ? sequence._id : ''}
-          hideFooterSelectedRowCount 
+          hideFooterSelectedRowCount
           editMode={'row'}
           rowHeight={45}  // MUI default is 52
-          autoPageSize= {true}
+          autoPageSize={true}
           loading={isUpdating}
           processRowUpdate={(updatedSequence) => {
             setIsUpdating(true)
@@ -200,9 +200,9 @@ export default function SequenceView() {
       </div>
 
 
-      <ConfirmDeleteModal 
-        onSubmit={() => sequenceToDelete ? delteMutation.mutate(sequenceToDelete) : () => {}}
-        isOpen={sequenceToDelete ? true : false} 
+      <ConfirmDeleteModal
+        onSubmit={() => sequenceToDelete ? delteMutation.mutate(sequenceToDelete) : () => { }}
+        isOpen={sequenceToDelete ? true : false}
         setOpen={(status) => {
           if (status == false) setSequenceToDelete(undefined)
         }}
@@ -233,14 +233,14 @@ export default function SequenceView() {
             flexDirection: 'column',
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }}/>
+          <ModalClose variant="plain" sx={{ m: 1 }} />
           <Typography component="h2" id="modal-title" level="h4" sx={{ fontWeight: 'lg', mb: 1 }}>
             {sequenceOpen?.name}
           </Typography>
 
           <Stack direction='row' gap={2}>
             <Typography>Sequence</Typography>
-            <Switch variant='outlined' checked={showHeader} onChange={() => setShowHeader(!showHeader)} disabled={!sequenceOpen?.xml_file}/>
+            <Switch variant='outlined' checked={showHeader} onChange={() => setShowHeader(!showHeader)} disabled={!sequenceOpen?.xml_file} />
             <Typography>Header</Typography>
           </Stack>
 

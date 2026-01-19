@@ -36,9 +36,11 @@ import { useColorScheme as useMaterialColorScheme } from '@mui/material/styles'
 
 import LoginContext from '../LoginContext'
 import { UserRole } from '../openapi/generated-client/userlogin'
-import ScanhubLogo from '../media/ScanhubLogo.png'
+import logo from '../media/logo.png'
 import { loginApi } from '../api'
 import { version } from '../utils/Versions'
+import ManagerStatus from './ManagerStatus'
+import DeviceStatus from './DeviceStatus'
 import PasswordModal from './PasswordModal'
 
 
@@ -52,7 +54,7 @@ function ColorSchemeToggle() {
   } else if (mode === 'dark') {
     modeicon = <DarkModeRoundedIcon />
   }
-  
+
   return (
     <IconButton
       id='toggle-mode'
@@ -88,9 +90,10 @@ export default function Navigation() {
   // Menu elements
   const menuItems = [
     { id: 0, text: 'Patients', link: '/', icon: <RecentActorsSharpIcon /> },
-    { id: 1, text: 'Templates', link: '/templates', icon: <ListAltIcon /> },
-    { id: 2, text: 'Devices', link: '/devices', icon: <TripOriginRoundedIcon /> },
-    { id: 3, text: 'Sequences', link: '/sequences', icon: <LineStyleIcon /> },
+    { id: 1, text: 'Library', link: '/4', icon: <ListAltIcon /> },
+    // { id: 1, text: 'Templates', link: '/templates', icon: <ListAltIcon /> },
+    // { id: 2, text: 'Devices', link: '/devices', icon: <TripOriginRoundedIcon /> },
+    // { id: 3, text: 'Sequences', link: '/sequences', icon: <LineStyleIcon /> },
   ]
   if (user && user.role == UserRole.Admin) {
     menuItems.push({ id: 4, text: 'Users', link: '/users', icon: <Person2SharpIcon /> })
@@ -117,9 +120,9 @@ export default function Navigation() {
       }}
     >
       <IconButton variant='plain'>
-        <a href='https://www.brain-link.de/' target='_blank' rel="noreferrer noopener">
+        <a href='https://github.com/scanhub-os' target='_blank' rel="noreferrer noopener">
           <img
-            src={ScanhubLogo}
+            src={logo}
             alt=''
             height='30'
             className='d-inline-block'
@@ -149,22 +152,24 @@ export default function Navigation() {
         ))}
       </>
 
-      <Box sx={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', width: '100%', gap: 1}}>
+      <Box sx={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', width: '100%', gap: 1 }}>
         <ColorSchemeToggle />
+        <ManagerStatus />
+        <DeviceStatus />
         <Chip
           variant='soft'
           color='warning'
           size='sm'
-          sx={{px: 2, py: 0.5, width: 'fit-content'}}
+          sx={{ px: 2, py: 0.5, width: 'fit-content' }}
         >
-            {'v' + version + ' not for clinical use!'}
+          {'v' + version + ' not for clinical use!'}
         </Chip>
       </Box>
 
       {/* User menu */}
       <Dropdown>
         <MenuButton
-          slots={{root: IconButton}}
+          slots={{ root: IconButton }}
           sx={{ ml: 2 }}
           size='sm'
         >
@@ -184,7 +189,7 @@ export default function Navigation() {
           <MenuItem
             key='currentuser'
             disabled
-            sx={{m: 'auto', fontWeight: 'bold'}}
+            sx={{ m: 'auto', fontWeight: 'bold' }}
           >
             {user?.username}
           </MenuItem>
@@ -234,9 +239,9 @@ export default function Navigation() {
         </Menu>
       </Dropdown>
 
-      <PasswordModal 
-        onSubmit={() => {}} 
-        isOpen={passwordModalOpen} 
+      <PasswordModal
+        onSubmit={() => { }}
+        isOpen={passwordModalOpen}
         setOpen={setPasswordModalOpen}
         modalType={'modify'}
         item={user?.username ? user.username : ''}

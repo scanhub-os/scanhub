@@ -78,14 +78,6 @@ export default function App() {
       {/* Main content */}
       <Box
         sx={{
-          // m: 0,
-          // p: 0,
-          // gap: 2,
-          // justifyContent: 'start',
-          // display: 'flex',
-          // flexDirection: 'row',
-          // flexGrow: 1,
-          // height: 'calc(100dvh - var(--Navigation-height)) - var(--Status-height)',
           flex: 1,
           overflow: 'auto',
           display: 'flex',
@@ -94,7 +86,6 @@ export default function App() {
       >
         <Outlet />
       </Box>
-      <StatusBar />
     </Box>
   )
 }

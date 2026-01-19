@@ -26,6 +26,7 @@ import TemplatesView from './pages/TemplatesView'
 import UserManagementView from './pages/UserManagementView'
 import SequenceView from './pages/SequenceView'
 import DeviceView from './pages/DeviceView'
+import LibraryView from './pages/Library';
 
 const materialTheme = materialExtendTheme()
 
@@ -53,9 +54,10 @@ export function RouteConfiguration() {
         />
 
         <Routes>
-          <Route path='/' element={user ? <App /> : <Navigate to='/login' state={{from: location}} />}>
+          <Route path='/' element={user ? <App /> : <Navigate to='/login' state={{ from: location }} />}>
             <Route index element={<PatientListView />} />
             <Route path=':patientId' element={<AcquisitionView />} />
+            <Route path='/library' element={<LibraryView />} />
             <Route path='/templates' element={<TemplatesView />} />
             <Route path='/devices' element={<DeviceView />} />
             <Route path='/sequences' element={<SequenceView />} />
