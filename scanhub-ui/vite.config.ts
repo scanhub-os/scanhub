@@ -21,6 +21,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
+    allowedHosts: true,
     // origin: 'https://localhost:8443', // Removed to allow access from other hosts
     // headers: {
     //   'Cross-Origin-Opener-Policy': 'same-origin',
