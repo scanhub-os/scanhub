@@ -137,7 +137,7 @@ async def connection_with_valid_id_and_token(websocket: WebSocket) -> UUID:
     try:
         device_id = UUID(device_id_header)
     except ValueError:
-        print("Invalid device_id format:", device_id)
+        print("Invalid device_id format:", device_id_header)
         raise WebSocketException(code=1008, reason="Invalid device_id")
 
     if not (device := await dal_get_device(device_id)):
@@ -206,7 +206,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             # ---------- Receive file/data from device
             elif command == "file-transfer":
-                await handle_file_transfer(websocket, message, device_id)
+                await handle_file_transfer(websocket, message, device_id)            
 
             else:
                 await send_json(websocket, {"command": "feedback", "message": f"Unknown command: {command}"})
@@ -277,10 +277,10 @@ async def handle_status_update(websocket: WebSocket, message: dict, device_id: U
         })
         return
 
-    task_id = message.get("task_id")
-    user_access_token = message.get("user_access_token")
 
     # For BUSY or ERROR, these identifiers are required
+    task_id = message.get("task_id")
+    user_access_token = message.get("user_access_token")
     if not task_id or not user_access_token:
         await send_json(websocket, {
             "command": "feedback",
@@ -429,15 +429,10 @@ async def handle_file_transfer(websocket: WebSocket, header: dict, device_id: UU
     print("Result to set: ", set_result.model_dump_json())
     result = exam_requests.set_result(str(blank_result.id), set_result, user_access_token)
 
-    # Update task status to FINISHED
-    task.status = ItemStatus.FINISHED
-    _ = exam_requests.set_task(task_id, task, user_access_token)
-    # if dict_id_parameters.get(device_id):
-    #     del dict_id_parameters[device_id]
-
     await send_json(websocket, {
         "command": "feedback",
         "message": f"File {result.id} saved to datalake: {file_path}",
+        "result_id": str(result.id),
     })
 
 
