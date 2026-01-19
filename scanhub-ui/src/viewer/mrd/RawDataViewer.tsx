@@ -315,7 +315,7 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
 
   return (
 
-    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: 'calc(100vh - var(--Navigation-height) - var(Status-height)) - 50', p: 2, gap: 1}}>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: '100%', p: 1, gap: 1, overflow: 'hidden' }}>
       <Controls
         metaCount={metaQuery.data?.acquisitions?.length ?? 0}
         results={results}
@@ -338,7 +338,7 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
         currentAcq={currentAcq}
         setCurrentAcq={setCurrentAcq}
       />
-      <Card variant="outlined" color="neutral" sx={{ p: 0.5, height: '100%' }}>
+      <Card variant="outlined" color="neutral" sx={{ p: 0.5, flex: 1, minHeight: 0 }}>
         {
           showEmpty ? (
             <Container maxWidth={false} sx={{ width: '50%', mt: 5, justifyContent: 'center' }}>

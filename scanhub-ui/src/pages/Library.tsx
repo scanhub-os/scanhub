@@ -3,6 +3,7 @@ import Grid from '@mui/joy/Grid'
 import DeviceView from './DeviceView'
 import SequenceView from './SequenceView'
 import TemplatesView from './TemplatesView'
+import { flex } from '@mui/system'
 
 function LibraryView() {
     return (
@@ -35,7 +36,7 @@ function LibraryView() {
                 height: '50%',
                 overflow: 'auto',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
             }}>
                 <TemplatesView />
             </Grid>

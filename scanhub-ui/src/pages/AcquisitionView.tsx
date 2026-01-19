@@ -46,9 +46,9 @@ function AcquisitionView() {
   const [examFromTemplateModalOpen, setExamFromTemplateModalOpen] = React.useState(false)
   const [confirmAcquisitionLimitsModalOpen, setConfirmAcquisitionLimitsModalOpen] = React.useState(false)
   const [itemSelection, setItemSelection] = React.useState<ItemSelection>(ITEM_UNSELECTED)
-  const [onAcquisitionLimitsConfirm, setOnAcquisitionLimitsConfirm] = React.useState<() => void>(() => () => {});
+  const [onAcquisitionLimitsConfirm, setOnAcquisitionLimitsConfirm] = React.useState<() => void>(() => () => { });
   // const [, showNotification] = React.useContext(NotificationContext)
-  
+
 
   // useQuery for caching the fetched data
   const {
@@ -60,9 +60,9 @@ function AcquisitionView() {
     queryKey: ['patient', params.patientId],
     queryFn: async () => {
       return await patientApi.getPatientApiV1PatientPatientIdGet(params.patientId!)
-      .then((result) => {
-        return result.data
-      })
+        .then((result) => {
+          return result.data
+        })
     },
     refetchInterval: 1000
   })
@@ -123,15 +123,15 @@ function AcquisitionView() {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
+        minHeight: 0,
+        overflow: 'hidden'
       }}
     >
       <Sheet
         className='Sidebar'
         sx={{
-          position: { xs: 'fixed', md: 'sticky' },
           height: '100%',
           width: 'var(--Sidebar-width)',
-          top: 0,
           p: 2,
           flexShrink: 0,
           display: 'flex',
@@ -174,25 +174,25 @@ function AcquisitionView() {
           }}
         >
           {exams?.map((exam: ExamOut) => (
-            <AccordionWithMenu 
+            <AccordionWithMenu
               key={`exam-${exam.id}`}
               accordionSummary={
-                <ExamItem 
-                  item={exam} 
-                  onClick={() => {setItemSelection({type: 'exam', name: exam.name, itemId: exam.id, status: exam.status, progress: 0})}} 
+                <ExamItem
+                  item={exam}
+                  onClick={() => { setItemSelection({ type: 'exam', name: exam.name, itemId: exam.id, status: exam.status, progress: 0 }) }}
                   selection={itemSelection}
                 />
               }
-              accordionMenu={ <ExamMenu item={exam} refetchParentData={refetchExams} /> }
-              toolTipContent={ <ExamInfo exam={exam} /> }
+              accordionMenu={<ExamMenu item={exam} refetchParentData={refetchExams} />}
+              toolTipContent={<ExamInfo exam={exam} />}
             >
               {exam.workflows?.map((workflow: WorkflowOut) => (
-                <AccordionWithMenu 
+                <AccordionWithMenu
                   key={`workflow-${workflow.id}`}
                   accordionSummary={
-                    <WorkflowItem 
-                      item={workflow} 
-                      onClick={() => {setItemSelection({type: 'workflow', name: workflow.name, itemId: workflow.id, status: workflow.status, progress: 0})}}
+                    <WorkflowItem
+                      item={workflow}
+                      onClick={() => { setItemSelection({ type: 'workflow', name: workflow.name, itemId: workflow.id, status: workflow.status, progress: 0 }) }}
                       selection={itemSelection}
                     />
                   }
@@ -210,17 +210,19 @@ function AcquisitionView() {
                     if (taskB.dag_type && taskB.dag_type == TaskType.Processing) b = 3;
                     return a - b
                   }).map((task: AcquisitionTaskOut | DAGTaskOut) => (
-                    <TaskItem 
-                      key={`task-${task.id}`} 
-                      item={task} 
+                    <TaskItem
+                      key={`task-${task.id}`}
+                      item={task}
                       refetchParentData={refetchExams}
-                      onClick={() => {setItemSelection({
-                        type: task.task_type == TaskType.Acquisition ? 'ACQUISITION' : 'DAG',
-                        name: task.name,
-                        itemId: task.id,
-                        status: task.status,
-                        progress: task.progress
-                      })}}
+                      onClick={() => {
+                        setItemSelection({
+                          type: task.task_type == TaskType.Acquisition ? 'ACQUISITION' : 'DAG',
+                          name: task.name,
+                          itemId: task.id,
+                          status: task.status,
+                          progress: task.progress
+                        })
+                      }}
                       selection={itemSelection}
                     />
                   ))}
@@ -231,7 +233,7 @@ function AcquisitionView() {
         </Box>
 
         <Divider />
-        
+
         <ConfirmAcquisitionLimitsModal
           item={patient}
           isOpen={confirmAcquisitionLimitsModalOpen}
@@ -240,12 +242,12 @@ function AcquisitionView() {
             refetchPatient()
             onAcquisitionLimitsConfirm()
           }}
-        />     
+        />
 
-        <AcquisitionControl 
+        <AcquisitionControl
           itemSelection={itemSelection}
           openConfirmModal={(callback: () => void) => {
-            if (itemSelection.type == 'ACQUISITION'){
+            if (itemSelection.type == 'ACQUISITION') {
               // Only require confirmation in case of acquisition tasks
               setOnAcquisitionLimitsConfirm(() => callback);
               setConfirmAcquisitionLimitsModalOpen(true);
@@ -268,8 +270,8 @@ function AcquisitionView() {
       />
 
       {
-        itemSelection.itemId && itemSelection.type == 'ACQUISITION' ? <RawDataViewer item={itemSelection}/> :
-          <DicomViewer3D item={itemSelection}/>
+        itemSelection.itemId && itemSelection.type == 'ACQUISITION' ? <RawDataViewer item={itemSelection} /> :
+          <DicomViewer3D item={itemSelection} />
       }
     </Box>
   )

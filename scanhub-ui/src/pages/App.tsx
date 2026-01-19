@@ -33,20 +33,20 @@ export default function App() {
 
   React.useEffect(() => {
     const interceptor = axios.interceptors.response.use(function (response) {
-        // Any status code that lie within the range of 2xx cause this function to trigger
-        // Do something with response data
-        return response;
-      }, function (error: AxiosError<{detail: string}>) {
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
-        if (error.response?.status === 401 && error.response?.data.detail == 'Invalid token.') {
-          console.log('Invalid token (probably due to timeout): Automatic Logout!')
-          setUser(null)
-          queryClient.clear() // make sure the user who logs in next, can't see data not meant for them (e.g. list of all users)
-        } else {
-          showNotification({message: 'A problem with the connection to the server occurred!', type: 'warning'})
-        }
-        return Promise.reject(error);
+      // Any status code that lie within the range of 2xx cause this function to trigger
+      // Do something with response data
+      return response;
+    }, function (error: AxiosError<{ detail: string }>) {
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      if (error.response?.status === 401 && error.response?.data.detail == 'Invalid token.') {
+        console.log('Invalid token (probably due to timeout): Automatic Logout!')
+        setUser(null)
+        queryClient.clear() // make sure the user who logs in next, can't see data not meant for them (e.g. list of all users)
+      } else {
+        showNotification({ message: 'A problem with the connection to the server occurred!', type: 'warning' })
+      }
+      return Promise.reject(error);
     });
     return () => {
       // clean up of the effect (reset the interceptor)
@@ -65,12 +65,12 @@ export default function App() {
 
       <Navigation />
 
-      <Snackbar 
-        open={messageObj.visible === true || messageObj.visible === undefined} 
-        variant={'soft'} 
+      <Snackbar
+        open={messageObj.visible === true || messageObj.visible === undefined}
+        variant={'soft'}
         color={messageObj.type}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        onClose={() => setMessageObject({ ...messageObj, visible: false})}
+        onClose={() => setMessageObject({ ...messageObj, visible: false })}
       >
         {messageObj.message.toString()}
       </Snackbar>
@@ -79,7 +79,7 @@ export default function App() {
       <Box
         sx={{
           flex: 1,
-          overflow: 'auto',
+          overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
         }}

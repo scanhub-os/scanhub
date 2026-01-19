@@ -327,10 +327,10 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
   }
 
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: 'calc(100vh - var(--Navigation-height) - var(--Status-height))', p: 1, gap: 1 }}>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: '100%', p: 1, gap: 1, overflow: 'hidden' }}>
 
       {/* Result Selector and Toolbar */}
-      <Stack direction="row" gap={3} alignItems="center">
+      <Stack direction="row" gap={3} alignItems="center" sx={{ flexShrink: 0 }}>
         <Select
           size="sm"
           placeholder="Select Result"
@@ -364,7 +364,14 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
       <Card
         variant="plain"
         color="neutral"
-        sx={{ p: 0.5, bgcolor: '#000', height: '100%', border: '5px solid' }}
+        sx={{
+          p: 0.5,
+          bgcolor: '#000',
+          flex: 1,
+          minHeight: 0,
+          border: '5px solid',
+          overflow: 'hidden'
+        }}
       >
         <div
           ref={containerRef}
@@ -373,7 +380,6 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
             gridTemplate,
             width: '100%',
             height: '100%',
-            // gap: '1px',
           }}
         >
           {VIEW_LAYOUTS[layout].map((v) => (
