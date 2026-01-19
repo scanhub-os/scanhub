@@ -139,6 +139,8 @@ orthanc-db
 *.pyc
 *settings.json
 *.seq
+*.dcm
+*.mrd
 */build
 /infrastructure/monai/.md/*
 .examples
