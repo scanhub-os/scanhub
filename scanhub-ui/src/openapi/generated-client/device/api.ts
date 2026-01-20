@@ -137,6 +137,12 @@ export interface AcquisitionTaskOut {
     'is_template': boolean;
     /**
      * 
+     * @type {number}
+     * @memberof AcquisitionTaskOut
+     */
+    'position'?: number;
+    /**
+     * 
      * @type {DeviceId1}
      * @memberof AcquisitionTaskOut
      */

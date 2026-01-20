@@ -6,12 +6,13 @@
  * and allows to add new templates or edit existing templates.
  */
 import Add from '@mui/icons-material/Add'
+import Box from '@mui/joy/Box'
 import Button from '@mui/joy/Button'
 import Stack from '@mui/joy/Stack'
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import { examApi } from '../api'
+import { examApi, taskApi } from '../api'
 import { ExamOut, WorkflowOut } from '../openapi/generated-client/exam'
 import ExamModal from '../components/ExamModal'
 import ExamItem, { ExamMenu } from '../components/ExamItem'
@@ -30,6 +31,35 @@ export default function TemplatesView() {
 
   const [selectedExam, setSelectedExam] = React.useState<undefined | number>(undefined)
   const [selectedWorkflow, setSelectedWorkflow] = React.useState<undefined | number>(undefined)
+  const [draggingTaskIndex, setDraggingTaskIndex] = React.useState<number | undefined>(undefined)
+
+  const handleDragStart = (index: number) => {
+    setDraggingTaskIndex(index)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = async (index: number) => {
+    if (
+      draggingTaskIndex === undefined ||
+      draggingTaskIndex === index ||
+      selectedExam === undefined ||
+      selectedWorkflow === undefined ||
+      !exams
+    )
+      return
+
+    const tasks = [...exams[selectedExam].workflows[selectedWorkflow].tasks]
+    const [draggedTask] = tasks.splice(draggingTaskIndex, 1)
+    tasks.splice(index, 0, draggedTask)
+
+    const taskIds = tasks.map((t) => t.id)
+    await taskApi.reorderTasksApiV1ExamTaskReorderPut({ task_ids: taskIds })
+    refetchExams()
+    setDraggingTaskIndex(undefined)
+  }
 
   // Reset selectedWorkflow and selectedTask when selectedExam changes to undefined
   React.useEffect(() => {
@@ -162,14 +192,26 @@ export default function TemplatesView() {
           parentId={exams && selectedExam !== undefined && selectedWorkflow !== undefined ? exams[selectedExam].workflows[selectedWorkflow].id : undefined}
         />
         {
-          exams && selectedExam !== undefined && selectedWorkflow !== undefined && exams[selectedExam].workflows[selectedWorkflow]?.tasks?.map((task) => (
-            <TaskItem
+          exams && selectedExam !== undefined && selectedWorkflow !== undefined && exams[selectedExam].workflows[selectedWorkflow]?.tasks?.map((task, index) => (
+            <Box
               key={`task-${task.id}`}
-              item={task}
-              refetchParentData={refetchExams}
-              onClick={() => { }}
-              selection={ITEM_UNSELECTED}
-            />
+              draggable
+              onDragStart={() => handleDragStart(index)}
+              onDragOver={handleDragOver}
+              onDrop={() => handleDrop(index)}
+              sx={{
+                cursor: 'grab',
+                '&:active': { cursor: 'grabbing' },
+                opacity: draggingTaskIndex === index ? 0.5 : 1,
+              }}
+            >
+              <TaskItem
+                item={task}
+                refetchParentData={refetchExams}
+                onClick={() => { }}
+                selection={ITEM_UNSELECTED}
+              />
+            </Box>
           ))
         }
       </Stack>

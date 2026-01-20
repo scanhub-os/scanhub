@@ -137,6 +137,12 @@ export interface AcquisitionTaskOut {
     'is_template': boolean;
     /**
      * 
+     * @type {number}
+     * @memberof AcquisitionTaskOut
+     */
+    'position'?: number;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof AcquisitionTaskOut
      */
@@ -312,6 +318,12 @@ export interface BaseAcquisitionTask {
     'is_template': boolean;
     /**
      * 
+     * @type {number}
+     * @memberof BaseAcquisitionTask
+     */
+    'position'?: number;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof BaseAcquisitionTask
      */
@@ -391,6 +403,12 @@ export interface BaseDAGTask {
      * @memberof BaseDAGTask
      */
     'is_template': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseDAGTask
+     */
+    'position'?: number;
     /**
      * 
      * @type {string}
@@ -627,6 +645,12 @@ export interface DAGTaskOut {
      * @memberof DAGTaskOut
      */
     'is_template': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof DAGTaskOut
+     */
+    'position'?: number;
     /**
      * 
      * @type {string}
@@ -869,6 +893,12 @@ export interface GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInne
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
     'is_template': any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
+     */
+    'position'?: any;
     /**
      * 
      * @type {DeviceId}
@@ -1224,6 +1254,12 @@ export interface ResponseCreateTaskApiV1ExamTaskNewPost {
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
@@ -1369,6 +1405,12 @@ export interface ResponseCreateTaskFromTemplateApiV1ExamTaskPost {
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
     'is_template': any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
+     */
+    'position'?: any;
     /**
      * 
      * @type {DeviceId}
@@ -1518,6 +1560,12 @@ export interface ResponseGetTaskApiV1ExamTaskTaskIdGet {
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
@@ -1663,6 +1711,12 @@ export interface ResponseUpdateTaskApiV1ExamTaskTaskIdPut {
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
     'is_template': any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
+     */
+    'position'?: any;
     /**
      * 
      * @type {DeviceId}
@@ -1891,6 +1945,19 @@ export interface TaskId {
  * @interface TaskId1
  */
 export interface TaskId1 {
+}
+/**
+ * Task reorder model.
+ * @export
+ * @interface TaskReorder
+ */
+export interface TaskReorder {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TaskReorder
+     */
+    'task_ids': Array<string>;
 }
 /**
  * Task type enum.
@@ -4845,6 +4912,46 @@ export const TasksApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
+         * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+         * @summary Reorder Tasks
+         * @param {TaskReorder} taskReorder 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reorderTasksApiV1ExamTaskReorderPut: async (taskReorder: TaskReorder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'taskReorder' is not null or undefined
+            assertParamExists('reorderTasksApiV1ExamTaskReorderPut', 'taskReorder', taskReorder)
+            const localVarPath = `/api/v1/exam/task/reorder`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(taskReorder, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Update an existing task.  Parameters ---------- task_id     Id of the workflow to be updated payload     Task pydantic base model  Returns -------     Task pydantic output model  Raises ------ HTTPException     404: Not found
          * @summary Update Task
          * @param {TaskId} taskId 
@@ -4978,6 +5085,19 @@ export const TasksApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+         * @summary Reorder Tasks
+         * @param {TaskReorder} taskReorder 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reorderTasksApiV1ExamTaskReorderPut(taskReorder: TaskReorder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reorderTasksApiV1ExamTaskReorderPut(taskReorder, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TasksApi.reorderTasksApiV1ExamTaskReorderPut']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Update an existing task.  Parameters ---------- task_id     Id of the workflow to be updated payload     Task pydantic base model  Returns -------     Task pydantic output model  Raises ------ HTTPException     404: Not found
          * @summary Update Task
          * @param {TaskId} taskId 
@@ -5061,6 +5181,16 @@ export const TasksApiFactory = function (configuration?: Configuration, basePath
          */
         getTaskApiV1ExamTaskTaskIdGet(taskId: TaskId, options?: any): AxiosPromise<ResponseGetTaskApiV1ExamTaskTaskIdGet> {
             return localVarFp.getTaskApiV1ExamTaskTaskIdGet(taskId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+         * @summary Reorder Tasks
+         * @param {TaskReorder} taskReorder 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reorderTasksApiV1ExamTaskReorderPut(taskReorder: TaskReorder, options?: any): AxiosPromise<void> {
+            return localVarFp.reorderTasksApiV1ExamTaskReorderPut(taskReorder, options).then((request) => request(axios, basePath));
         },
         /**
          * Update an existing task.  Parameters ---------- task_id     Id of the workflow to be updated payload     Task pydantic base model  Returns -------     Task pydantic output model  Raises ------ HTTPException     404: Not found
@@ -5154,6 +5284,18 @@ export class TasksApi extends BaseAPI {
      */
     public getTaskApiV1ExamTaskTaskIdGet(taskId: TaskId, options?: RawAxiosRequestConfig) {
         return TasksApiFp(this.configuration).getTaskApiV1ExamTaskTaskIdGet(taskId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+     * @summary Reorder Tasks
+     * @param {TaskReorder} taskReorder 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TasksApi
+     */
+    public reorderTasksApiV1ExamTaskReorderPut(taskReorder: TaskReorder, options?: RawAxiosRequestConfig) {
+        return TasksApiFp(this.configuration).reorderTasksApiV1ExamTaskReorderPut(taskReorder, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

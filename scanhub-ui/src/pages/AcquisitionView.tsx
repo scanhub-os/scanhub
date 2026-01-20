@@ -18,7 +18,7 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
-import { examApi, patientApi } from '../api'
+import { examApi, patientApi, taskApi } from '../api'
 import AcquisitionControl from '../components/AcquisitionControl'
 import ConfirmAcquisitionLimitsModal from '../components/AcquisitionLimitsModal'
 // import DicomViewer from '../components/DicomViewer'
@@ -48,6 +48,37 @@ function AcquisitionView() {
   const [itemSelection, setItemSelection] = React.useState<ItemSelection>(ITEM_UNSELECTED)
   const [onAcquisitionLimitsConfirm, setOnAcquisitionLimitsConfirm] = React.useState<() => void>(() => () => { });
   // const [, showNotification] = React.useContext(NotificationContext)
+
+  const [draggingTaskIndex, setDraggingTaskIndex] = React.useState<number | undefined>(undefined)
+  const [draggingWorkflowId, setDraggingWorkflowId] = React.useState<string | undefined>(undefined)
+
+  const handleDragStart = (index: number, workflowId: string) => {
+    setDraggingTaskIndex(index)
+    setDraggingWorkflowId(workflowId)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = async (index: number, workflow: WorkflowOut) => {
+    if (
+      draggingTaskIndex === undefined ||
+      draggingWorkflowId !== workflow.id ||
+      draggingTaskIndex === index
+    )
+      return
+
+    const tasks = [...workflow.tasks]
+    const [draggedTask] = tasks.splice(draggingTaskIndex, 1)
+    tasks.splice(index, 0, draggedTask)
+
+    const taskIds = tasks.map((t) => t.id)
+    await taskApi.reorderTasksApiV1ExamTaskReorderPut({ task_ids: taskIds })
+    refetchExams()
+    setDraggingTaskIndex(undefined)
+    setDraggingWorkflowId(undefined)
+  }
 
 
   // useQuery for caching the fetched data
@@ -199,32 +230,34 @@ function AcquisitionView() {
                   accordionMenu={<WorkflowMenu item={workflow} refetchParentData={refetchExams} />}
                   toolTipContent={<WorkflowInfo workflow={workflow} />}
                 >
-                  {workflow.tasks?.sort((taskA, taskB) => {
-                    let a: number = 4
-                    let b: number = 4
-                    if (taskA.task_type == TaskType.Acquisition) a = 1;
-                    if (taskA.task_type == TaskType.Dag) a = 2;
-                    if (taskA.dag_type && taskA.dag_type == TaskType.Processing) a = 3;
-                    if (taskB.task_type == TaskType.Acquisition) b = 1;
-                    if (taskB.task_type == TaskType.Dag) b = 2;
-                    if (taskB.dag_type && taskB.dag_type == TaskType.Processing) b = 3;
-                    return a - b
-                  }).map((task: AcquisitionTaskOut | DAGTaskOut) => (
-                    <TaskItem
+                  {workflow.tasks?.map((task: AcquisitionTaskOut | DAGTaskOut, index: number) => (
+                    <Box
                       key={`task-${task.id}`}
-                      item={task}
-                      refetchParentData={refetchExams}
-                      onClick={() => {
-                        setItemSelection({
-                          type: task.task_type == TaskType.Acquisition ? 'ACQUISITION' : 'DAG',
-                          name: task.name,
-                          itemId: task.id,
-                          status: task.status,
-                          progress: task.progress
-                        })
+                      draggable
+                      onDragStart={() => handleDragStart(index, workflow.id)}
+                      onDragOver={handleDragOver}
+                      onDrop={() => handleDrop(index, workflow)}
+                      sx={{
+                        cursor: 'grab',
+                        '&:active': { cursor: 'grabbing' },
+                        opacity: (draggingTaskIndex === index && draggingWorkflowId === workflow.id) ? 0.5 : 1,
                       }}
-                      selection={itemSelection}
-                    />
+                    >
+                      <TaskItem
+                        item={task}
+                        refetchParentData={refetchExams}
+                        onClick={() => {
+                          setItemSelection({
+                            type: task.task_type == TaskType.Acquisition ? 'ACQUISITION' : 'DAG',
+                            name: task.name,
+                            itemId: task.id,
+                            status: task.status,
+                            progress: task.progress
+                          })
+                        }}
+                        selection={itemSelection}
+                      />
+                    </Box>
                   ))}
                 </AccordionWithMenu>
               ))}
