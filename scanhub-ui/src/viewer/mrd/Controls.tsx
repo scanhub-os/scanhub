@@ -9,6 +9,8 @@ import FormLabel from '@mui/joy/FormLabel'
 import Box from '@mui/joy/Box';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
+import IconButton from '@mui/joy/IconButton';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { ResultOut } from '../../openapi/generated-client/exam';
 import { plotColorPaletteOptions, plotColorPalettes } from './utils/colormaps';
 
@@ -34,6 +36,7 @@ export interface ControlsProps {
   setAcqRange: (v: [number, number]) => void;
   currentAcq: number;
   setCurrentAcq: (v: number) => void;
+  onDownload: () => void;
 }
 
 export default function Controls(p: ControlsProps) {
@@ -43,23 +46,35 @@ export default function Controls(p: ControlsProps) {
 
     <Stack direction={'row'} sx={{ alignItems: 'center', justifyContent: 'flex-start' }} gap={2}>
 
-      <Select
-        size="sm"
-        value={p.selectedResultId}
-        onChange={(_, value) => value && p.setSelectedResultId(value)}
-        required
-      >
-        {
-          p.results.map((result => {
-            const date_time = new Date(result.datetime_created)
-            return (
-              <Option key={result.id} id={result.id} value={result.id}>
-                {(result.files ? result.files[0] + ' | ' : '') + date_time.toLocaleDateString() + ', ' + date_time.toLocaleTimeString()}
-              </Option>
-            )
-          }))
-        }
-      </Select>
+      <Stack direction="row" gap={1} alignItems="center">
+        <Select
+          size="sm"
+          value={p.selectedResultId}
+          onChange={(_, value) => value && p.setSelectedResultId(value)}
+          required
+          sx={{ minWidth: 200 }}
+        >
+          {
+            p.results.map((result => {
+              const date_time = new Date(result.datetime_created)
+              return (
+                <Option key={result.id} id={result.id} value={result.id}>
+                  {(result.files ? result.files[0] + ' | ' : '') + date_time.toLocaleDateString() + ', ' + date_time.toLocaleTimeString()}
+                </Option>
+              )
+            }))
+          }
+        </Select>
+        <IconButton
+          size="sm"
+          variant="outlined"
+          color="neutral"
+          title="Download MRD"
+          onClick={p.onDownload}
+        >
+          <FileDownloadIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
+        </IconButton>
+      </Stack>
 
       <Box sx={{ display: 'flex', gap: 2 }}>
         {/* <FormLabel>Domain</FormLabel> */}

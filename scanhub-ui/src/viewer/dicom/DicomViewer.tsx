@@ -394,6 +394,7 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
           <MenuButton
             slots={{ root: IconButton }}
             slotProps={{ root: { size: 'sm', title: 'Share / Export' } }}
+            variant="outlined"
           >
             <SaveIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
           </MenuButton>

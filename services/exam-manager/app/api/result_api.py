@@ -8,7 +8,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from scanhub_libraries.models import MRDMetaResponse, ResultOut, SetResult, User
 from scanhub_libraries.security import get_current_user
 from starlette.responses import Response
@@ -391,3 +391,36 @@ def get_mrd_binary(
                 yield view[i:i+step]
 
     return StreamingResponse(gen(), media_type="application/octet-stream")
+@result_router.get(
+    "/mrd/{workflow_id}/{task_id}/{result_id}/download",
+    operation_id="downloadMRD",
+    tags=["results", "data"],
+    summary="Download MRD file",
+    responses={
+        200: {
+            "description": "The raw MRD file.",
+            "content": {
+                "application/octet-stream": {
+                    "schema": {"type": "string", "format": "binary"},
+                },
+            },
+        },
+    },
+)
+async def download_mrd(
+    workflow_id: str,
+    task_id: str,
+    result_id: str,
+    user: Annotated[User, Depends(get_current_user)],
+):
+    """Download the full MRD file."""
+    try:
+        path = mrd.locate_mrd(workflow_id, task_id, result_id)
+    except FileNotFoundError:
+        raise HTTPException(404, "MRD file not found")
+
+    return FileResponse(
+        path=path,
+        media_type="application/octet-stream",
+        filename=path.name,
+    )

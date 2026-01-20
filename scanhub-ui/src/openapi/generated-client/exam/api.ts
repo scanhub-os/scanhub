@@ -2150,6 +2150,52 @@ export interface XmlFileExtension {
 export const DataApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD: async (workflowId: string, taskId: string, resultId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('downloadMRD', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('downloadMRD', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('downloadMRD', 'resultId', resultId)
+            const localVarPath = `/api/v1/exam/mrd/{workflow_id}/{task_id}/{result_id}/download`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
          * @summary Get DICOM result
          * @param {string} workflowId 
@@ -2369,6 +2415,21 @@ export const DataApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DataApiAxiosParamCreator(configuration)
     return {
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadMRD(workflowId, taskId, resultId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataApi.downloadMRD']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
          * @summary Get DICOM result
          * @param {string} workflowId 
@@ -2444,6 +2505,18 @@ export const DataApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = DataApiFp(configuration)
     return {
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD(workflowId: string, taskId: string, resultId: string, options?: any): AxiosPromise<any> {
+            return localVarFp.downloadMRD(workflowId, taskId, resultId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
          * @summary Get DICOM result
          * @param {string} workflowId 
@@ -2506,6 +2579,20 @@ export const DataApiFactory = function (configuration?: Configuration, basePath?
  * @extends {BaseAPI}
  */
 export class DataApi extends BaseAPI {
+    /**
+     * Download the full MRD file.
+     * @summary Download MRD file
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataApi
+     */
+    public downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig) {
+        return DataApiFp(this.configuration).downloadMRD(workflowId, taskId, resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
      * @summary Get DICOM result
@@ -3944,6 +4031,52 @@ export const ResultsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD: async (workflowId: string, taskId: string, resultId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('downloadMRD', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('downloadMRD', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('downloadMRD', 'resultId', resultId)
+            const localVarPath = `/api/v1/exam/mrd/{workflow_id}/{task_id}/{result_id}/download`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Get all existing results of a certain task.  Parameters ---------- task_id     Id of parental task  Returns -------     List of task pydantic output model
          * @summary Get All Task Results
          * @param {TaskId} taskId 
@@ -4309,6 +4442,21 @@ export const ResultsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadMRD(workflowId, taskId, resultId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResultsApi.downloadMRD']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Get all existing results of a certain task.  Parameters ---------- task_id     Id of parental task  Returns -------     List of task pydantic output model
          * @summary Get All Task Results
          * @param {TaskId} taskId 
@@ -4444,6 +4592,18 @@ export const ResultsApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.deleteResultApiV1ExamResultResultIdDelete(resultId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD(workflowId: string, taskId: string, resultId: string, options?: any): AxiosPromise<any> {
+            return localVarFp.downloadMRD(workflowId, taskId, resultId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get all existing results of a certain task.  Parameters ---------- task_id     Id of parental task  Returns -------     List of task pydantic output model
          * @summary Get All Task Results
          * @param {TaskId} taskId 
@@ -4559,6 +4719,20 @@ export class ResultsApi extends BaseAPI {
      */
     public deleteResultApiV1ExamResultResultIdDelete(resultId: ResultId, options?: RawAxiosRequestConfig) {
         return ResultsApiFp(this.configuration).deleteResultApiV1ExamResultResultIdDelete(resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Download the full MRD file.
+     * @summary Download MRD file
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResultsApi
+     */
+    public downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig) {
+        return ResultsApiFp(this.configuration).downloadMRD(workflowId, taskId, resultId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

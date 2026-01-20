@@ -47,7 +47,8 @@ echartsUse([
   ToolboxComponent,
   CanvasRenderer,
 ]);
-const echarts = { init, use: echartsUse };
+const echartsCore = { init, use: echartsUse };
+import { dataApi } from '../../api';
 
 
 export default function RawDataViewer({ item }: { item: ItemSelection }) {
@@ -310,6 +311,37 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
     colorPalette,
   ]);
 
+  // Handle MRD download
+  async function handleDownload() {
+    if (!workflowId || !resolvedTaskId || !selectedResultId) return;
+
+    try {
+      const response = await dataApi.downloadMRD(workflowId, resolvedTaskId, selectedResultId, { responseType: 'blob' });
+
+      // Extract filename from content-disposition if possible, or use a default
+      const contentDisposition = response.headers['content-disposition'];
+      let filename = 'data.mrd';
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename="(.+)"/);
+        if (match) filename = match[1];
+      }
+
+      // Create link from blob
+      const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (e) {
+      console.error("Failed to download MRD", e);
+    }
+  }
+
   // Render (no early returns)
   const showEmpty = (idsError || !results || results.length === 0) && !idsLoading;
 
@@ -337,6 +369,7 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
         setAcqRange={setAcqRange}
         currentAcq={currentAcq}
         setCurrentAcq={setCurrentAcq}
+        onDownload={handleDownload}
       />
       <Card variant="outlined" color="neutral" sx={{ p: 0.5, flex: 1, minHeight: 0 }}>
         {
@@ -357,7 +390,7 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
               }}
             >
               <ReactECharts
-                echarts={echarts}
+                echarts={echartsCore}
                 option={option}
                 notMerge
                 lazyUpdate

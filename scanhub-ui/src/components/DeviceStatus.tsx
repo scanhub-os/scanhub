@@ -38,36 +38,39 @@ function DeviceStatusInfo({ items }: { items: Array<DeviceOut> }) {
         }
     }
 
-    return (
-        <Box
-            sx={{
-                display: 'grid',
-                gridTemplateColumns: '1fr auto', // left column flexible, right column auto-sized
-                rowGap: 2,                       // vertical spacing between rows
-                columnGap: 4,                    // horizontal spacing
-                alignItems: 'center',            // vertical centering per row
-                p: 2
-            }}
-        >
-            {
-                items.map((device) => {
-                    return (
-                        <React.Fragment key={device.id}>
-                            <Typography level='body-xs'>{device.name}</Typography>
-                            <Chip
-                                size="sm"
-                                color={getStatusColor(device.status as unknown as string)}
-                                variant="solid"
-                                sx={{ mr: 1 }}
-                            >
-                                {(device.status as unknown as string) || 'Unknown'}
-                            </Chip>
-                        </React.Fragment>
-                    );
-                })
-            }
-        </Box>
-    )
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: '1fr auto', // left column flexible, right column auto-sized
+        rowGap: 2,                       // vertical spacing between rows
+        columnGap: 4,                    // horizontal spacing
+        alignItems: 'center',            // vertical centering per row
+        p: 2
+      }}
+    >
+      {
+        items.length > 0 ? (items.map((device) => {
+          return (
+            <React.Fragment key={device.id}>
+              <Typography level='body-xs'>{device.name}</Typography>
+              <Chip
+                size="sm"
+                color={getStatusColor(device.status as unknown as string)}
+                variant="solid"
+                sx={{ mr: 1 }}
+              >
+                {(device.status as unknown as string) || 'Unknown'}
+              </Chip>
+            </React.Fragment>
+          );
+        })
+        ) : (
+          <Typography level='body-xs'>No devices</Typography>
+        )
+      }
+    </Box>
+  )
 }
 
 
