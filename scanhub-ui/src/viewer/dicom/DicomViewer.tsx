@@ -19,16 +19,22 @@ import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
 import Container from '@mui/joy/Container';
 import IconButton from '@mui/joy/IconButton';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import AlertItem from '../../components/AlertItem';
 import Divider from '@mui/joy/Divider';
 import { ItemSelection } from '../../interfaces/components.interface'
 import { Alerts } from '../../interfaces/components.interface'
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import Dropdown from '@mui/joy/Dropdown';
+import Menu from '@mui/joy/Menu';
+import MenuButton from '@mui/joy/MenuButton';
+import MenuItem from '@mui/joy/MenuItem';
+import SaveIcon from '@mui/icons-material/Save';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { useTaskResults } from './hooks/useTaskResults';
 import { useImageIds } from '../../hooks/useImageIds';
-import { dataApi } from '../../api';
+import { dataApi, resultApi } from '../../api';
 
 
 // Constants:
@@ -326,6 +332,40 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
     }
   }
 
+  // Handle XNAT export
+  async function handleExportToXnat() {
+    const engine = engineRef.current;
+    if (!engine) return;
+
+    const viewportId = VIEW_LAYOUTS[layout][0].id;
+    const viewport = engine.getViewport(viewportId);
+
+    if (!viewport) return;
+
+    try {
+      const imageId = (viewport as any).getCurrentImageId?.();
+
+      if (imageId) {
+        const url = imageId.replace(/^wadouri:/, '').split('?')[0];
+
+        // Extract params from URL structure: .../dcm/{workflowId}/{taskId}/{resultId}/{filename}
+        const parts = url.split('/');
+        const filename = parts.pop();
+        const resultId = parts.pop();
+        const taskId = parts.pop();
+        const workflowId = parts.pop();
+
+        if (workflowId && taskId && resultId && filename) {
+          await resultApi.uploadToXnat(workflowId, taskId, resultId, filename);
+          alert(`Successfully exported ${filename} to XNAT`);
+        }
+      }
+    } catch (e) {
+      console.error("Failed to export to XNAT", e);
+      alert("Failed to export to XNAT");
+    }
+  }
+
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, width: '100%', height: '100%', p: 1, gap: 1, overflow: 'hidden' }}>
 
@@ -350,13 +390,24 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
 
         <Divider orientation="vertical" />
 
-        <IconButton
-          size='sm'
-          onClick={handleDownload}
-          title="Download DICOM"
-        >
-          <DownloadRoundedIcon fontSize='small' />
-        </IconButton>
+        <Dropdown>
+          <MenuButton
+            slots={{ root: IconButton }}
+            slotProps={{ root: { size: 'sm', title: 'Share / Export' } }}
+          >
+            <SaveIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
+          </MenuButton>
+          <Menu size="sm" placement="bottom-end">
+            <MenuItem onClick={handleDownload}>
+              <FileDownloadIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
+              Download DICOM
+            </MenuItem>
+            <MenuItem onClick={handleExportToXnat}>
+              <OpenInNewIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
+              Export to XNAT
+            </MenuItem>
+          </Menu>
+        </Dropdown>
 
       </Stack>
 

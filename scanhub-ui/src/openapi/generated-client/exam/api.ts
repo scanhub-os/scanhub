@@ -2241,6 +2241,56 @@ export const DataApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat: async (workflowId: string, taskId: string, resultId: string, filename: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('uploadToXnat', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('uploadToXnat', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('uploadToXnat', 'resultId', resultId)
+            // verify required parameter 'filename' is not null or undefined
+            assertParamExists('uploadToXnat', 'filename', filename)
+            const localVarPath = `/api/v1/exam/xnat/upload/{workflow_id}/{task_id}/{result_id}/{filename}`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)))
+                .replace(`{${"filename"}}`, encodeURIComponent(String(filename)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2300,6 +2350,22 @@ export const DataApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['DataApi.getMrdMeta']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadToXnat(workflowId, taskId, resultId, filename, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataApi.uploadToXnat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2349,6 +2415,19 @@ export const DataApiFactory = function (configuration?: Configuration, basePath?
          */
         getMrdMeta(workflowId: string, taskId: string, resultId: string, options?: any): AxiosPromise<MRDMetaResponse> {
             return localVarFp.getMrdMeta(workflowId, taskId, resultId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: any): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2404,6 +2483,21 @@ export class DataApi extends BaseAPI {
      */
     public getMrdMeta(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig) {
         return DataApiFp(this.configuration).getMrdMeta(workflowId, taskId, resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Upload a DICOM file to XNAT test database.
+     * @summary Upload DICOM result to XNAT
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {string} filename 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataApi
+     */
+    public uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig) {
+        return DataApiFp(this.configuration).uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4061,6 +4155,56 @@ export const ResultsApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat: async (workflowId: string, taskId: string, resultId: string, filename: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('uploadToXnat', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('uploadToXnat', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('uploadToXnat', 'resultId', resultId)
+            // verify required parameter 'filename' is not null or undefined
+            assertParamExists('uploadToXnat', 'filename', filename)
+            const localVarPath = `/api/v1/exam/xnat/upload/{workflow_id}/{task_id}/{result_id}/{filename}`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)))
+                .replace(`{${"filename"}}`, encodeURIComponent(String(filename)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -4186,6 +4330,22 @@ export const ResultsApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ResultsApi.setResultApiV1ExamResultResultIdPut']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadToXnat(workflowId, taskId, resultId, filename, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResultsApi.uploadToXnat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -4286,6 +4446,19 @@ export const ResultsApiFactory = function (configuration?: Configuration, basePa
          */
         setResultApiV1ExamResultResultIdPut(resultId: ResultId, setResult: SetResult, options?: any): AxiosPromise<ResultOut> {
             return localVarFp.setResultApiV1ExamResultResultIdPut(resultId, setResult, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: any): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -4402,6 +4575,21 @@ export class ResultsApi extends BaseAPI {
      */
     public setResultApiV1ExamResultResultIdPut(resultId: ResultId, setResult: SetResult, options?: RawAxiosRequestConfig) {
         return ResultsApiFp(this.configuration).setResultApiV1ExamResultResultIdPut(resultId, setResult, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Upload a DICOM file to XNAT test database.
+     * @summary Upload DICOM result to XNAT
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {string} filename 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResultsApi
+     */
+    public uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig) {
+        return ResultsApiFp(this.configuration).uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

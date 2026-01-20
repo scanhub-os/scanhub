@@ -1,6 +1,6 @@
 x-dagster-common: &dagster_common
   image: scanhub-orchestration-engine:latest
-  pull_policy: never  # Don't pull the image, use the local build
+  pull_policy: never # Don't pull the image, use the local build
   build:
     context: ./services/orchestration-engine
     args:
@@ -27,18 +27,19 @@ services:
   # Workflow manager, device manager and exam manager create data tables in postgres DB
   workflow-manager:
     container_name: workflow-manager
-    build: 
+    build:
       context: ./services/workflow-manager
-      args: 
+      args:
         - BASE_IMG=${SCANHUB_BASE_IMAGE}
     volumes:
       - ./services/workflow-manager/app/:/app/
       - ${DATA_LAKE_DIR}:/data
     environment:
       DATA_LAKE_DIRECTORY: /data
+      SCANHUB_ALLOWED_ORIGINS: ${SCANHUB_ALLOWED_ORIGINS}
     healthcheck:
       # TODO: host.docker.internal is only working with docker desktop, must be replaced in product
-      test: ["CMD", "curl", "http://workflow-manager:8000/api/v1/workflowmanager/health/readiness"]
+      test: [ "CMD", "curl", "http://workflow-manager:8000/api/v1/workflowmanager/health/readiness" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -54,16 +55,17 @@ services:
     container_name: device-manager
     build:
       context: ./services/device-manager
-      args: 
+      args:
         - BASE_IMG=${SCANHUB_BASE_IMAGE}
     volumes:
       - ./services/device-manager/app/:/app/
       - ${DATA_LAKE_DIR}:/data
     environment:
       DATA_LAKE_DIRECTORY: /data
+      SCANHUB_ALLOWED_ORIGINS: ${SCANHUB_ALLOWED_ORIGINS}
     healthcheck:
       # TODO: host.docker.internal is only working with docker desktop, must be replaced in product
-      test: ["CMD", "curl", "http://device-manager:8000/api/v1/device/health/readiness"]
+      test: [ "CMD", "curl", "http://device-manager:8000/api/v1/device/health/readiness" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -77,16 +79,24 @@ services:
 
   exam-manager:
     container_name: exam-manager
-    build: 
+    build:
       context: ./services/exam-manager
-      args: 
+      args:
         - BASE_IMG=${SCANHUB_BASE_IMAGE}
     volumes:
       - ./services/exam-manager/app/:/app/
       - ${DATA_LAKE_DIR}:/data
+    environment:
+      SCANHUB_ALLOWED_ORIGINS: ${SCANHUB_ALLOWED_ORIGINS}
+      XNAT_HOST: ${XNAT_HOST:-http://host.docker.internal:8081}
+      XNAT_USER: ${XNAT_USER:-admin}
+      XNAT_PASSWORD: ${XNAT_PASSWORD:-admin}
+      XNAT_PROJECT_ID: ${XNAT_PROJECT_ID:-A4IM}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     healthcheck:
       # TODO: host.docker.internal is only working with docker desktop, must be replaced in product
-      test: ["CMD", "curl", "http://exam-manager:8000/api/v1/exam/health/readiness"]
+      test: [ "CMD", "curl", "http://exam-manager:8000/api/v1/exam/health/readiness" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -108,15 +118,17 @@ services:
 
   patient-manager:
     container_name: patient-manager
-    build: 
+    build:
       context: ./services/patient-manager
-      args: 
-          - BASE_IMG=${SCANHUB_BASE_IMAGE}
+      args:
+        - BASE_IMG=${SCANHUB_BASE_IMAGE}
     volumes:
       - ./services/patient-manager/app:/app/
+    environment:
+      SCANHUB_ALLOWED_ORIGINS: ${SCANHUB_ALLOWED_ORIGINS}
     healthcheck:
       # TODO: host.docker.internal is only working with docker desktop, must be replaced in product
-      test: ["CMD", "curl", "http://patient-manager:8100/api/v1/patient/health/readiness"]
+      test: [ "CMD", "curl", "http://patient-manager:8100/api/v1/patient/health/readiness" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -130,15 +142,17 @@ services:
 
   user-login-manager:
     container_name: user-login-manager
-    build: 
+    build:
       context: ./services/user-login-manager
-      args: 
+      args:
         - BASE_IMG=${SCANHUB_BASE_IMAGE}
     volumes:
       - ./services/user-login-manager/app/:/app/
+    environment:
+      SCANHUB_ALLOWED_ORIGINS: ${SCANHUB_ALLOWED_ORIGINS}
     healthcheck:
       # TODO: host.docker.internal is only working with docker desktop, must be replaced in product
-      test: ["CMD", "curl", "http://user-login-manager:8000/api/v1/userlogin/health/readiness"]
+      test: [ "CMD", "curl", "http://user-login-manager:8000/api/v1/userlogin/health/readiness" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -179,13 +193,13 @@ services:
       POSTGRES_USER_FILE: /run/secrets/scanhub_database_postgres_user
       POSTGRES_PASSWORD_FILE: /run/secrets/scanhub_database_postgres_password
       POSTGRES_DB_FILE: /run/secrets/scanhub_database_postgres_db_name
-    healthcheck:  
+    healthcheck:
       # Workflow, device and exam microservices depend on healthy postgres database
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 5s
       timeout: 5s
       retries: 10
-      start_period: 5s 
+      start_period: 5s
     secrets:
       - scanhub_database_postgres_user
       - scanhub_database_postgres_password
@@ -202,9 +216,9 @@ services:
       POSTGRES_USER_FILE: /run/secrets/patient_database_postgres_user
       POSTGRES_PASSWORD_FILE: /run/secrets/patient_database_postgres_password
       POSTGRES_DB_FILE: /run/secrets/patient_database_postgres_db_name
-    healthcheck:  
+    healthcheck:
       # init-db container is started, after health check passed
-      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -213,7 +227,6 @@ services:
       - patient_database_postgres_user
       - patient_database_postgres_password
       - patient_database_postgres_db_name
-
 
   # MRI Sequence mongo database: Contains (pulseq) mri sequence files
   sequence-database:
@@ -235,7 +248,6 @@ services:
       - sequence_database_root_username
       - sequence_database_root_password
 
-
   # API Gateway
   nginx:
     container_name: api-gateway
@@ -250,7 +262,7 @@ services:
     volumes:
       - ./infrastructure/nginx_config.conf:/etc/nginx/conf.d/default.conf
     healthcheck:
-      test: ["CMD", "curl", "http://api-gateway/health"]
+      test: [ "CMD", "curl", "http://api-gateway/health" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -259,7 +271,7 @@ services:
         condition: service_healthy
       workflow-manager:
         condition: service_healthy
-      exam-manager: 
+      exam-manager:
         condition: service_healthy
       patient-manager:
         condition: service_healthy
@@ -269,37 +281,37 @@ services:
         condition: service_healthy
       # scanhub-ui:
       #   condition: service_healthy
-    extra_hosts:                                # somehow needed to find host.docker.internal under linux
-      - 'host.docker.internal:host-gateway'     # for the access to host.docker.internal to work the firewall of the host needs to allow incoming connections
+    extra_hosts:
+      # somehow needed to find host.docker.internal under linux
+      - 'host.docker.internal:host-gateway' # for the access to host.docker.internal to work the firewall of the host needs to allow incoming connections
     secrets:
       - certificate
       - privatekey
-  
 
   # FRONTEND/SCANHUB-UI
-  scanhub-ui:
-    container_name: scanhub-ui
-    build:
-      context: ./scanhub-ui
-      dockerfile: ./Dockerfile
-      args:
-        NODE_ENV: "production" # or "development"
-    volumes:
-      - ./scanhub-ui/src:/app/src
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+  # scanhub-ui:
+  #   container_name: scanhub-ui
+  #   build:
+  #     context: ./scanhub-ui
+  #     dockerfile: ./Dockerfile
+  #     args:
+  #       NODE_ENV: "production" # or "development"
+  #   volumes:
+  #     - ./scanhub-ui/src:/app/src
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 10
+  #     start_period: 30s
 
   # DAGSTER
   dagster-webserver:
     <<: *dagster_common
     container_name: dagster-webserver
-    command: ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "--path-prefix", "/dagster", "-w", "/opt/dagster/app/workspace.yaml"]
+    command: [ "dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "--path-prefix", "/dagster", "-w", "/opt/dagster/app/workspace.yaml" ]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/dagster/server-status"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/dagster/server-status" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -311,13 +323,12 @@ services:
     <<: *dagster_common
     container_name: dagster-daemon
     user: "0:0"
-    entrypoint: ["dagster-daemon", "run", "-w", "/opt/dagster/app/workspace.yaml"]
+    entrypoint: [ "dagster-daemon", "run", "-w", "/opt/dagster/app/workspace.yaml" ]
     healthcheck:
-      test: ["CMD", "pgrep", "-f", "dagster-daemon"]
+      test: [ "CMD", "pgrep", "-f", "dagster-daemon" ]
       interval: 10s
       timeout: 5s
       retries: 5
-
 
 volumes:
   # data_lake:  # Use bind-mount to inspect files, make sure data_lake/ exists at project root

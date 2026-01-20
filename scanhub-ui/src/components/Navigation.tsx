@@ -211,7 +211,7 @@ export default function Navigation() {
             }}
           >
             <ListItemDecorator>
-              <PersonSharpIcon />
+              <PersonSharpIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
             </ListItemDecorator>{' '}
             Profile
           </MenuItem>
@@ -222,7 +222,7 @@ export default function Navigation() {
             }}
           >
             <ListItemDecorator>
-              <AdminPanelSettingsSharpIcon />
+              <AdminPanelSettingsSharpIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
             </ListItemDecorator>{' '}
             Set Password
           </MenuItem>
@@ -241,7 +241,7 @@ export default function Navigation() {
             }}
           >
             <ListItemDecorator>
-              <LogoutSharpIcon />
+              <LogoutSharpIcon sx={{ fontSize: 'var(--IconFontSize)' }} />
             </ListItemDecorator>{' '}
             Logout
           </MenuItem>
