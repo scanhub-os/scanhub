@@ -40,7 +40,7 @@ Module Contents
 
    Build a file path.
 
-   /data_lake/{workflow_id}/{task_id}/{result_id}/data.mrd
+   /data_lake/{workflow_id}/{task_id}/{result_id}/*.mrd
 
 
 .. py:function:: build_index_meta(file_path: str) -> list[scanhub_libraries.models.MRDAcquisitionInfo]

@@ -281,6 +281,10 @@ Module Contents
       :type:  sqlalchemy.orm.Mapped[bool]
 
 
+   .. py:attribute:: position
+      :type:  sqlalchemy.orm.Mapped[int]
+
+
    .. py:attribute:: results
       :type:  sqlalchemy.orm.Mapped[list[Result]]
 

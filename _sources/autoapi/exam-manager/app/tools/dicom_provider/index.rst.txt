@@ -23,6 +23,7 @@ Functions
 .. autoapisummary::
 
    exam-manager.app.tools.dicom_provider.resolve_dicom_path
+   exam-manager.app.tools.dicom_provider.get_p10_dicom_bytes
    exam-manager.app.tools.dicom_provider.provide_p10_dicom
 
 
@@ -36,16 +37,20 @@ Module Contents
    Build and validate the requested file path, prevent traversal, return (path, safe_name).
 
 
+.. py:function:: get_p10_dicom_bytes(dicom_path: str | pathlib.Path, patient_id: str | None = None, patient_name: str | None = None, study_description: str | None = None) -> bytes
+
+   Ensure the dataset at `path` is a valid DICOM Part-10 file and return its bytes.
+
+   - If not Part-10 or missing metadata, create minimal File Meta + 128-byte preamble.
+   - Ensures mandatory DICOM tags (SOP Class UID, SOP Instance UID, etc.) are present.
+   - If `patient_id` or `study_description` are provided, they override the values in the dataset.
+
+
 .. py:function:: provide_p10_dicom(dicom_path: str | pathlib.Path) -> starlette.responses.Response
 
    Ensure the dataset at `path` is a valid DICOM Part-10 file.
 
    - If already Part-10, return FileResponse
-   - If not Part-10, create minimal File Meta + 128-byte preamble and return StreamingResponse
-   - We *do not* transcode pixel data here; we only wrap the dataset into Part-10.
-   - TransferSyntaxUID:
-       * If present, we keep it.
-       * If missing, we choose based on ds.is_little_endian/is_implicit_VR if known,
-         otherwise default to ExplicitVRLittleEndian (widely supported).
+   - Else → convert to Part-10 in memory and return StreamingResponse.
 
 

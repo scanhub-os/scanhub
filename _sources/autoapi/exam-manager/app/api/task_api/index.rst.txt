@@ -17,6 +17,14 @@ Attributes
    exam-manager.app.api.task_api.task_router
 
 
+Classes
+-------
+
+.. autoapisummary::
+
+   exam-manager.app.api.task_api.TaskReorder
+
+
 Functions
 ---------
 
@@ -28,6 +36,7 @@ Functions
    exam-manager.app.api.task_api.get_all_workflow_tasks
    exam-manager.app.api.task_api.get_all_task_templates
    exam-manager.app.api.task_api.delete_task
+   exam-manager.app.api.task_api.reorder_tasks
    exam-manager.app.api.task_api.update_task
 
 
@@ -35,6 +44,18 @@ Module Contents
 ---------------
 
 .. py:data:: task_router
+
+.. py:class:: TaskReorder
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Task reorder model.
+
+
+   .. py:attribute:: task_ids
+      :type:  list[uuid.UUID]
+
 
 .. py:function:: create_task(payload: Annotated[scanhub_libraries.models.BaseAcquisitionTask | scanhub_libraries.models.BaseDAGTask, Field(discriminator='task_type')], user: Annotated[scanhub_libraries.models.User, Depends(get_current_user)]) -> scanhub_libraries.models.AcquisitionTaskOut | scanhub_libraries.models.DAGTaskOut
    :async:
@@ -145,6 +166,18 @@ Module Contents
    ------
    HTTPException
        404: Not found
+
+
+.. py:function:: reorder_tasks(payload: TaskReorder, user: Annotated[scanhub_libraries.models.User, Depends(get_current_user)]) -> None
+   :async:
+
+
+   Reorder tasks by updating their position.
+
+   Parameters
+   ----------
+   payload
+       Task reorder pydantic model containing list of task IDs in the new order
 
 
 .. py:function:: update_task(task_id: uuid.UUID | str, payload: Annotated[scanhub_libraries.models.BaseAcquisitionTask | scanhub_libraries.models.BaseDAGTask, Field(discriminator='task_type')], user: Annotated[scanhub_libraries.models.User, Depends(get_current_user)]) -> scanhub_libraries.models.AcquisitionTaskOut | scanhub_libraries.models.DAGTaskOut

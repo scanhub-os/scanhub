@@ -440,6 +440,17 @@
 </table>
 </div>
 </section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.task_api.TaskReorder" title="exam-manager.app.api.task_api.TaskReorder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskReorder</span></code></a></p></td>
+<td><p>Task reorder model.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
@@ -462,7 +473,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.task_api.delete_task" title="exam-manager.app.api.task_api.delete_task"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_task</span></code></a>(]) → None)</p></td>
 <td><p>Delete a task.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.task_api.update_task" title="exam-manager.app.api.task_api.update_task"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_task</span></code></a>(], user, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.task_api.reorder_tasks" title="exam-manager.app.api.task_api.reorder_tasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorder_tasks</span></code></a>(]) → None)</p></td>
+<td><p>Reorder tasks by updating their position.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.task_api.update_task" title="exam-manager.app.api.task_api.update_task"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_task</span></code></a>(], user, ...)</p></td>
 <td><p>Update an existing task.</p></td>
 </tr>
 </tbody>
@@ -475,6 +489,18 @@
 <dt class="sig sig-object py" id="exam-manager.app.api.task_api.task_router">
 <span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.task_api.</span></span><span class="sig-name descname"><span class="pre">task_router</span></span><a class="headerlink" href="#exam-manager.app.api.task_api.task_router" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="exam-manager.app.api.task_api.TaskReorder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.task_api.</span></span><span class="sig-name descname"><span class="pre">TaskReorder</span></span><a class="headerlink" href="#exam-manager.app.api.task_api.TaskReorder" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pydantic.BaseModel</span></code></p>
+<p>Task reorder model.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="exam-manager.app.api.task_api.TaskReorder.task_ids">
+<span class="sig-name descname"><span class="pre">task_ids</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#exam-manager.app.api.task_api.TaskReorder.task_ids" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.task_api.create_task">
@@ -610,11 +636,24 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="exam-manager.app.api.task_api.reorder_tasks">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.task_api.</span></span><span class="sig-name descname"><span class="pre">reorder_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#exam-manager.app.api.task_api.TaskReorder" title="exam-manager.app.api.task_api.TaskReorder"><span class="pre">TaskReorder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#exam-manager.app.api.task_api.reorder_tasks" title="Link to this definition">#</a></dt>
+<dd><p>Reorder tasks by updating their position.</p>
+<section id="id12">
+<h3>Parameters<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>payload</dt><dd><p>Task reorder pydantic model containing list of task IDs in the new order</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.task_api.update_task">
 <span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.task_api.</span></span><span class="sig-name descname"><span class="pre">update_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.BaseAcquisitionTask</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">scanhub_libraries.models.BaseDAGTask</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Field</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">discriminator</span></span><span class="o"><span class="pre">=</span></span><span class="s"><span class="pre">'task_type'</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.AcquisitionTaskOut</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">scanhub_libraries.models.DAGTaskOut</span></span></span><a class="headerlink" href="#exam-manager.app.api.task_api.update_task" title="Link to this definition">#</a></dt>
 <dd><p>Update an existing task.</p>
-<section id="id12">
-<h3>Parameters<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<section id="id13">
+<h3>Parameters<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>task_id</dt><dd><p>Id of the workflow to be updated</p>
 </dd>
@@ -622,14 +661,14 @@
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h3>Returns<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<section id="id14">
+<h3>Returns<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
 <blockquote>
 <div><p>Task pydantic output model</p>
 </div></blockquote>
 </section>
-<section id="id14">
-<h3>Raises<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<section id="id15">
+<h3>Raises<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>HTTPException</dt><dd><p>404: Not found</p>
 </dd>
@@ -670,15 +709,21 @@
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.task_router"><code class="docutils literal notranslate"><span class="pre">task_router</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.TaskReorder"><code class="docutils literal notranslate"><span class="pre">TaskReorder</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.TaskReorder.task_ids"><code class="docutils literal notranslate"><span class="pre">TaskReorder.task_ids</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.create_task"><code class="docutils literal notranslate"><span class="pre">create_task()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.create_task_from_template"><code class="docutils literal notranslate"><span class="pre">create_task_from_template()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.get_task"><code class="docutils literal notranslate"><span class="pre">get_task()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.get_all_workflow_tasks"><code class="docutils literal notranslate"><span class="pre">get_all_workflow_tasks()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.get_all_task_templates"><code class="docutils literal notranslate"><span class="pre">get_all_task_templates()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.delete_task"><code class="docutils literal notranslate"><span class="pre">delete_task()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.reorder_tasks"><code class="docutils literal notranslate"><span class="pre">reorder_tasks()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.task_api.update_task"><code class="docutils literal notranslate"><span class="pre">update_task()</span></code></a></li>
 </ul>
 </li>

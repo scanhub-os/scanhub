@@ -433,7 +433,13 @@
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.result_router" title="exam-manager.app.api.result_api.result_router"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result_router</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.PREFIX_PATIENT_MANAGER" title="exam-manager.app.api.result_api.PREFIX_PATIENT_MANAGER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PREFIX_PATIENT_MANAGER</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.result_router" title="exam-manager.app.api.result_api.result_router"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result_router</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.oauth2_scheme" title="exam-manager.app.api.result_api.oauth2_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oauth2_scheme</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -462,11 +468,17 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.get_dicom" title="exam-manager.app.api.result_api.get_dicom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dicom</span></code></a>(]) → starlette.responses.Response)</p></td>
 <td><p>Serve a DICOM instance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.get_meta" title="exam-manager.app.api.result_api.get_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meta</span></code></a>(→ scanhub_libraries.models.MRDMetaResponse)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.upload_to_xnat" title="exam-manager.app.api.result_api.upload_to_xnat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upload_to_xnat</span></code></a>(]) → dict)</p></td>
+<td><p>Upload a DICOM file to XNAT test database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.get_meta" title="exam-manager.app.api.result_api.get_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meta</span></code></a>(→ scanhub_libraries.models.MRDMetaResponse)</p></td>
 <td><p>Get MRD meta info.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.get_mrd_binary" title="exam-manager.app.api.result_api.get_mrd_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mrd_binary</span></code></a>(workflow_id, task_id, result_id[, ids, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.get_mrd_binary" title="exam-manager.app.api.result_api.get_mrd_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mrd_binary</span></code></a>(workflow_id, task_id, result_id[, ids, ...])</p></td>
 <td><p>Get MRD as binary stream.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.api.result_api.download_mrd" title="exam-manager.app.api.result_api.download_mrd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_mrd</span></code></a>(workflow_id, task_id, result_id, user)</p></td>
+<td><p>Download the full MRD file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -475,8 +487,18 @@
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
 <dl class="py data">
+<dt class="sig sig-object py" id="exam-manager.app.api.result_api.PREFIX_PATIENT_MANAGER">
+<span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">PREFIX_PATIENT_MANAGER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://patient-manager:8100/api/v1/patient'</span></span><a class="headerlink" href="#exam-manager.app.api.result_api.PREFIX_PATIENT_MANAGER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
 <dt class="sig sig-object py" id="exam-manager.app.api.result_api.result_router">
 <span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">result_router</span></span><a class="headerlink" href="#exam-manager.app.api.result_api.result_router" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="exam-manager.app.api.result_api.oauth2_scheme">
+<span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">oauth2_scheme</span></span><a class="headerlink" href="#exam-manager.app.api.result_api.oauth2_scheme" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -620,6 +642,12 @@ If this is the pydantic ResultBase model, only fields in the base model can be u
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="exam-manager.app.api.result_api.upload_to_xnat">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">upload_to_xnat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#exam-manager.app.api.result_api.oauth2_scheme" title="exam-manager.app.api.result_api.oauth2_scheme"><span class="pre">oauth2_scheme</span></a><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#exam-manager.app.api.result_api.upload_to_xnat" title="Link to this definition">#</a></dt>
+<dd><p>Upload a DICOM file to XNAT test database.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.api.result_api.get_meta">
 <span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">get_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.MRDMetaResponse</span></span></span><a class="headerlink" href="#exam-manager.app.api.result_api.get_meta" title="Link to this definition">#</a></dt>
 <dd><p>Get MRD meta info.</p>
@@ -629,6 +657,12 @@ If this is the pydantic ResultBase model, only fields in the base model can be u
 <dt class="sig sig-object py" id="exam-manager.app.api.result_api.get_mrd_binary">
 <span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">get_mrd_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Query(...,</span> <span class="pre">description=&quot;IDs:</span> <span class="pre">'0,1,10-20,40-50:2'&quot;)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coil_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Query(0,</span> <span class="pre">ge=0,</span> <span class="pre">description='Coil</span> <span class="pre">index')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Query(1,</span> <span class="pre">ge=1,</span> <span class="pre">description='Decimate</span> <span class="pre">samples</span> <span class="pre">by</span> <span class="pre">stride')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exam-manager.app.api.result_api.get_mrd_binary" title="Link to this definition">#</a></dt>
 <dd><p>Get MRD as binary stream.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="exam-manager.app.api.result_api.download_mrd">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.api.result_api.</span></span><span class="sig-name descname"><span class="pre">download_mrd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">scanhub_libraries.models.User</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Depends</span><span class="p"><span class="pre">(</span></span><span class="pre">get_current_user</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#exam-manager.app.api.result_api.download_mrd" title="Link to this definition">#</a></dt>
+<dd><p>Download the full MRD file.</p>
 </dd></dl>
 
 </section>
@@ -666,15 +700,19 @@ If this is the pydantic ResultBase model, only fields in the base model can be u
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.PREFIX_PATIENT_MANAGER"><code class="docutils literal notranslate"><span class="pre">PREFIX_PATIENT_MANAGER</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.result_router"><code class="docutils literal notranslate"><span class="pre">result_router</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.oauth2_scheme"><code class="docutils literal notranslate"><span class="pre">oauth2_scheme</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.create_blank_result"><code class="docutils literal notranslate"><span class="pre">create_blank_result()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.get_result"><code class="docutils literal notranslate"><span class="pre">get_result()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.get_all_task_results"><code class="docutils literal notranslate"><span class="pre">get_all_task_results()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.delete_result"><code class="docutils literal notranslate"><span class="pre">delete_result()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.set_result"><code class="docutils literal notranslate"><span class="pre">set_result()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.get_dicom"><code class="docutils literal notranslate"><span class="pre">get_dicom()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.upload_to_xnat"><code class="docutils literal notranslate"><span class="pre">upload_to_xnat()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.get_meta"><code class="docutils literal notranslate"><span class="pre">get_meta()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.get_mrd_binary"><code class="docutils literal notranslate"><span class="pre">get_mrd_binary()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.api.result_api.download_mrd"><code class="docutils literal notranslate"><span class="pre">download_mrd()</span></code></a></li>
 </ul>
 </li>
 </ul>

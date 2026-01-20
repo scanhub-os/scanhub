@@ -447,7 +447,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.tools.dicom_provider.resolve_dicom_path" title="exam-manager.app.tools.dicom_provider.resolve_dicom_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_dicom_path</span></code></a>(→ pathlib.Path)</p></td>
 <td><p>Build and validate the requested file path, prevent traversal, return (path, safe_name).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.tools.dicom_provider.provide_p10_dicom" title="exam-manager.app.tools.dicom_provider.provide_p10_dicom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provide_p10_dicom</span></code></a>(→ starlette.responses.Response)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.tools.dicom_provider.get_p10_dicom_bytes" title="exam-manager.app.tools.dicom_provider.get_p10_dicom_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_p10_dicom_bytes</span></code></a>(→ bytes)</p></td>
+<td><p>Ensure the dataset at <cite>path</cite> is a valid DICOM Part-10 file and return its bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.tools.dicom_provider.provide_p10_dicom" title="exam-manager.app.tools.dicom_provider.provide_p10_dicom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provide_p10_dicom</span></code></a>(→ starlette.responses.Response)</p></td>
 <td><p>Ensure the dataset at <cite>path</cite> is a valid DICOM Part-10 file.</p></td>
 </tr>
 </tbody>
@@ -468,22 +471,23 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="exam-manager.app.tools.dicom_provider.get_p10_dicom_bytes">
+<span class="sig-prename descclassname"><span class="pre">exam-manager.app.tools.dicom_provider.</span></span><span class="sig-name descname"><span class="pre">get_p10_dicom_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicom_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">study_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#exam-manager.app.tools.dicom_provider.get_p10_dicom_bytes" title="Link to this definition">#</a></dt>
+<dd><p>Ensure the dataset at <cite>path</cite> is a valid DICOM Part-10 file and return its bytes.</p>
+<ul class="simple">
+<li><p>If not Part-10 or missing metadata, create minimal File Meta + 128-byte preamble.</p></li>
+<li><p>Ensures mandatory DICOM tags (SOP Class UID, SOP Instance UID, etc.) are present.</p></li>
+<li><p>If <cite>patient_id</cite> or <cite>study_description</cite> are provided, they override the values in the dataset.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="exam-manager.app.tools.dicom_provider.provide_p10_dicom">
 <span class="sig-prename descclassname"><span class="pre">exam-manager.app.tools.dicom_provider.</span></span><span class="sig-name descname"><span class="pre">provide_p10_dicom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicom_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">starlette.responses.Response</span></span></span><a class="headerlink" href="#exam-manager.app.tools.dicom_provider.provide_p10_dicom" title="Link to this definition">#</a></dt>
 <dd><p>Ensure the dataset at <cite>path</cite> is a valid DICOM Part-10 file.</p>
 <ul class="simple">
 <li><p>If already Part-10, return FileResponse</p></li>
-<li><p>If not Part-10, create minimal File Meta + 128-byte preamble and return StreamingResponse</p></li>
-<li><p>We <em>do not</em> transcode pixel data here; we only wrap the dataset into Part-10.</p></li>
-<li><dl class="simple">
-<dt>TransferSyntaxUID:</dt><dd><ul>
-<li><p>If present, we keep it.</p></li>
-<li><p>If missing, we choose based on ds.is_little_endian/is_implicit_VR if known,
-otherwise default to ExplicitVRLittleEndian (widely supported).</p></li>
-</ul>
-</dd>
-</dl>
-</li>
+<li><p>Else → convert to Part-10 in memory and return StreamingResponse.</p></li>
 </ul>
 </dd></dl>
 
@@ -524,6 +528,7 @@ otherwise default to ExplicitVRLittleEndian (widely supported).</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.tools.dicom_provider.DATA_LAKE_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_LAKE_DIR</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.tools.dicom_provider.resolve_dicom_path"><code class="docutils literal notranslate"><span class="pre">resolve_dicom_path()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.tools.dicom_provider.get_p10_dicom_bytes"><code class="docutils literal notranslate"><span class="pre">get_p10_dicom_bytes()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.tools.dicom_provider.provide_p10_dicom"><code class="docutils literal notranslate"><span class="pre">provide_p10_dicom()</span></code></a></li>
 </ul>
 </li>

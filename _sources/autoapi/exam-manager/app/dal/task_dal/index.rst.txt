@@ -20,6 +20,7 @@ Functions
    exam-manager.app.dal.task_dal.get_all_task_template_data
    exam-manager.app.dal.task_dal.delete_task_data
    exam-manager.app.dal.task_dal.update_task_data
+   exam-manager.app.dal.task_dal.reorder_tasks_data
 
 
 Module Contents
@@ -123,5 +124,17 @@ Module Contents
    Returns
    -------
        Database orm model of updated task
+
+
+.. py:function:: reorder_tasks_data(task_ids: list[uuid.UUID]) -> bool
+   :async:
+
+
+   Update the position of multiple tasks.
+
+   Parameters
+   ----------
+   task_ids
+       List of task IDs in the new order
 
 

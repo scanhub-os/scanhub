@@ -14,7 +14,9 @@ Attributes
 
 .. autoapisummary::
 
+   exam-manager.app.api.result_api.PREFIX_PATIENT_MANAGER
    exam-manager.app.api.result_api.result_router
+   exam-manager.app.api.result_api.oauth2_scheme
 
 
 Functions
@@ -28,14 +30,22 @@ Functions
    exam-manager.app.api.result_api.delete_result
    exam-manager.app.api.result_api.set_result
    exam-manager.app.api.result_api.get_dicom
+   exam-manager.app.api.result_api.upload_to_xnat
    exam-manager.app.api.result_api.get_meta
    exam-manager.app.api.result_api.get_mrd_binary
+   exam-manager.app.api.result_api.download_mrd
 
 
 Module Contents
 ---------------
 
+.. py:data:: PREFIX_PATIENT_MANAGER
+   :value: 'http://patient-manager:8100/api/v1/patient'
+
+
 .. py:data:: result_router
+
+.. py:data:: oauth2_scheme
 
 .. py:function:: create_blank_result(task_id: str | uuid.UUID, user: Annotated[scanhub_libraries.models.User, Depends(get_current_user)]) -> scanhub_libraries.models.ResultOut
    :async:
@@ -151,6 +161,13 @@ Module Contents
      - 'Cache-Control: no-transform' to prevent proxies from gzipping (which breaks Range offsets)
 
 
+.. py:function:: upload_to_xnat(workflow_id: str, task_id: str, result_id: str, filename: str, access_token: Annotated[str, Depends(oauth2_scheme)]) -> dict
+   :async:
+
+
+   Upload a DICOM file to XNAT test database.
+
+
 .. py:function:: get_meta(workflow_id: str, task_id: str, result_id: str) -> scanhub_libraries.models.MRDMetaResponse
 
    Get MRD meta info.
@@ -159,5 +176,12 @@ Module Contents
 .. py:function:: get_mrd_binary(workflow_id: str, task_id: str, result_id: str, ids: str = Query(..., description="IDs: '0,1,10-20,40-50:2'"), coil_idx: int = Query(0, ge=0, description='Coil index'), stride: int = Query(1, ge=1, description='Decimate samples by stride'))
 
    Get MRD as binary stream.
+
+
+.. py:function:: download_mrd(workflow_id: str, task_id: str, result_id: str, user: Annotated[scanhub_libraries.models.User, Depends(get_current_user)])
+   :async:
+
+
+   Download the full MRD file.
 
 

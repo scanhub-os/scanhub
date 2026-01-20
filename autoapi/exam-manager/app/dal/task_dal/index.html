@@ -451,6 +451,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#exam-manager.app.dal.task_dal.update_task_data" title="exam-manager.app.dal.task_dal.update_task_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_task_data</span></code></a>(→ app.db.postgres.Task | None)</p></td>
 <td><p>Update existing task in database.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#exam-manager.app.dal.task_dal.reorder_tasks_data" title="exam-manager.app.dal.task_dal.reorder_tasks_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorder_tasks_data</span></code></a>(→ bool)</p></td>
+<td><p>Update the position of multiple tasks.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -575,6 +578,19 @@
 </section>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="exam-manager.app.dal.task_dal.reorder_tasks_data">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">exam-manager.app.dal.task_dal.</span></span><span class="sig-name descname"><span class="pre">reorder_tasks_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#exam-manager.app.dal.task_dal.reorder_tasks_data" title="Link to this definition">#</a></dt>
+<dd><p>Update the position of multiple tasks.</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>task_ids</dt><dd><p>List of task IDs in the new order</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
 </section>
 </section>
 
@@ -615,6 +631,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.dal.task_dal.get_all_task_template_data"><code class="docutils literal notranslate"><span class="pre">get_all_task_template_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.dal.task_dal.delete_task_data"><code class="docutils literal notranslate"><span class="pre">delete_task_data()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.dal.task_dal.update_task_data"><code class="docutils literal notranslate"><span class="pre">update_task_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exam-manager.app.dal.task_dal.reorder_tasks_data"><code class="docutils literal notranslate"><span class="pre">reorder_tasks_data()</span></code></a></li>
 </ul>
 </li>
 </ul>
