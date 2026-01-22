@@ -2,12 +2,11 @@
 
 import io
 import os
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import HTTPException
 from fastapi.responses import FileResponse, StreamingResponse
-from pydicom.uid import generate_uid
-from datetime import datetime
 from pydicom import dcmread
 from pydicom.dataset import FileMetaDataset
 from pydicom.filebase import DicomBytesIO
@@ -15,6 +14,7 @@ from pydicom.uid import (
     ExplicitVRBigEndian,
     ExplicitVRLittleEndian,
     ImplicitVRLittleEndian,
+    generate_uid,
 )
 from starlette.responses import Response
 
@@ -67,7 +67,7 @@ def get_p10_dicom_bytes(
     # Generic mandatory tags for XNAT sanity
     if not getattr(ds, "Modality", None):
         ds.Modality = "MR"
-    
+
     # Overrides or defaults for Patient
     ds.PatientID = patient_id if patient_id else getattr(ds, "PatientID", "ScanHub_001")
     ds.PatientName = patient_name if patient_name else getattr(ds, "PatientName", "ScanHub_001")
@@ -93,7 +93,7 @@ def get_p10_dicom_bytes(
     # Sync to File Meta
     if not getattr(ds, "file_meta", None):
         ds.file_meta = FileMetaDataset()
-    
+
     ds.file_meta.MediaStorageSOPClassUID = ds.SOPClassUID
     ds.file_meta.MediaStorageSOPInstanceUID = ds.SOPInstanceUID
 

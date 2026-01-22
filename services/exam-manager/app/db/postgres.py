@@ -7,9 +7,16 @@ import os
 import uuid
 
 from pydantic import BaseModel
-from scanhub_libraries.models import AcquisitionLimits, AcquisitionParameter, ItemStatus, ResultType, TaskType, CalibrationType
+from scanhub_libraries.models import (
+    AcquisitionLimits,
+    AcquisitionParameter,
+    CalibrationType,
+    ItemStatus,
+    ResultType,
+    TaskType,
+)
 from sqlalchemy import JSON, ForeignKey, String, create_engine, func
-from sqlalchemy.dialects.postgresql import ARRAY, UUID, JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.ext.mutable import MutableList

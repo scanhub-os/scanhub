@@ -3,27 +3,25 @@
 
 """Definition of result API endpoints accessible through swagger UI."""
 
+import os
 import struct
+import tempfile
+import zipfile
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import FileResponse, StreamingResponse
-from scanhub_libraries.models import MRDMetaResponse, ResultOut, SetResult, User
-from scanhub_libraries.security import get_current_user
-from starlette.responses import Response
-from fastapi.security import OAuth2PasswordBearer
-
-import os
-import tempfile
-import zipfile
-
 import httpx
 import requests
+from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.security import OAuth2PasswordBearer
+from scanhub_libraries.models import MRDMetaResponse, PatientOut, ResultOut, SetResult, User
+from scanhub_libraries.security import get_current_user
+from starlette.responses import Response
+
 import app.tools.mrd_provider as mrd
 from app import LOG_CALL_DELIMITER
-from app.dal import result_dal, task_dal, workflow_dal, exam_dal
-from scanhub_libraries.models import PatientOut
+from app.dal import exam_dal, result_dal, task_dal, workflow_dal
 from app.tools.dicom_provider import (
     get_p10_dicom_bytes,
     provide_p10_dicom,
@@ -254,8 +252,7 @@ async def upload_to_xnat(
     project_id = os.getenv("XNAT_PROJECT_ID", "A4IM")
 
     # Fetch workflow and exam to get actual patient info
-    workflow_uuid = UUID(workflow_id) if not isinstance(workflow_id, UUID) else workflow_id
-    workflow = await workflow_dal.get_workflow_data(workflow_uuid)
+    workflow = await workflow_dal.get_workflow_data(UUID(workflow_id))
     if not workflow:
         raise HTTPException(status_code=404, detail=f"Workflow not found: {workflow_id}")
 
@@ -266,7 +263,10 @@ async def upload_to_xnat(
     # Fetch patient details from patient-manager
     get_patient_response = requests.get(f"{PREFIX_PATIENT_MANAGER}/{exam.patient_id}", headers=headers, timeout=3)
     if get_patient_response.status_code != 200:
-        raise HTTPException(status_code=get_patient_response.status_code, detail="Failed to fetch patient with id=" + str(exam.patient_id))
+        raise HTTPException(
+            status_code=get_patient_response.status_code,
+            detail="Failed to fetch patient with id=" + str(exam.patient_id),
+        )
     patient_raw = get_patient_response.json()
     patient = PatientOut(**patient_raw)
 
@@ -281,8 +281,8 @@ async def upload_to_xnat(
 
     try:
         dicom_bytes = get_p10_dicom_bytes(
-            dicom_path, 
-            patient_id=subject_id, 
+            dicom_path,
+            patient_id=subject_id,
             patient_name=patient_name,
             study_description=session_id
         )

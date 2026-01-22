@@ -5,6 +5,7 @@
 
 """Exam manager main file."""
 
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -26,8 +27,6 @@ from app.db.mongodb import close_mongo_connection, connect_to_mongo, db
 from app.db.postgres import engine, init_db
 
 from . import LOG_CALL_DELIMITER
-
-import os
 
 ORIGINS = [
     "http://localhost:8080",
