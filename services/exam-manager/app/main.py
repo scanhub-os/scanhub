@@ -27,11 +27,16 @@ from app.db.postgres import engine, init_db
 
 from . import LOG_CALL_DELIMITER
 
+import os
+
 ORIGINS = [
     "http://localhost:8080",
     "https://localhost:8443",
     "https://localhost:3000",
 ]
+
+if extra_origins := os.getenv("SCANHUB_ALLOWED_ORIGINS"):
+    ORIGINS.extend(extra_origins.split(","))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

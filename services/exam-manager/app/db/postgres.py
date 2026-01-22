@@ -104,7 +104,9 @@ class Workflow(Base):  # TBD: rename to "Workflow"
         onupdate=func.now(),
         nullable=True,  # pylint: disable=not-callable
     )
-    tasks: Mapped[list["Task"]] = relationship("Task", lazy="selectin", cascade="all, delete-orphan")
+    tasks: Mapped[list["Task"]] = relationship(
+        "Task", lazy="selectin", cascade="all, delete-orphan", order_by="Task.position"
+    )
     exam_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("exam.id"), nullable=True)
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
@@ -136,6 +138,7 @@ class Task(Base):
     status: Mapped[ItemStatus] = mapped_column(nullable=False)
     progress: Mapped[int] = mapped_column(nullable=False)
     is_template: Mapped[bool] = mapped_column(nullable=False, default=True)
+    position: Mapped[int] = mapped_column(nullable=False, default=0)
     results: Mapped[list["Result"]] = relationship("Result", lazy="selectin", cascade="all, delete-orphan")
 
     __mapper_args__ = {

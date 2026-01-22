@@ -194,6 +194,7 @@ class BaseTask(BaseModel):
     status: ItemStatus
     progress: int
     is_template: bool
+    position: int = 0
 
 
 class TaskOut(BaseTask):

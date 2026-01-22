@@ -30,6 +30,7 @@ motor = "^3.7.1"
 motor-types = "^1.0.0b4"
 pydicom = "^3.0.1"
 ismrmrd = "^1.14.1"
+httpx = "^0.28.1"
 
 [tool.poetry.group.test.dependencies]
 coverage = "*"

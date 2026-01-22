@@ -123,6 +123,7 @@ async def create_workflow_from_template(
     task_instances: list[DAGTaskOut | AcquisitionTaskOut] = []
 
     # Create all the sub-items for the task templates in a workflow template
+    # These must be created sequentially to ensure add_task_data correctly assigns positions
     for task in template.tasks:
         task_instance: DAGTaskOut | AcquisitionTaskOut = await task_api.create_task_from_template(
             workflow_id=workflow.id,

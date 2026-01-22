@@ -6,7 +6,8 @@
  */
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
+import Add from '@mui/icons-material/Add'
+import Button from '@mui/joy/Button'
 import IconButton from '@mui/joy/IconButton'
 import AddSharpIcon from '@mui/icons-material/AddSharp'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
@@ -58,41 +59,41 @@ export default function SequenceView() {
   const delteMutation = useMutation<unknown, unknown, MRISequenceOut>({
     mutationFn: async (sequence) => {
       await sequenceApi.deleteMriSequenceEndpointApiV1ExamSequenceSequenceIdDelete(sequence._id)
-      .then(() => {
-        showNotification({message: 'Deleted sequence ' + sequence.name, type: 'success'})
-        refetch()
-      })
-      .catch((err) => {
-        let errorMessage = null
-        if (err?.response?.data?.detail) {
-          errorMessage = 'Could not delete sequence. Detail: ' + err.response.data.detail
-        } else {
-          errorMessage = 'Could not delete sequence.'
-        }
-        showNotification({message: errorMessage, type: 'warning'})
-      })
+        .then(() => {
+          showNotification({ message: 'Deleted sequence ' + sequence.name, type: 'success' })
+          refetch()
+        })
+        .catch((err) => {
+          let errorMessage = null
+          if (err?.response?.data?.detail) {
+            errorMessage = 'Could not delete sequence. Detail: ' + err.response.data.detail
+          } else {
+            errorMessage = 'Could not delete sequence.'
+          }
+          showNotification({ message: errorMessage, type: 'warning' })
+        })
     }
   })
 
   const updateMutation = useMutation<unknown, unknown, MRISequenceOut>({
     mutationFn: async (sequence) => {
       await sequenceApi.updateMriSequenceEndpointApiV1ExamSequenceSequenceIdPut(sequence._id, sequence as BaseMRISequence)
-      .then(() => {
-        showNotification({message: 'Modified sequence ' + sequence.name, type: 'success'})
-        setIsUpdating(false)
-        refetch()
-      })
-      .catch((err) => {
-        let errorMessage = null
-        if (err?.response?.data?.detail) {
-          errorMessage = 'Could not update sequence. Detail: ' + err.response.data.detail
-        } else {
-          errorMessage = 'Could not update sequence.'
-        }
-        setIsUpdating(false)
-        refetch()
-        showNotification({message: errorMessage, type: 'warning'})
-      })
+        .then(() => {
+          showNotification({ message: 'Modified sequence ' + sequence.name, type: 'success' })
+          setIsUpdating(false)
+          refetch()
+        })
+        .catch((err) => {
+          let errorMessage = null
+          if (err?.response?.data?.detail) {
+            errorMessage = 'Could not update sequence. Detail: ' + err.response.data.detail
+          } else {
+            errorMessage = 'Could not update sequence.'
+          }
+          setIsUpdating(false)
+          refetch()
+          showNotification({ message: errorMessage, type: 'warning' })
+        })
     }
   })
 
@@ -128,10 +129,10 @@ export default function SequenceView() {
         />,
       ]
     },
-    { field: '_id', headerName: 'ID', width: 100, editable: false },
-    { field: 'name', headerName: 'Name', width: 200, editable: true },
-    { field: 'description', headerName: 'Description', width: 500, editable: true },
-    { field: 'sequence_type', headerName: 'Type', width: 200, editable: true },
+    { field: '_id', headerName: 'ID', width: 50, editable: false },
+    { field: 'name', headerName: 'Name', width: 120, editable: true },
+    { field: 'description', headerName: 'Description', width: 300, editable: true },
+    { field: 'sequence_type', headerName: 'Type', width: 100, editable: true },
     {
       field: 'created_at', headerName: 'Added', width: 150, editable: false,
       valueFormatter: (value) => (value ? new Date(value).toLocaleString() : '')
@@ -155,7 +156,7 @@ export default function SequenceView() {
   ]
 
   return (
-    <Box sx={{ p: 3, width: '100%'}}>
+    <Box sx={{ p: 2, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <SequenceUpload
         isOpen={dialogOpen}
         setOpen={setDialogOpen}
@@ -164,22 +165,28 @@ export default function SequenceView() {
         }}
       />
 
-      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 2 }}> 
+      <Stack direction='row' sx={{ justifyContent: 'space-between', mb: 1, alignItems: 'center' }}>
         <Typography level='title-md'>List of Sequences</Typography>
-        <IconButton size='sm' variant='outlined'>
+        {/* <IconButton size='sm' variant='outlined'>
           <AddSharpIcon onClick={() => setDialogOpen(true)} />
-        </IconButton>
+        </IconButton> */}
+        <Button
+          variant='outlined'
+          startDecorator={<Add sx={{ fontSize: 'var(--IconFontSize)' }} />}
+          onClick={() => setDialogOpen(true)}>
+          Create Sequence
+        </Button>
       </Stack>
 
-      <div style={{ height:'80vh', width: '100%'}}>
+      <div style={{ flex: 1, minHeight: 0, width: '100%' }}>
         <DataGrid
           rows={sequences}
           columns={columns}
           getRowId={(sequence) => sequence._id ? sequence._id : ''}
-          hideFooterSelectedRowCount 
+          hideFooterSelectedRowCount
           editMode={'row'}
           rowHeight={45}  // MUI default is 52
-          autoPageSize= {true}
+          autoPageSize={true}
           loading={isUpdating}
           processRowUpdate={(updatedSequence) => {
             setIsUpdating(true)
@@ -200,9 +207,9 @@ export default function SequenceView() {
       </div>
 
 
-      <ConfirmDeleteModal 
-        onSubmit={() => sequenceToDelete ? delteMutation.mutate(sequenceToDelete) : () => {}}
-        isOpen={sequenceToDelete ? true : false} 
+      <ConfirmDeleteModal
+        onSubmit={() => sequenceToDelete ? delteMutation.mutate(sequenceToDelete) : () => { }}
+        isOpen={sequenceToDelete ? true : false}
         setOpen={(status) => {
           if (status == false) setSequenceToDelete(undefined)
         }}
@@ -233,14 +240,14 @@ export default function SequenceView() {
             flexDirection: 'column',
           }}
         >
-          <ModalClose variant="plain" sx={{ m: 1 }}/>
+          <ModalClose variant="plain" sx={{ m: 1 }} />
           <Typography component="h2" id="modal-title" level="h4" sx={{ fontWeight: 'lg', mb: 1 }}>
             {sequenceOpen?.name}
           </Typography>
 
           <Stack direction='row' gap={2}>
             <Typography>Sequence</Typography>
-            <Switch variant='outlined' checked={showHeader} onChange={() => setShowHeader(!showHeader)} disabled={!sequenceOpen?.xml_file}/>
+            <Switch variant='outlined' checked={showHeader} onChange={() => setShowHeader(!showHeader)} disabled={!sequenceOpen?.xml_file} />
             <Typography>Header</Typography>
           </Stack>
 

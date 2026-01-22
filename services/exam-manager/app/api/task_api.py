@@ -7,7 +7,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import Field
+from pydantic import BaseModel, Field
 from scanhub_libraries.models import (
     AcquisitionTaskOut,
     BaseAcquisitionTask,
@@ -32,6 +32,12 @@ from app.tools.helper import get_task_out
 
 
 task_router = APIRouter(dependencies=[Depends(get_current_user)])
+
+
+class TaskReorder(BaseModel):
+    """Task reorder model."""
+
+    task_ids: list[UUID]
 
 
 @task_router.post("/task/new", response_model=AcquisitionTaskOut | DAGTaskOut, status_code=201, tags=["tasks"])
@@ -70,6 +76,7 @@ async def create_task(
             )
     if payload.is_template is False and payload.workflow_id is None:
         raise HTTPException(status_code=400, detail="Task instance needs workflow_id.")
+    # The position of the new task is automatically set to the end of the workflow in add_task_data
     if not (task := await task_dal.add_task_data(payload=payload, creator=user.username)):
         raise HTTPException(status_code=404, detail="Could not create task")
 
@@ -133,6 +140,7 @@ async def create_task_from_template(
             status_code=400,
             detail="Invalid link to workflow. Instance needs to refer to instance, template to template.",
         )
+    # The position of the new task is automatically set to the end of the workflow in add_task_data
     if not (task := await task_dal.add_task_data(payload=new_task, creator=user.username)):
         raise HTTPException(status_code=404, detail="Could not create task.")
 
@@ -251,6 +259,25 @@ async def delete_task(task_id: UUID | str, user: Annotated[User, Depends(get_cur
         raise HTTPException(status_code=404, detail=message)
 
 
+@task_router.put("/task/reorder", response_model=None, status_code=204, tags=["tasks"])
+async def reorder_tasks(
+    payload: TaskReorder,
+    user: Annotated[User, Depends(get_current_user)],
+) -> None:
+    """Reorder tasks by updating their position.
+
+    Parameters
+    ----------
+    payload
+        Task reorder pydantic model containing list of task IDs in the new order
+    """
+    print(LOG_CALL_DELIMITER)
+    print("Username:", user.username)
+    print("task_ids:", payload.task_ids)
+    if not await task_dal.reorder_tasks_data(task_ids=payload.task_ids):
+        raise HTTPException(status_code=404, detail="Could not reorder tasks")
+
+
 @task_router.put("/task/{task_id}", response_model=AcquisitionTaskOut | DAGTaskOut, status_code=200, tags=["tasks"])
 async def update_task(
     task_id: UUID | str,
@@ -295,3 +322,6 @@ async def update_task(
         message = "Could not update workflow, either because it does not exist, or for another reason."
         raise HTTPException(status_code=404, detail=message)
     return await get_task_out(data=task_updated)
+
+
+

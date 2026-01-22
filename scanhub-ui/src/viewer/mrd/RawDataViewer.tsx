@@ -47,7 +47,8 @@ echartsUse([
   ToolboxComponent,
   CanvasRenderer,
 ]);
-const echarts = { init, use: echartsUse };
+const echartsCore = { init, use: echartsUse };
+import { dataApi } from '../../api';
 
 
 export default function RawDataViewer({ item }: { item: ItemSelection }) {
@@ -310,12 +311,43 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
     colorPalette,
   ]);
 
+  // Handle MRD download
+  async function handleDownload() {
+    if (!workflowId || !resolvedTaskId || !selectedResultId) return;
+
+    try {
+      const response = await dataApi.downloadMRD(workflowId, resolvedTaskId, selectedResultId, { responseType: 'blob' });
+
+      // Extract filename from content-disposition if possible, or use a default
+      const contentDisposition = response.headers['content-disposition'];
+      let filename = 'data.mrd';
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename="(.+)"/);
+        if (match) filename = match[1];
+      }
+
+      // Create link from blob
+      const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (e) {
+      console.error("Failed to download MRD", e);
+    }
+  }
+
   // Render (no early returns)
   const showEmpty = (idsError || !results || results.length === 0) && !idsLoading;
 
   return (
 
-    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: 'calc(100vh - var(--Navigation-height) - var(Status-height)) - 50', p: 2, gap: 1}}>
+    <Stack sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: '100%', p: 1, gap: 1, overflow: 'hidden' }}>
       <Controls
         metaCount={metaQuery.data?.acquisitions?.length ?? 0}
         results={results}
@@ -337,8 +369,9 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
         setAcqRange={setAcqRange}
         currentAcq={currentAcq}
         setCurrentAcq={setCurrentAcq}
+        onDownload={handleDownload}
       />
-      <Card variant="outlined" color="neutral" sx={{ p: 0.5, height: '100%' }}>
+      <Card variant="outlined" color="neutral" sx={{ p: 0.5, flex: 1, minHeight: 0 }}>
         {
           showEmpty ? (
             <Container maxWidth={false} sx={{ width: '50%', mt: 5, justifyContent: 'center' }}>
@@ -357,7 +390,7 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
               }}
             >
               <ReactECharts
-                echarts={echarts}
+                echarts={echartsCore}
                 option={option}
                 notMerge
                 lazyUpdate

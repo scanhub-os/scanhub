@@ -2,7 +2,7 @@
 import asyncio
 
 from sdk.client import Client
-from scanhub_libraries.models import AcquisitionPayload, DeviceDetails
+from scanhub_libraries.models import AcquisitionPayload, DeviceDetails, CalibrationType
 import os
 import json
 import logging
@@ -17,9 +17,23 @@ async def perform_scan(client, payload: AcquisitionPayload):
     # Print device parameters obtained
     print("Retrieved device parameters dict: ", payload.device_parameter)
 
+    directory = Path(__file__).resolve().parent
+
+    if CalibrationType.FREQUENCY in payload.calibration:
+        print("Performing frequency calibration...")
+        # Upload MRD result
+        file_path = directory / "frequency_calibration.mrd"
+        await client.upload_file_result(
+            file_path=file_path,
+            name="frequency_calibration.mrd",
+            parameter=payload.device_parameter,
+            task_id=str(payload.id),
+            user_access_token=payload.access_token,
+    )
+
     # Simulate some workload
-    delay_per_step = 1
-    for percentage in range(10):
+    delay_per_step = 0.5
+    for percentage in range(9):
         await asyncio.sleep(delay_per_step)
         await client.send_scanning_status(
             progress=(percentage+1)*10,
@@ -28,11 +42,18 @@ async def perform_scan(client, payload: AcquisitionPayload):
         )
 
     # Upload MRD result
-    directory = Path(__file__).resolve().parent
-    file_path = directory / "data.mrd"
+    file_path = directory / "data_osi.mrd"
+    # file_path = directory / "data_caliber.mrd"
     await client.upload_file_result(
         file_path=file_path,
+        name="acquisition_data",
         parameter=payload.device_parameter,
+        task_id=str(payload.id),
+        user_access_token=payload.access_token,
+    )
+
+    await client.send_scanning_status(
+        progress=100,
         task_id=str(payload.id),
         user_access_token=payload.access_token,
     )

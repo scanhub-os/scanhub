@@ -1,83 +1,61 @@
-# Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
-# SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
-
 """Dagster IO Manager for mrpro IData object."""
-from dataclasses import dataclass
-from pathlib import Path
+from typing import List
+from upath import UPath
 
-from dagster import ConfigurableIOManager, InputContext, OutputContext
+from dagster import InputContext, OutputContext
 from mrpro.data import IData
-from scanhub_libraries.resources.dag_config import DAGConfiguration
+
+from orchestrator.io.base import ScanHubIOManager
 
 
-@dataclass
-class IDataContext:
-    """Context definition for IData IO manager."""
-
-    data: IData
-    dag_config: DAGConfiguration
-
-
-class IDataIOManager(ConfigurableIOManager):
+class IDataIOManager(ScanHubIOManager):
     """IO manager for mrpro IData object."""
 
-    def handle_output(self, context: OutputContext, obj: IDataContext) -> None:
-        """Handle the output of a data processing step by saving the data as DICOM files.
+    def _get_path(self, context: OutputContext) -> UPath:
+        """Resolve the path for an asset.
 
-        Args:
-            context (OutputContext): The context object providing logging and metadata methods.
-            obj (IDataContext): The data context containing the data and DAG configuration.
-
-        Raises:
-            AttributeError: If the output directory is not defined in the DAG configuration.
-
-        Side Effects:
-            - Saves the data as DICOM files in the specified output directory.
-            - Adds output metadata including the output directory path and list of stored files.
-
+        Overrides ScanHubIOManager._get_path to return the output directory directly,
+        without appending the asset key. This is required because the exam-manager
+        expects files to be directly in the result directory.
         """
-        # Decide where to write based on asset key
-        if not obj.dag_config.output_directory:
-            context.log.error("Output directory not defined")
-            raise AttributeError
-        directory_path = Path(obj.dag_config.output_directory)
+        if hasattr(context.resources, "dag_config"):
+            dag_config = context.resources.dag_config
+            return UPath(dag_config.output_directory)
+        return super()._get_path(context)
 
-        # Save data as dicom to result folder
-        obj.data.to_dicom_folder(directory_path)
-
-        # Surface paths in the UI and for hooks/sensors
+    def dump_to_path(self, context: OutputContext, obj: IData, path: UPath) -> None:
+        """Save IData to directory."""
+        if path.exists():
+            import shutil
+            shutil.rmtree(path)
+            
+        # path (UPath) will be converted to string, UPath creates dir structure if needed? 
+        # mrpro expects parent to exist?
+        # to_dicom_folder creates the folder itself.
+        # But parents?
+        # path.parent.mkdir(parents=True, exist_ok=True)
+        # Actually UPath might need specific handling, but for local FS str(path) is fine.
+        
+        # Ensure parent exists just in case
+        path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Assuming mrpro supports path-like string or Path object
+        obj.to_dicom_folder(str(path))
+        
+        stored_files = [p.name for p in path.iterdir() if p.is_file()]
         context.add_output_metadata({
-            "output_directory": str(directory_path.resolve()),
-            "stored_files": [p.name for p in directory_path.iterdir() if p.is_file()],
+            "output_directory": str(path),
+            "stored_files": stored_files,
         })
 
-    def load_input(self, context: InputContext) -> IData:
-        """Load input DICOM data from a specified directory using metadata from the provided context.
+    def load_from_path(self, context: InputContext, path: UPath) -> IData:
+        """Load IData from directory."""
+        return IData.from_dicom_folder(str(path))
 
-        Args:
-            context (InputContext): The context containing metadata and logging utilities.
-
-        Returns:
-            IData: An IData instance loaded from the DICOM folder.
-
-        Raises:
-            AttributeError: If required metadata or the output directory is missing.
-            FileNotFoundError: If the specified DICOM folder does not exist.
-
-        Logs:
-            Errors are logged if metadata or directory information is missing or invalid.
-
-        """
-        if (meta := context.metadata) is None:
-            context.log.error("No metadata, cannot save result")
-            raise AttributeError
-        dcm_folder = meta.get("output_directory")
-        if not dcm_folder:
-            context.log.error("Missing directory to load dicom files")
-            raise AttributeError
-        dcm_path = Path(dcm_folder)
-        if not dcm_path.exists():
-            msg = f"DICOM folder does not exist: {dcm_path}"
-            context.log.error(msg)
-            raise FileNotFoundError(msg)
-        return IData.from_dicom_folder(str(dcm_path))
+    def load_from_files(self, files: List[str]) -> IData:
+        """Load IData from file list."""
+        if not files:
+            return None
+        
+        folder = UPath(files[0]).parent
+        return IData.from_dicom_folder(str(folder))

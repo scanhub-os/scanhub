@@ -229,29 +229,45 @@ class Client:
                 log.error("Scan callback not defined.")
                 await self.state_machine.transition(
                     DeviceStatus.ERROR,
-                    context={"error_message": "Scan callback not defined."},
+                    context={
+                        "error_message": "Scan callback not defined.",
+                        "task_id": str(payload.id),
+                        "user_access_token": payload.access_token,
+                    },
                 )
                 return
-            await self.state_machine.transition(DeviceStatus.BUSY, context={"progress": 0})
+            await self.state_machine.transition(DeviceStatus.BUSY, context={
+                "progress": 0,
+                "task_id": str(payload.id),
+                "user_access_token": payload.access_token,
+            })
             await self.scan_callback(payload)
-            await self.state_machine.transition(DeviceStatus.ONLINE)
             log.info(f"Scan task {task_id} completed successfully.")
 
         except asyncio.CancelledError:
             log.warning(f"Scan task {task_id} cancelled.")
             await self.state_machine.transition(
                 DeviceStatus.ERROR,
-                context={"error_message": "Scan cancelled"},
+                context={
+                    "error_message": "Scan cancelled",
+                    "task_id": str(payload.id),
+                    "user_access_token": payload.access_token,
+                },
             )
         except Exception as exc:
             log.exception(f"Scan task {task_id} failed: {exc}")
             await self.state_machine.transition(
                 DeviceStatus.ERROR,
-                context={"error_message": str(exc)},
+                context={
+                    "error_message": str(exc),
+                    "task_id": str(payload.id),
+                    "user_access_token": payload.access_token,
+                },
             )
         finally:
             async with self._task_lock:
                 self.active_tasks.pop(task_id, None)
+            await self.state_machine.transition(DeviceStatus.ONLINE)
 
     async def cancel_scan(self, task_id: str) -> None:
         """Cancel an active scan."""
@@ -307,12 +323,16 @@ class Client:
     async def upload_file_result(
         self,
         file_path: str | Path,
+        name: str,
         parameter: dict,
         task_id: str,
         user_access_token: str,
     ) -> None:
         """Enqueue file upload task."""
-        await self.upload_queue.put((Path(file_path), parameter, task_id, user_access_token))
+        # Ensure that the file name has the correct suffix
+        if not name.endswith(file_path.suffix):
+            name += file_path.suffix
+        await self.upload_queue.put((Path(file_path), name, parameter, task_id, user_access_token))
         msg = f"Queued file for upload: {file_path}"
         log.info(msg)
 
@@ -320,13 +340,13 @@ class Client:
         """Background worker to upload files sequentially with retry logic."""
         while True:
             try:
-                file_path, parameter, task_id, user_token = await self.upload_queue.get()
+                file_path, name, parameter, task_id, user_token = await self.upload_queue.get()
                 attempt, success = 0, False
 
                 while not success and attempt < MAX_FILE_UPLOAD_ATTEMPTS:
                     attempt += 1
                     try:
-                        await self._upload_file_direct(file_path, parameter, task_id, user_token)
+                        await self._upload_file_direct(file_path, name, parameter, task_id, user_token)
                         success = True
                         msg = f"Uploaded file {file_path} successfully."
                         log.info(msg)
@@ -349,7 +369,7 @@ class Client:
                 msg = f"Uploader error: {exc}"
                 log.error(msg)
 
-    async def _upload_file_direct(self, path: Path, parameter: dict, task_id: str, user_access_token: str) -> None:
+    async def _upload_file_direct(self, path: Path, name: str, parameter: dict, task_id: str, user_access_token: str) -> None:
         """Perform actual streaming of a file to the backend."""
         if not path.exists():
             raise FileNotFoundError(path)
@@ -367,7 +387,7 @@ class Client:
             "command": "file-transfer",
             "task_id": task_id,
             "user_access_token": user_access_token,
-            "filename": path.name,
+            "filename": name,
             "size_bytes": size,
             "content_type": ct,
             "sha256": sha_hex,
@@ -378,63 +398,6 @@ class Client:
         with path.open("rb") as f:
             for chunk in iter(lambda: f.read(CHUNK), b""):
                 await self.websocket_handler.send_message(chunk)
-
-
-    # async def upload_file_result(
-    #     self,
-    #     file_path: str | Path,
-    #     parameter: dict,
-    #     task_id: str,
-    #     user_access_token: str,
-    # ) -> None:
-    #     """Send MRD file as base64-encoded binary."""
-    #     path = Path(file_path) if not isinstance(file_path, Path) else file_path
-    #     if not path.exists():
-    #         await self.state_machine.transition(
-    #             DeviceStatus.ERROR,
-    #             context={"error_message": f"File not found: {file_path}"},
-    #         )
-    #         raise FileNotFoundError(file_path)
-
-    #     try:
-    #         size = path.stat().st_size
-    #         content_type = (
-    #             "application/x-ismrmrd+hdf5" if path.suffix == ".mrd" else "application/octet-stream"
-    #         )
-
-    #         # Compute checksum
-    #         sha = hashlib.sha256()
-    #         with path.open("rb") as f:
-    #             for chunk in iter(lambda: f.read(CHUNK), b""):
-    #                 sha.update(chunk)
-    #         sha_hex = sha.hexdigest()
-
-    #         header = {
-    #             "command": "file-transfer",
-    #             "task_id": task_id,
-    #             "user_access_token": user_access_token,
-    #             "filename": path.name,
-    #             "size_bytes": size,
-    #             "content_type": content_type ,
-    #             "sha256": sha_hex,
-    #             "device_parameter": parameter,
-    #         }
-
-    #         # Send header
-    #         await self.websocket_handler.send_message(json.dumps(header))
-    #         # Stream file in binary frames
-    #         with path.open("rb") as f:
-    #             for chunk in iter(lambda: f.read(CHUNK), b""):
-    #                 await self.websocket_handler.send_message(chunk)
-
-    #         log.info("File %s uploaded successfully.", file_path)
-
-    #     except Exception as exc:
-    #         await self.state_machine.transition(
-    #             DeviceStatus.ERROR,
-    #             context={"error_message": f"Upload failed: {exc}"},
-    #         )
-    #         raise
 
     # --------------------------------------------------------------------------
     # Handler registration
