@@ -22,15 +22,9 @@ import Grid from '@mui/joy/Grid'
 import Textarea from '@mui/joy/Textarea'
 import Typography from '@mui/joy/Typography'
 import Sheet from '@mui/joy/Sheet';
-import Box from '@mui/joy/Box';
 import Chip from '@mui/joy/Chip';
 import ChipDelete from '@mui/joy/ChipDelete';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import ListItemContent from '@mui/joy/ListItemContent';
 // Icons
-import DeleteIcon from '@mui/icons-material/Delete';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import AddIcon from '@mui/icons-material/Add';
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -52,7 +46,6 @@ import {
 import { DeviceOut } from '../openapi/generated-client/device/api'
 import { ModalPropsCreate, ModalPropsModify } from '../interfaces/components.interface'
 import NotificationContext from '../NotificationContext'
-import { width } from '@mui/system';
 
 
 function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<AcquisitionTaskOut>) {
@@ -161,9 +154,9 @@ function AcquisitionTaskForm(props: ModalPropsCreate | ModalPropsModify<Acquisit
   };
 
   const getCalibrationName = (type: CalibrationType) => {
-    if (type === CalibrationType.FlipAngle) { return "Power calibration" }
-    if (type === CalibrationType.Frequency) { return "Frequency calibration" }
-    if (type === CalibrationType.Shims) { return "Shim calibration" }
+    if (type === CalibrationType.FlipAngle) { return 'Power calibration' }
+    if (type === CalibrationType.Frequency) { return 'Frequency calibration' }
+    if (type === CalibrationType.Shims) { return 'Shim calibration' }
   };
 
   const handleDrop = (e: React.DragEvent, targetIndex: number) => {

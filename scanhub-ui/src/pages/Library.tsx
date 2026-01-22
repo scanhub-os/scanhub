@@ -3,7 +3,6 @@ import Grid from '@mui/joy/Grid'
 import DeviceView from './DeviceView'
 import SequenceView from './SequenceView'
 import TemplatesView from './TemplatesView'
-import { flex } from '@mui/system'
 
 function LibraryView() {
     return (

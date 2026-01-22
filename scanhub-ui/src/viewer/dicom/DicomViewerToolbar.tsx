@@ -7,7 +7,6 @@
 import React from 'react'
 
 // Icons
-// import Divider from '@mui/joy/Divider'
 import IconButton from '@mui/joy/IconButton'
 import ToggleButtonGroup from '@mui/joy/ToggleButtonGroup'
 import Stack from '@mui/joy/Stack';
@@ -17,12 +16,6 @@ import { Enums } from '@cornerstonejs/tools';
 import { getToolGroup, tools } from './cornerstone/toolgroups';
 import { ViewLayout } from './cornerstone/viewLayouts';
 import { GridIcon } from './icons/LayoutIcons';
-
-
-// Layout icons (you can pick from @mui/icons-material or any other)
-import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
-import ViewModuleRoundedIcon from '@mui/icons-material/ViewModuleRounded';
-import ViewComfyRoundedIcon from '@mui/icons-material/ViewComfyRounded';
 
 
 interface DicomViewerToolbarProps {
@@ -97,7 +90,7 @@ function DiconViewerToolbar({ onLayoutChange, currentLayout }: DicomViewerToolba
             title={label ?? Tool.toolName}
             size='sm'
           >
-            <Icon fontSize="small" />
+            <Icon sx={{ fontSize: 'var(--IconFontSize)' }} />
           </IconButton>
         ))}
       </ToggleButtonGroup>
@@ -105,46 +98,5 @@ function DiconViewerToolbar({ onLayoutChange, currentLayout }: DicomViewerToolba
 
   )
 }
-
-{/* <IconButton value='Pan' aria-label='Pan image'>
-        <PanToolSharpIcon sx={{ p: 0.5 }} />
-      </IconButton>
-
-      <IconButton value='Zoom' aria-label='Zoom image'>
-        <ZoomInSharpIcon />
-      </IconButton>
-
-      <IconButton value='Rotate' aria-label='Rotate image'>
-        <RotateLeftSharpIcon />
-      </IconButton>
-
-      <IconButton value='Wwwc' aria-label='Contrast and brightness'>
-        <ContrastSharpIcon sx={{ p: 0.2 }} />
-      </IconButton>
-
-      <Divider orientation='vertical' />
-
-      <IconButton value='Length' aria-label='Measure length'>
-        <StraightenSharpIcon />
-      </IconButton>
-
-      <IconButton value='Angle' aria-label='Measure angle'>
-        <SquareFootSharpIcon />
-      </IconButton>
-
-      <IconButton value='Bidirectional' aria-label='Bidirectional'>
-        <VerticalAlignCenterSharpIcon />
-      </IconButton>
-
-      <IconButton value='FreehandRoi' aria-label='Draw custom region of interest'>
-        <HighlightAltSharpIcon sx={{ p: 0.2 }} />
-      </IconButton>
-
-      <IconButton value='Eraser' aria-label='Erase'>
-        <AutoFixNormalSharpIcon sx={{ p: 0.2 }} />
-      </IconButton> */}
-//     </ToggleButtonGroup>
-//   )
-// }
 
 export default DiconViewerToolbar

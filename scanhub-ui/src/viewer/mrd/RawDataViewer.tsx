@@ -338,7 +338,7 @@ export default function RawDataViewer({ item }: { item: ItemSelection }) {
       link.parentNode?.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
     } catch (e) {
-      console.error("Failed to download MRD", e);
+      console.error('Failed to download MRD', e);
     }
   }
 

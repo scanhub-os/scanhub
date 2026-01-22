@@ -14,7 +14,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import NotificationContext from '../NotificationContext'
 import Navigation from '../components/Navigation'
 import LoginContext from '../LoginContext'
-import StatusBar from '../components/StatusBar'
 
 
 export default function App() {

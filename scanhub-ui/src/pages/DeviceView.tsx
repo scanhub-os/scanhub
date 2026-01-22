@@ -9,8 +9,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 
 import Box from '@mui/joy/Box'
 import Add from '@mui/icons-material/Add'
-import IconButton from '@mui/joy/IconButton'
-import AddSharpIcon from '@mui/icons-material/AddSharp'
 import LinearProgress from '@mui/joy/LinearProgress'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
@@ -21,10 +19,9 @@ import Sheet from '@mui/joy/Sheet'
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp'
 import ModalClose from '@mui/joy/ModalClose'
-import Textarea from '@mui/joy/Textarea'
 import Button from '@mui/joy/Button'
-import Editor from "@monaco-editor/react";
-import { Card } from "@mui/joy";
+import Editor from '@monaco-editor/react';
+import { Card } from '@mui/joy';
 
 import NotificationContext from '../NotificationContext'
 import { deviceApi } from '../api'
@@ -34,7 +31,6 @@ import { DeviceOut } from '../openapi/generated-client/device/api'
 import DeviceCreateModal from '../components/DeviceCreateModal'
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
 import { haveSameKeys } from '../utils/Compare'
-import { flexGrow } from '@mui/system'
 
 
 export default function DeviceView() {
@@ -81,13 +77,10 @@ export default function DeviceView() {
     }
   })
 
-  const deviceParameterMutation = useMutation<unknown, unknown, { deviceId: string; parameter: Object }>({
+  const deviceParameterMutation = useMutation<unknown, unknown, { deviceId: string; parameter: object }>({
     mutationFn: async ({ deviceId, parameter }) => {
       await deviceApi.updateDeviceParameterApiV1DeviceParameterDeviceIdPut(deviceId, parameter)
-        .then(() => {
-          console.log('Modified device parameter:', parameter)
-          refetch()
-        })
+        .then(() => { refetch() })
         .catch((err) => {
           let errorMessage = null
           if (err?.response?.data?.detail) {
@@ -289,8 +282,8 @@ export default function DeviceView() {
                 scrollBeyondLastLine: false,
                 automaticLayout: true,
                 scrollbar: {
-                  vertical: "auto",   // only show vertical scrollbar when needed
-                  horizontal: "auto", // only show horizontal scrollbar when needed
+                  vertical: 'auto',   // only show vertical scrollbar when needed
+                  horizontal: 'auto', // only show horizontal scrollbar when needed
                   useShadows: false,  // cleaner look
                 },
               }}

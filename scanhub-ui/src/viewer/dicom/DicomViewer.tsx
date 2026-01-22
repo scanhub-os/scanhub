@@ -138,7 +138,7 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
     // Disable removed viewports
     for (const id of engineViewportIdsRef.current) {
       if (!layoutViewportIds.includes(id)) {
-        try { engine.disableElement(id); } catch { }
+        engine.disableElement(id);
       }
     }
 
@@ -328,7 +328,7 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
         }
       }
     } catch (e) {
-      console.error("Failed to download DICOM", e);
+      console.error('Failed to download DICOM', e);
     }
   }
 
@@ -361,8 +361,8 @@ export default function DicomViewer3D({ item }: { item: ItemSelection }) {
         }
       }
     } catch (e) {
-      console.error("Failed to export to XNAT", e);
-      alert("Failed to export to XNAT");
+      console.error('Failed to export to XNAT', e);
+      alert('Failed to export to XNAT');
     }
   }
 

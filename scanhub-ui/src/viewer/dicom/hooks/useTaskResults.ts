@@ -1,8 +1,7 @@
-// src/viewer/dicom/hooks/useTaskResults.ts
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { taskApi } from '../../../api';
-import { TaskType, ItemStatus, ResultOut } from '../../../openapi/generated-client/exam';
+import { ItemStatus, ResultOut } from '../../../openapi/generated-client/exam';
 import { ItemSelection } from '../../../interfaces/components.interface';
 
 /**
