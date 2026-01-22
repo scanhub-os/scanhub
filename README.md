@@ -1,5 +1,6 @@
 <p align="center">
-  <a href="https://brain-link.de/wp-content/uploads/2022/03/ScanHub.svg"><img src="https://brain-link.de/wp-content/uploads/2022/03/ScanHub.svg" width="300" height="150" alt="ScanHub"></a>
+    <img src="scanhub-ui/src/media/logo.png" width="100" alt="ScanHub">
+    <h1 align="center">ScanHub</h3>
 </p>
 
 <p align="center">
@@ -15,9 +16,9 @@
 </a>
 </p>
 
----
 
-# Scanhub
+
+# About
 
 ScanHub is intended to be a multi modal acquisition software, which allows individualizable, modular and cloud-based processing of functional and anatomical medical images. 
 It seamlessly merges the acquisition with the processing of complex data on a single platform.
