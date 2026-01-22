@@ -13,14 +13,17 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from scanhub_libraries.models import DeviceStatus
-from typing import ClassVar
+
+if TYPE_CHECKING:
+    from sdk.client import Client
 
 log = logging.getLogger("DeviceStateMachine")
 
 
-class InvalidStateTransition(Exception):
+class InvalidStateTransitionError(Exception):
     """Raised when an invalid state transition is attempted."""
 
 
@@ -34,7 +37,7 @@ class DeviceStateMachine:
         DeviceStatus.ERROR: [DeviceStatus.ONLINE, DeviceStatus.OFFLINE],
     }
 
-    def __init__(self, client) -> None:
+    def __init__(self, client: Client) -> None:
         """
         Initialize a new DeviceStateMachine.
 
@@ -53,7 +56,7 @@ class DeviceStateMachine:
         """Return the current device state."""
         return self._state
 
-    async def transition(self, new_state: DeviceStatus, *, context: dict | None = None) -> None:
+    async def transition(self, new_state: DeviceStatus, *, context: dict[str, Any] | None = None) -> None:
         """
         Perform a validated state transition and propagate it to the backend.
 
@@ -65,14 +68,14 @@ class DeviceStateMachine:
             if not self._is_valid_transition(new_state):
                 msg = f"Invalid transition {self._state.value} → {new_state.value}"
                 log.warning(msg)
-                raise InvalidStateTransition(msg)
+                raise InvalidStateTransitionError(msg)
 
             self._state = new_state
             await self._send_status(new_state, context)
             msg = f"[STATE] Transitioned to {new_state.value}"
             log.info(msg)
 
-    async def update_context(self, context: dict) -> None:
+    async def update_context(self, context: dict[str, Any]) -> None:
         """
         Update contextual data (e.g., progress) without changing state.
 
@@ -91,7 +94,7 @@ class DeviceStateMachine:
         valid_next = self._VALID_TRANSITIONS.get(self._state, [])
         return new_state in valid_next
 
-    async def _send_status(self, status: DeviceStatus, context: dict | None = None) -> None:
+    async def _send_status(self, status: DeviceStatus, context: dict[str, Any] | None = None) -> None:
         """Propagate state/context to backend."""
         context = context or {}
         try:
@@ -103,7 +106,7 @@ class DeviceStateMachine:
             # Local state is still updated; the next progress or state update after reconnect will re-sync.
             log.warning(f"Suppressed send failure during {status.value}: {e}")
 
-    def _build_status_message(self, status: DeviceStatus, context: dict) -> str:
+    def _build_status_message(self, status: DeviceStatus, context: dict[str, Any]) -> str:
         """Format a JSON message for WebSocket transmission."""
         message = {
             "command": "update_status",

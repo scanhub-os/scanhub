@@ -17,10 +17,10 @@ import logging
 from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any, Optional
-from sdk.device_state_machine import DeviceStateMachine
 
 from scanhub_libraries.models import AcquisitionPayload, DeviceDetails, DeviceStatus
 
+from sdk.device_state_machine import DeviceStateMachine
 from sdk.websocket_handler import WebSocketHandler
 
 MAX_FILE_UPLOAD_ATTEMPTS = 3
@@ -93,14 +93,14 @@ class Client:
         self.scan_callback: Optional[Callable[[AcquisitionPayload], Awaitable[None]]] = None
 
         # Task management
-        self.active_tasks: dict[str, asyncio.Task] = {}
+        self.active_tasks: dict[str, asyncio.Task[Any]] = {}
         self._task_lock = asyncio.Lock()
 
         # Device state machine
         self.state_machine = DeviceStateMachine(self)
 
         # Create file upload queue
-        self.upload_queue: asyncio.Queue = asyncio.Queue()
+        self.upload_queue: asyncio.Queue[tuple[Path, str, dict[str, Any], str, str]] = asyncio.Queue()
 
     # --------------------------------------------------------------------------
     # Core lifecycle
@@ -324,15 +324,16 @@ class Client:
         self,
         file_path: str | Path,
         name: str,
-        parameter: dict,
+        parameter: dict[str, Any],
         task_id: str,
         user_access_token: str,
     ) -> None:
         """Enqueue file upload task."""
         # Ensure that the file name has the correct suffix
-        if not name.endswith(file_path.suffix):
-            name += file_path.suffix
-        await self.upload_queue.put((Path(file_path), name, parameter, task_id, user_access_token))
+        path = Path(file_path)
+        if not name.endswith(path.suffix):
+            name += path.suffix
+        await self.upload_queue.put((path, name, parameter, task_id, user_access_token))
         msg = f"Queued file for upload: {file_path}"
         log.info(msg)
 
@@ -369,7 +370,13 @@ class Client:
                 msg = f"Uploader error: {exc}"
                 log.error(msg)
 
-    async def _upload_file_direct(self, path: Path, name: str, parameter: dict, task_id: str, user_access_token: str) -> None:
+    async def _upload_file_direct(
+        self,
+        path: Path, name: str,
+        parameter: dict[str, Any],
+        task_id: str,
+        user_access_token: str,
+    ) -> None:
         """Perform actual streaming of a file to the backend."""
         if not path.exists():
             raise FileNotFoundError(path)
