@@ -9,9 +9,11 @@ It includes functionalities for:
 Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
 SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 """
+import asyncio
 import hashlib
 import json
 import os
+import time
 from pathlib import Path
 from secrets import compare_digest, token_hex
 from typing import Annotated, Dict, Optional
@@ -38,8 +40,6 @@ from scanhub_libraries.models import (
 )
 from scanhub_libraries.security import compute_complex_password_hash
 from sqlalchemy import exc
-import time
-import asyncio
 
 import app.api.exam_requests as exam_requests
 from app.api.dal import dal_get_device, dal_update_device
@@ -62,6 +62,7 @@ device_last_seen: Dict[UUID, float] = {}
 
 
 async def send_json(websocket, payload: dict):
+    """Send json payload via websocket."""
     try:
         await websocket.send_json(payload)
     except WebSocketDisconnect:
@@ -85,12 +86,13 @@ async def start_scan_via_websocket(
         Details of the scan and the device to scan on.
 
     """
-    # Get sequence
-    sequence = exam_requests.get_sequence(task.sequence_id, access_token)
-    # Get device
+    # Get sequence and device
+    if task.sequence_id is None:
+        raise HTTPException(status_code=404, detail="Missing sequence ID")
     if task.device_id is None:
         raise HTTPException(status_code=404, detail="Missing device ID")
 
+    sequence = exam_requests.get_sequence(task.sequence_id, access_token)
 
     # Use parameter state to prevent triggering a device twice
     # if task.device_id in dict_id_parameters:
@@ -164,6 +166,7 @@ async def connection_with_valid_id_and_token(websocket: WebSocket) -> UUID:
 
 # Coroutine to monitor device status depending on ping-pong
 async def monitor_devices():
+    """Monitor device online/offline status."""
     while True:
         now = time.time()
         for dev, last_seen in device_last_seen.items():
@@ -206,7 +209,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             # ---------- Receive file/data from device
             elif command == "file-transfer":
-                await handle_file_transfer(websocket, message, device_id)            
+                await handle_file_transfer(websocket, message, device_id)
 
             else:
                 await send_json(websocket, {"command": "feedback", "message": f"Unknown command: {command}"})
