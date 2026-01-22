@@ -38,6 +38,7 @@ Functions
    device-manager.app.api.exam_requests.create_blank_result
    device-manager.app.api.exam_requests.delete_blank_result
    device-manager.app.api.exam_requests.set_result
+   device-manager.app.api.exam_requests.get_result
 
 
 Module Contents
@@ -163,5 +164,23 @@ Module Contents
    Raises
    ------
        HTTPException: If the result update fails (status code not 200).
+
+
+.. py:function:: get_result(result_id: str, user_access_token: str) -> scanhub_libraries.models.ResultOut
+
+   Fetch result by ID from the exam manager service.
+
+   Args
+   ----
+       result_id (str): The unique identifier of the result to retrieve.
+       user_access_token (str): The user's access token for authentication.
+
+   Returns
+   -------
+       ResultOut | None: The result object if found and valid.
+
+   Raises
+   ------
+       HTTPException: If the result is not found (404).
 
 

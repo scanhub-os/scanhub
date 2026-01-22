@@ -471,6 +471,9 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#device-manager.app.api.exam_requests.set_result" title="device-manager.app.api.exam_requests.set_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_result</span></code></a>(→ scanhub_libraries.models.ResultOut)</p></td>
 <td><p>Update a result in the exam manager service.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#device-manager.app.api.exam_requests.get_result" title="device-manager.app.api.exam_requests.get_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_result</span></code></a>(→ scanhub_libraries.models.ResultOut)</p></td>
+<td><p>Fetch result by ID from the exam manager service.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -642,6 +645,31 @@ user_access_token (str): The user’s access token for authentication.</p>
 </section>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="device-manager.app.api.exam_requests.get_result">
+<span class="sig-prename descclassname"><span class="pre">device-manager.app.api.exam_requests.</span></span><span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">scanhub_libraries.models.ResultOut</span></span></span><a class="headerlink" href="#device-manager.app.api.exam_requests.get_result" title="Link to this definition">#</a></dt>
+<dd><p>Fetch result by ID from the exam manager service.</p>
+<section id="id14">
+<h3>Args<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>result_id (str): The unique identifier of the result to retrieve.
+user_access_token (str): The user’s access token for authentication.</p>
+</div></blockquote>
+</section>
+<section id="id15">
+<h3>Returns<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>ResultOut | None: The result object if found and valid.</p>
+</div></blockquote>
+</section>
+<section id="id16">
+<h3>Raises<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p>HTTPException: If the result is not found (404).</p>
+</div></blockquote>
+</section>
+</dd></dl>
+
 </section>
 </section>
 
@@ -686,6 +714,7 @@ user_access_token (str): The user’s access token for authentication.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device-manager.app.api.exam_requests.create_blank_result"><code class="docutils literal notranslate"><span class="pre">create_blank_result()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device-manager.app.api.exam_requests.delete_blank_result"><code class="docutils literal notranslate"><span class="pre">delete_blank_result()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device-manager.app.api.exam_requests.set_result"><code class="docutils literal notranslate"><span class="pre">set_result()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device-manager.app.api.exam_requests.get_result"><code class="docutils literal notranslate"><span class="pre">get_result()</span></code></a></li>
 </ul>
 </li>
 </ul>
