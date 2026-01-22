@@ -34,7 +34,6 @@ from scanhub_libraries.models import (
     SetResult,
     TaskType,
     WorkflowOut,
-    CalibrationType,
 )
 from scanhub_libraries.resources import DAG_CONFIG_KEY
 from scanhub_libraries.resources.dag_config import DAGConfiguration
