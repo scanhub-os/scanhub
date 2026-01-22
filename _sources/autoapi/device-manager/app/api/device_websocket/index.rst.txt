@@ -69,6 +69,9 @@ Module Contents
    :async:
 
 
+   Send json payload via websocket.
+
+
 .. py:function:: start_scan_via_websocket(task: scanhub_libraries.models.AcquisitionTaskOut, access_token: Annotated[str, Depends(oauth2_scheme)])
    :async:
 
@@ -91,6 +94,9 @@ Module Contents
 
 .. py:function:: monitor_devices()
    :async:
+
+
+   Monitor device online/offline status.
 
 
 .. py:function:: websocket_endpoint(websocket: fastapi.WebSocket)
