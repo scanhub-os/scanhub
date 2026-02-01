@@ -43,6 +43,14 @@ class DeviceStatus(str, Enum):
     ERROR = "ERROR"
 
 
+class CalibrationType(str, Enum):
+    """Pydantic definition of calibration methods."""
+
+    FLIPANGLE = "flip-angle"
+    FREQUENCY = "frequency"
+    SHIMS = "shims"
+
+
 class ItemStatus(str, Enum):
     """Task status enum."""
 
@@ -186,6 +194,7 @@ class BaseTask(BaseModel):
     status: ItemStatus
     progress: int
     is_template: bool
+    position: int = 0
 
 
 class TaskOut(BaseTask):
@@ -211,8 +220,9 @@ class BaseAcquisitionTask(BaseTask):
 
     task_type: Literal[TaskType.ACQUISITION]
     device_id: UUID | None = None
-    sequence_id: str    # sequence ID is a mongo db ObjectId, which is not a UUID
-    acquisition_parameter: AcquisitionParameter
+    calibration: list[CalibrationType] = []
+    sequence_id: str | None = None    # sequence ID is a mongo db ObjectId, which is not a UUID
+    acquisition_parameter: AcquisitionParameter | None = None
 
 
 class AcquisitionLimits(BaseModel):

@@ -4,18 +4,23 @@
  *
  * Initialize cornerstone 3D.
  */
-import {init as csInit, cache} from '@cornerstonejs/core';
+import { init as csInit, cache } from '@cornerstonejs/core';
 import { init as toolsInit } from '@cornerstonejs/tools';
-import { init as dicomImageLoaderInit } from '@cornerstonejs/dicom-image-loader';
+// import { init as dicomImageLoaderInit } from '@cornerstonejs/dicom-image-loader';
+import dicomImageLoader from '@cornerstonejs/dicom-image-loader';
 import { registerDefaultTools } from './toolgroups';
 
+
 let initialized: Promise<void> | null = null;
+let currentGetAccessToken: (() => string | undefined) | undefined;
 
 // Nuke all image cache (careful in bigger apps)
 cache.purgeCache();
 
 
 export function initCornerstone(getAccessToken?: () => string | undefined) {
+  currentGetAccessToken = getAccessToken;
+
   if (!initialized) {
     initialized = (
       async () => {
@@ -27,17 +32,17 @@ export function initCornerstone(getAccessToken?: () => string | undefined) {
         toolsInit();
 
         // Init dicom image loader
-        await dicomImageLoaderInit({
+        await dicomImageLoader.init({
           strict: false,
           maxWebWorkers: navigator.hardwareConcurrency || 1,
-          beforeSend: (_xhr, _imageId, defaultHeaders) => {
-
+          beforeSend: (xhr: XMLHttpRequest) => {
+            const token = currentGetAccessToken?.();
+            if (token) {
+              xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+            }
             // Optional: Prevent caching
-            _xhr.setRequestHeader('Cache-Control', 'no-cache');
-            _xhr.setRequestHeader('Pragma', 'no-cache');
-
-            const token = getAccessToken?.();
-            return token ? { ...defaultHeaders, Authorization: `Bearer ${token}` } : defaultHeaders;
+            xhr.setRequestHeader('Cache-Control', 'no-cache');
+            xhr.setRequestHeader('Pragma', 'no-cache');
           },
         });
 

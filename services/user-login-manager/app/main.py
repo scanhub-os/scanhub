@@ -3,6 +3,7 @@
 
 """User login manager main file."""
 
+import os
 
 from fastapi import FastAPI, HTTPException
 from fastapi.exception_handlers import (
@@ -32,6 +33,9 @@ origins = [
     "http://localhost:8080",    # frontend via nginx-proxy with custom port
     "https://localhost:8443",   # frontend via nginx-proxy with custom port
 ]
+
+if extra_origins := os.getenv("SCANHUB_ALLOWED_ORIGINS"):
+    origins.extend(extra_origins.split(","))
 
 app.add_middleware(
     CORSMiddleware,

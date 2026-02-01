@@ -137,22 +137,34 @@ export interface AcquisitionTaskOut {
     'is_template': boolean;
     /**
      * 
+     * @type {number}
+     * @memberof AcquisitionTaskOut
+     */
+    'position'?: number;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof AcquisitionTaskOut
      */
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {string}
+     * @type {Array<CalibrationType>}
      * @memberof AcquisitionTaskOut
      */
-    'sequence_id': string;
+    'calibration'?: Array<CalibrationType>;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof AcquisitionTaskOut
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof AcquisitionTaskOut
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {string}
@@ -226,6 +238,31 @@ export interface AcquisitionTaskOutAcquisitionLimits {
 
 
 /**
+ * 
+ * @export
+ * @interface AcquisitionTaskOutAcquisitionParameter
+ */
+export interface AcquisitionTaskOutAcquisitionParameter {
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_scaling': XYZ;
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_offset': XYZ;
+    /**
+     * 
+     * @type {XYZ}
+     * @memberof AcquisitionTaskOutAcquisitionParameter
+     */
+    'fov_rotation': XYZ;
+}
+/**
  * Represents a task for data acquisition in the system.
  * @export
  * @interface BaseAcquisitionTask
@@ -281,22 +318,34 @@ export interface BaseAcquisitionTask {
     'is_template': boolean;
     /**
      * 
+     * @type {number}
+     * @memberof BaseAcquisitionTask
+     */
+    'position'?: number;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof BaseAcquisitionTask
      */
     'device_id'?: DeviceId;
     /**
      * 
-     * @type {string}
+     * @type {Array<CalibrationType>}
      * @memberof BaseAcquisitionTask
      */
-    'sequence_id': string;
+    'calibration'?: Array<CalibrationType>;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof BaseAcquisitionTask
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof BaseAcquisitionTask
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
 }
 
 
@@ -354,6 +403,12 @@ export interface BaseDAGTask {
      * @memberof BaseDAGTask
      */
     'is_template': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseDAGTask
+     */
+    'position'?: number;
     /**
      * 
      * @type {string}
@@ -515,6 +570,21 @@ export interface BaseWorkflow {
 
 
 /**
+ * Pydantic definition of calibration methods.
+ * @export
+ * @enum {string}
+ */
+
+export const CalibrationType = {
+    FlipAngle: 'flip-angle',
+    Frequency: 'frequency',
+    Shims: 'shims'
+} as const;
+
+export type CalibrationType = typeof CalibrationType[keyof typeof CalibrationType];
+
+
+/**
  * 
  * @export
  * @interface Comment
@@ -575,6 +645,12 @@ export interface DAGTaskOut {
      * @memberof DAGTaskOut
      */
     'is_template': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof DAGTaskOut
+     */
+    'position'?: number;
     /**
      * 
      * @type {string}
@@ -819,6 +895,12 @@ export interface GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInne
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
@@ -828,13 +910,19 @@ export interface GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInne
      * @type {any}
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
-    'sequence_id': any;
+    'calibration'?: any;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof GetAllWorkflowTasksApiV1ExamTaskAllWorkflowIdGet200ResponseInner
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1166,6 +1254,12 @@ export interface ResponseCreateTaskApiV1ExamTaskNewPost {
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
@@ -1175,13 +1269,19 @@ export interface ResponseCreateTaskApiV1ExamTaskNewPost {
      * @type {any}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
-    'sequence_id': any;
+    'calibration'?: any;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseCreateTaskApiV1ExamTaskNewPost
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1307,6 +1407,12 @@ export interface ResponseCreateTaskFromTemplateApiV1ExamTaskPost {
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
@@ -1316,13 +1422,19 @@ export interface ResponseCreateTaskFromTemplateApiV1ExamTaskPost {
      * @type {any}
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
-    'sequence_id': any;
+    'calibration'?: any;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseCreateTaskFromTemplateApiV1ExamTaskPost
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1448,6 +1560,12 @@ export interface ResponseGetTaskApiV1ExamTaskTaskIdGet {
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
@@ -1457,13 +1575,19 @@ export interface ResponseGetTaskApiV1ExamTaskTaskIdGet {
      * @type {any}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
-    'sequence_id': any;
+    'calibration'?: any;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseGetTaskApiV1ExamTaskTaskIdGet
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1589,6 +1713,12 @@ export interface ResponseUpdateTaskApiV1ExamTaskTaskIdPut {
     'is_template': any;
     /**
      * 
+     * @type {any}
+     * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
+     */
+    'position'?: any;
+    /**
+     * 
      * @type {DeviceId}
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
@@ -1598,13 +1728,19 @@ export interface ResponseUpdateTaskApiV1ExamTaskTaskIdPut {
      * @type {any}
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
-    'sequence_id': any;
+    'calibration'?: any;
     /**
      * 
-     * @type {AcquisitionParameter}
+     * @type {SequenceId}
      * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
      */
-    'acquisition_parameter': AcquisitionParameter;
+    'sequence_id'?: SequenceId;
+    /**
+     * 
+     * @type {AcquisitionTaskOutAcquisitionParameter}
+     * @memberof ResponseUpdateTaskApiV1ExamTaskTaskIdPut
+     */
+    'acquisition_parameter'?: AcquisitionTaskOutAcquisitionParameter;
     /**
      * 
      * @type {any}
@@ -1757,6 +1893,13 @@ export type ResultType = typeof ResultType[keyof typeof ResultType];
 export interface SeqFileExtension {
 }
 /**
+ * 
+ * @export
+ * @interface SequenceId
+ */
+export interface SequenceId {
+}
+/**
  * Update result model.
  * @export
  * @interface SetResult
@@ -1802,6 +1945,19 @@ export interface TaskId {
  * @interface TaskId1
  */
 export interface TaskId1 {
+}
+/**
+ * Task reorder model.
+ * @export
+ * @interface TaskReorder
+ */
+export interface TaskReorder {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TaskReorder
+     */
+    'task_ids': Array<string>;
 }
 /**
  * Task type enum.
@@ -1994,6 +2150,52 @@ export interface XmlFileExtension {
 export const DataApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD: async (workflowId: string, taskId: string, resultId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('downloadMRD', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('downloadMRD', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('downloadMRD', 'resultId', resultId)
+            const localVarPath = `/api/v1/exam/mrd/{workflow_id}/{task_id}/{result_id}/download`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
          * @summary Get DICOM result
          * @param {string} workflowId 
@@ -2152,6 +2354,56 @@ export const DataApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat: async (workflowId: string, taskId: string, resultId: string, filename: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('uploadToXnat', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('uploadToXnat', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('uploadToXnat', 'resultId', resultId)
+            // verify required parameter 'filename' is not null or undefined
+            assertParamExists('uploadToXnat', 'filename', filename)
+            const localVarPath = `/api/v1/exam/xnat/upload/{workflow_id}/{task_id}/{result_id}/{filename}`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)))
+                .replace(`{${"filename"}}`, encodeURIComponent(String(filename)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2162,6 +2414,21 @@ export const DataApiAxiosParamCreator = function (configuration?: Configuration)
 export const DataApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DataApiAxiosParamCreator(configuration)
     return {
+        /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadMRD(workflowId, taskId, resultId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataApi.downloadMRD']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
          * @summary Get DICOM result
@@ -2211,6 +2478,22 @@ export const DataApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['DataApi.getMrdMeta']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadToXnat(workflowId, taskId, resultId, filename, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DataApi.uploadToXnat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2221,6 +2504,18 @@ export const DataApiFp = function(configuration?: Configuration) {
 export const DataApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = DataApiFp(configuration)
     return {
+        /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD(workflowId: string, taskId: string, resultId: string, options?: any): AxiosPromise<any> {
+            return localVarFp.downloadMRD(workflowId, taskId, resultId, options).then((request) => request(axios, basePath));
+        },
         /**
          * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
          * @summary Get DICOM result
@@ -2261,6 +2556,19 @@ export const DataApiFactory = function (configuration?: Configuration, basePath?
         getMrdMeta(workflowId: string, taskId: string, resultId: string, options?: any): AxiosPromise<MRDMetaResponse> {
             return localVarFp.getMrdMeta(workflowId, taskId, resultId, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: any): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -2271,6 +2579,20 @@ export const DataApiFactory = function (configuration?: Configuration, basePath?
  * @extends {BaseAPI}
  */
 export class DataApi extends BaseAPI {
+    /**
+     * Download the full MRD file.
+     * @summary Download MRD file
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataApi
+     */
+    public downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig) {
+        return DataApiFp(this.configuration).downloadMRD(workflowId, taskId, resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Serve a DICOM instance.    - If it\'s already a DICOM Part-10 file → return FileResponse (supports HTTP Range).   - Else → convert to Part-10 in memory and return StreamingResponse.  Headers:   - \'application/dicom\' content type   - inline disposition (avoid forced download)   - \'Cache-Control: no-transform\' to prevent proxies from gzipping (which breaks Range offsets)
      * @summary Get DICOM result
@@ -2315,6 +2637,21 @@ export class DataApi extends BaseAPI {
      */
     public getMrdMeta(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig) {
         return DataApiFp(this.configuration).getMrdMeta(workflowId, taskId, resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Upload a DICOM file to XNAT test database.
+     * @summary Upload DICOM result to XNAT
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {string} filename 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DataApi
+     */
+    public uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig) {
+        return DataApiFp(this.configuration).uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -3694,6 +4031,52 @@ export const ResultsApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD: async (workflowId: string, taskId: string, resultId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('downloadMRD', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('downloadMRD', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('downloadMRD', 'resultId', resultId)
+            const localVarPath = `/api/v1/exam/mrd/{workflow_id}/{task_id}/{result_id}/download`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Get all existing results of a certain task.  Parameters ---------- task_id     Id of parental task  Returns -------     List of task pydantic output model
          * @summary Get All Task Results
          * @param {TaskId} taskId 
@@ -3972,6 +4355,56 @@ export const ResultsApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat: async (workflowId: string, taskId: string, resultId: string, filename: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workflowId' is not null or undefined
+            assertParamExists('uploadToXnat', 'workflowId', workflowId)
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('uploadToXnat', 'taskId', taskId)
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('uploadToXnat', 'resultId', resultId)
+            // verify required parameter 'filename' is not null or undefined
+            assertParamExists('uploadToXnat', 'filename', filename)
+            const localVarPath = `/api/v1/exam/xnat/upload/{workflow_id}/{task_id}/{result_id}/{filename}`
+                .replace(`{${"workflow_id"}}`, encodeURIComponent(String(workflowId)))
+                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+                .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)))
+                .replace(`{${"filename"}}`, encodeURIComponent(String(filename)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -4006,6 +4439,21 @@ export const ResultsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteResultApiV1ExamResultResultIdDelete(resultId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ResultsApi.deleteResultApiV1ExamResultResultIdDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadMRD(workflowId, taskId, resultId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResultsApi.downloadMRD']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -4097,6 +4545,22 @@ export const ResultsApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ResultsApi.setResultApiV1ExamResultResultIdPut']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadToXnat(workflowId, taskId, resultId, filename, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ResultsApi.uploadToXnat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -4126,6 +4590,18 @@ export const ResultsApiFactory = function (configuration?: Configuration, basePa
          */
         deleteResultApiV1ExamResultResultIdDelete(resultId: ResultId, options?: any): AxiosPromise<void> {
             return localVarFp.deleteResultApiV1ExamResultResultIdDelete(resultId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Download the full MRD file.
+         * @summary Download MRD file
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadMRD(workflowId: string, taskId: string, resultId: string, options?: any): AxiosPromise<any> {
+            return localVarFp.downloadMRD(workflowId, taskId, resultId, options).then((request) => request(axios, basePath));
         },
         /**
          * Get all existing results of a certain task.  Parameters ---------- task_id     Id of parental task  Returns -------     List of task pydantic output model
@@ -4198,6 +4674,19 @@ export const ResultsApiFactory = function (configuration?: Configuration, basePa
         setResultApiV1ExamResultResultIdPut(resultId: ResultId, setResult: SetResult, options?: any): AxiosPromise<ResultOut> {
             return localVarFp.setResultApiV1ExamResultResultIdPut(resultId, setResult, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Upload a DICOM file to XNAT test database.
+         * @summary Upload DICOM result to XNAT
+         * @param {string} workflowId 
+         * @param {string} taskId 
+         * @param {string} resultId 
+         * @param {string} filename 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: any): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -4230,6 +4719,20 @@ export class ResultsApi extends BaseAPI {
      */
     public deleteResultApiV1ExamResultResultIdDelete(resultId: ResultId, options?: RawAxiosRequestConfig) {
         return ResultsApiFp(this.configuration).deleteResultApiV1ExamResultResultIdDelete(resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Download the full MRD file.
+     * @summary Download MRD file
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResultsApi
+     */
+    public downloadMRD(workflowId: string, taskId: string, resultId: string, options?: RawAxiosRequestConfig) {
+        return ResultsApiFp(this.configuration).downloadMRD(workflowId, taskId, resultId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4313,6 +4816,21 @@ export class ResultsApi extends BaseAPI {
      */
     public setResultApiV1ExamResultResultIdPut(resultId: ResultId, setResult: SetResult, options?: RawAxiosRequestConfig) {
         return ResultsApiFp(this.configuration).setResultApiV1ExamResultResultIdPut(resultId, setResult, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Upload a DICOM file to XNAT test database.
+     * @summary Upload DICOM result to XNAT
+     * @param {string} workflowId 
+     * @param {string} taskId 
+     * @param {string} resultId 
+     * @param {string} filename 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ResultsApi
+     */
+    public uploadToXnat(workflowId: string, taskId: string, resultId: string, filename: string, options?: RawAxiosRequestConfig) {
+        return ResultsApiFp(this.configuration).uploadToXnat(workflowId, taskId, resultId, filename, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4568,6 +5086,46 @@ export const TasksApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
+         * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+         * @summary Reorder Tasks
+         * @param {TaskReorder} taskReorder 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reorderTasksApiV1ExamTaskReorderPut: async (taskReorder: TaskReorder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'taskReorder' is not null or undefined
+            assertParamExists('reorderTasksApiV1ExamTaskReorderPut', 'taskReorder', taskReorder)
+            const localVarPath = `/api/v1/exam/task/reorder`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication OAuth2PasswordBearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "OAuth2PasswordBearer", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(taskReorder, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Update an existing task.  Parameters ---------- task_id     Id of the workflow to be updated payload     Task pydantic base model  Returns -------     Task pydantic output model  Raises ------ HTTPException     404: Not found
          * @summary Update Task
          * @param {TaskId} taskId 
@@ -4701,6 +5259,19 @@ export const TasksApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+         * @summary Reorder Tasks
+         * @param {TaskReorder} taskReorder 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async reorderTasksApiV1ExamTaskReorderPut(taskReorder: TaskReorder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.reorderTasksApiV1ExamTaskReorderPut(taskReorder, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TasksApi.reorderTasksApiV1ExamTaskReorderPut']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Update an existing task.  Parameters ---------- task_id     Id of the workflow to be updated payload     Task pydantic base model  Returns -------     Task pydantic output model  Raises ------ HTTPException     404: Not found
          * @summary Update Task
          * @param {TaskId} taskId 
@@ -4784,6 +5355,16 @@ export const TasksApiFactory = function (configuration?: Configuration, basePath
          */
         getTaskApiV1ExamTaskTaskIdGet(taskId: TaskId, options?: any): AxiosPromise<ResponseGetTaskApiV1ExamTaskTaskIdGet> {
             return localVarFp.getTaskApiV1ExamTaskTaskIdGet(taskId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+         * @summary Reorder Tasks
+         * @param {TaskReorder} taskReorder 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        reorderTasksApiV1ExamTaskReorderPut(taskReorder: TaskReorder, options?: any): AxiosPromise<void> {
+            return localVarFp.reorderTasksApiV1ExamTaskReorderPut(taskReorder, options).then((request) => request(axios, basePath));
         },
         /**
          * Update an existing task.  Parameters ---------- task_id     Id of the workflow to be updated payload     Task pydantic base model  Returns -------     Task pydantic output model  Raises ------ HTTPException     404: Not found
@@ -4877,6 +5458,18 @@ export class TasksApi extends BaseAPI {
      */
     public getTaskApiV1ExamTaskTaskIdGet(taskId: TaskId, options?: RawAxiosRequestConfig) {
         return TasksApiFp(this.configuration).getTaskApiV1ExamTaskTaskIdGet(taskId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Reorder tasks by updating their position.  Parameters ---------- payload     Task reorder pydantic model containing list of task IDs in the new order
+     * @summary Reorder Tasks
+     * @param {TaskReorder} taskReorder 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TasksApi
+     */
+    public reorderTasksApiV1ExamTaskReorderPut(taskReorder: TaskReorder, options?: RawAxiosRequestConfig) {
+        return TasksApiFp(this.configuration).reorderTasksApiV1ExamTaskReorderPut(taskReorder, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

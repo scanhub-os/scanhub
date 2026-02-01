@@ -12,12 +12,8 @@ def list_dagster_jobs() -> list[dict]:
         ... on RepositoryConnection {
           nodes {
             name
-            location {
-              name
-            }
-            pipelines {
-              name
-            }
+            location { name }
+            jobs { name }
           }
         }
       }
@@ -30,8 +26,10 @@ def list_dagster_jobs() -> list[dict]:
     for repo in data["data"]["repositoriesOrError"]["nodes"]:
         repo_name = repo["name"]
         location_name = repo["location"]["name"]
-        for pipeline in repo["pipelines"]:
+        for pipeline in repo["jobs"]:
             job_name = pipeline["name"]
+            if job_name == "__ASSET_JOB":
+              continue
             job_id = f"{location_name}::{repo_name}::{job_name}"
             jobs.append({
                 "job_id": job_id,

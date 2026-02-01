@@ -10,7 +10,7 @@ import Box from '@mui/joy/Box'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
 
-import { AcquisitionTaskOut, DAGTaskOut, TaskType } from '../openapi/generated-client/exam'
+import { AcquisitionTaskOut, DAGTaskOut, TaskType, CalibrationType } from '../openapi/generated-client/exam'
 
 
 function capitalize(str: string){
@@ -24,6 +24,19 @@ function TaskInfo({ data: task }: { data: AcquisitionTaskOut | DAGTaskOut }) {
 
   const datetime_created = new Date(task.datetime_created)
   const datetime_updated = task.datetime_updated ? new Date(String(task.datetime_updated)) : undefined
+
+  const getCalibrationSequenceString = (sequence: CalibrationType[]) => {
+    // Mapping each enum value to its display string
+    const labels = (sequence ?? []).map((item) => {
+      if (item === CalibrationType.Frequency) return 'Freq.';
+      if (item === CalibrationType.FlipAngle) return 'Power';
+      if (item === CalibrationType.Shims) return 'Shims';
+      return item;
+    });
+
+    // Join them with a comma and a space
+    return labels.join(' > ');
+  }
 
   return (
     <Box sx={{display: 'flex', alignItems: 'stretch'}}>
@@ -76,6 +89,16 @@ function TaskInfo({ data: task }: { data: AcquisitionTaskOut | DAGTaskOut }) {
             <Typography fontSize='sm'>Sequence ID</Typography>
             <Typography level='body-sm' textColor='text.primary'>
               {task.sequence_id ? String(task.sequence_id) : '-'}
+            </Typography>
+          </>
+        }
+
+        {
+          task.task_type === TaskType.Acquisition && 'calibration' in task && task.calibration &&
+          <>
+            <Typography fontSize='sm'>Calibration</Typography>
+            <Typography level='body-sm' textColor='text.primary'>
+              { getCalibrationSequenceString(task.calibration) }
             </Typography>
           </>
         }

@@ -11,7 +11,6 @@ TODO: How to handle tasks, and where to trigger the device task?
 
 """
 import json
-import logging
 import os
 from pathlib import Path
 from typing import Annotated, Any
@@ -19,8 +18,8 @@ from uuid import UUID
 
 import requests
 from dagster import RunConfig
-from dagster_graphql import DagsterGraphQLClient
-from fastapi import APIRouter, Depends, HTTPException, status
+from dagster_graphql import DagsterGraphQLClient, DagsterGraphQLClientError
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordBearer
 from scanhub_libraries.models import (
@@ -36,7 +35,8 @@ from scanhub_libraries.models import (
     TaskType,
     WorkflowOut,
 )
-from scanhub_libraries.resources import SCANHUB_RESOURCE_KEY, JobConfigResource
+from scanhub_libraries.resources import DAG_CONFIG_KEY
+from scanhub_libraries.resources.dag_config import DAGConfiguration
 from scanhub_libraries.security import get_current_user
 from scanhub_libraries.utils import calc_age_from_date
 
@@ -103,6 +103,11 @@ async def trigger_task(
     print(f"\n>>>>>\nPatient: {patient.__dict__}\n")
 
     if task.task_type == TaskType.ACQUISITION:
+        if len(task.calibration) == 0 and task.sequence_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_204_NO_CONTENT,
+                detail="Neither sequence nor calibration specified.",
+            )
         return handle_acquisition_task_trigger(task=task, patient=patient, access_token=access_token)
 
     if task.task_type == TaskType.DAG:
@@ -214,29 +219,31 @@ def handle_dag_task_trigger(
         new_result_out = create_blank_result(task_id, access_token)
 
         # Use internal url and http (not https and port 8443) because callback endpoint is requested from another docker container
-        callback_endpoint = f"{WORKFLOW_MANAGER_URI}/result_ready/{task.id}/{new_result_out.id}"
-        device_parameter_update_endpoint = f"{DEVICE_MANAGER_URI}/parameter/"
-        result_directory = f"/data/{str(task.workflow_id)}/{str(task.id)}/{str(new_result_out.id)}/"
+        result_directory = f"{DATA_LAKE_DIR}/{str(task.workflow_id)}/{str(task.id)}/{str(new_result_out.id)}/"
 
         # Trigger dagster job
         job_name, repository, location = parse_job_id(task.dag_id)
         print(f"Triggering job: {job_name} in repository: {repository} at location: {location}")
-        run_id = dg_client.submit_job_execution(
-            job_name=job_name,
-            repository_location_name=location,
-            repository_name=repository,
-            run_config=RunConfig(resources={
-                SCANHUB_RESOURCE_KEY: JobConfigResource(
-                    callback_url=callback_endpoint,
-                    user_access_token=access_token,
-                    input_files=job_inputs,
-                    output_dir=result_directory,
-                    task_id=task_id,
-                    exam_id=exam_id,
-                    update_device_parameter_base_url=device_parameter_update_endpoint,
-                ),
-            }),
-        )
+
+        resource_cfg = {
+            DAG_CONFIG_KEY: DAGConfiguration(
+                output_directory=result_directory,
+                input_files=job_inputs,
+                user_access_token=access_token,
+                output_result_id=str(new_result_out.id),
+            ),
+        }
+
+        try:
+            run_id = dg_client.submit_job_execution(
+                job_name=job_name,
+                repository_location_name=location,
+                repository_name=repository,
+                run_config=RunConfig(resources=resource_cfg),
+            )
+        except DagsterGraphQLClientError as exc:
+            raise HTTPException(status_code=400, detail=f"Dagster submission failed: {exc}") from exc
+
         if run_id:
             # Update result
             new_result_out = set_result(
@@ -256,15 +263,15 @@ def handle_dag_task_trigger(
         _ = set_task(task.id, updated_task, access_token)
         return {"message": "Failed to start DAG, no run_id..."}
     except Exception as exc:
-        logging.error(f"Failed to trigger DAG: {exc}")
+        print(f"Failed to trigger DAG: {exc}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc))
 
 
-@router.post("/result_ready/{task_id}/{result_id}", tags=["WorkflowManager"])
+@router.post("/result_ready/{result_id}", tags=["WorkflowManager"])
 async def callback_results_ready(
-    task_id: UUID | str,
     result_id: UUID | str,
-    access_token: Annotated[str, Depends(oauth2_scheme)]
+    access_token: Annotated[str, Depends(oauth2_scheme)],
+    success: bool = Body(..., embed=True),
 ) -> dict[str, Any]:
     """
     Notify that results are ready via callback endpoint.
@@ -277,49 +284,45 @@ async def callback_results_ready(
     -------
         dict: A dictionary containing a success message.
     """
-    if not isinstance(task := get_task(task_id, access_token), DAGTaskOut):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Result ready callback received invalid task_id: {task.id}",
-        )
     if not isinstance(result := get_result(result_id, access_token), ResultOut):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Result ready callback received invalid task_id: {task.id}",
+            detail=f"Result ready callback received invalid result_id: {result_id.id}",
         )
-
-    print("\n>>>>>\nCallback received: ", result.model_dump_json())
-
-    # Update task status
-    task.status = ItemStatus.FINISHED
-    task.progress = 100
-    _ = set_task(task.id, task, access_token)
-
-    # Get a list of dicom files from the result directory
-    result_dir = Path(result.directory)
-    dicom_files = sorted(result_dir.rglob("*.dcm"))
-
-    # Get dicom location in shared data lake
-    workflow_folder = result_dir.parts[-3]
-    task_folder = result_dir.parts[-2]
-    result_folder = result_dir.parts[-1]
-
-    # Add file names to the result
-    result.files = [str(_file.name) for _file in dicom_files]
-    # Add meta information
-    meta_update = {
-        "instance_count": len(dicom_files),
-        "instances": [
-            f"{DICOM_BASE_URI}{workflow_folder}/{task_folder}/{result_folder}/{_file.name}" for _file in dicom_files
-        ],
-    }
-    if result.meta is not None:
-        result.meta.update(meta_update)
+    if not isinstance(task := get_task(result.task_id, access_token), DAGTaskOut):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Result ready callback received invalid task_id: {result.task_id}",
+        )
+    # Update task/result depending on success
+    if not success:
+        task.status = ItemStatus.ERROR
+        task.progress = 0
+        _ = set_task(task.id, task, access_token)
     else:
-        result.meta = meta_update
-    print(f"Updated result: {result.model_dump_json()}")
-    _ = set_result(result_id=result.id, payload=result, user_access_token=access_token)
+        task.status = ItemStatus.FINISHED
+        task.progress = 100
+        _ = set_task(task.id, task, access_token)
 
+        # Get a list of dicom files from the result directory
+        result_dir = Path(result.directory)
+        dcm_files = sorted(result_dir.rglob("*.dcm"))
+        result.files = [str(_file.name) for _file in dcm_files]
+
+        # Get dicom location in data lake and update meta
+        workflow_folder, task_folder, result_folder = result_dir.parts[-3:]
+        meta_update = {
+            "instance_count": len(dcm_files),
+            "instances": [
+                f"{DICOM_BASE_URI}{workflow_folder}/{task_folder}/{result_folder}/{_file.name}" for _file in dcm_files
+            ],
+        }
+        if result.meta is not None:
+            result.meta.update(meta_update)
+        else:
+            result.meta = meta_update
+        print(f"Updated result: {result.model_dump_json()}")
+        _ = set_result(result_id=result.id, payload=result, user_access_token=access_token)
     return {"message": "Results ready notification sent successfully."}
 
 

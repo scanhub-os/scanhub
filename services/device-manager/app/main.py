@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 
 """Main file for the device manager service."""
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request, Response
@@ -44,12 +45,16 @@ app = FastAPI(
 #   Wildcard ["*"] excludes eeverything that involves credentials
 #   Better specify explicitly the allowed origins
 #   See: https://fastapi.tiangolo.com/tutorial/cors/
+
 origins = [
     # "http://localhost",       # frontend via nginx-proxy with default port
     # "https://localhost",      # frontend via nginx-proxy with default port
     "http://localhost:8080",    # frontend via nginx-proxy with custom port
     "https://localhost:8443",   # frontend via nginx-proxy with custom port
 ]
+
+if extra_origins := os.getenv("SCANHUB_ALLOWED_ORIGINS"):
+    origins.extend(extra_origins.split(","))
 
 app.add_middleware(
     CORSMiddleware,

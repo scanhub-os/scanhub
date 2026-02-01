@@ -5,6 +5,7 @@
 
 """Exam manager main file."""
 
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -32,6 +33,9 @@ ORIGINS = [
     "https://localhost:8443",
     "https://localhost:3000",
 ]
+
+if extra_origins := os.getenv("SCANHUB_ALLOWED_ORIGINS"):
+    ORIGINS.extend(extra_origins.split(","))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

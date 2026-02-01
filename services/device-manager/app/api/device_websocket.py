@@ -9,9 +9,11 @@ It includes functionalities for:
 Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
 SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 """
+import asyncio
 import hashlib
 import json
 import os
+import time
 from pathlib import Path
 from secrets import compare_digest, token_hex
 from typing import Annotated, Dict, Optional
@@ -53,7 +55,23 @@ router = APIRouter()
 dict_id_websocket: Dict[UUID, WebSocket] = {}
 
 # Maintain device parameters from acquisition start
-dict_id_parameters: dict[UUID, dict] = {}
+# dict_id_parameters: dict[UUID, dict] = {}
+
+# Maintain latest device activity (pong)
+device_last_seen: Dict[UUID, float] = {}
+
+
+async def send_json(websocket, payload: dict):
+    """Send json payload via websocket."""
+    try:
+        await websocket.send_json(payload)
+    except WebSocketDisconnect:
+        # Socket is already closed — just log and ignore
+        print("WebSocket already closed, cannot send:", payload)
+    except RuntimeError as exc:
+        # Starlette sometimes raises RuntimeError when send called after close
+        print(f"RuntimeError while sending WS message: {exc}")
+
 
 @router.post("/start_scan_via_websocket", response_model={}, status_code=200, tags=["devices"])
 async def start_scan_via_websocket(
@@ -68,25 +86,33 @@ async def start_scan_via_websocket(
         Details of the scan and the device to scan on.
 
     """
-    # Get sequence
-    sequence = exam_requests.get_sequence(task.sequence_id, access_token)
-    # Get device
+    # Get sequence and device
+    if task.sequence_id is None:
+        raise HTTPException(status_code=404, detail="Missing sequence ID")
     if task.device_id is None:
         raise HTTPException(status_code=404, detail="Missing device ID")
+
+    sequence = exam_requests.get_sequence(task.sequence_id, access_token)
+
     # Use parameter state to prevent triggering a device twice
-    if task.device_id in dict_id_parameters:
-        raise HTTPException(status_code=404, detail="Device is busy")
+    # if task.device_id in dict_id_parameters:
+    #     raise HTTPException(status_code=404, detail="Device is busy")
+
+
     if not (device := await dal_get_device(task.device_id)):
         raise HTTPException(status_code=404, detail="Device not found")
     device_details = DeviceDetails(**device.__dict__)
-    dict_id_parameters[task.device_id] = device_details.parameter if device_details.parameter is not None else {}
+
+
+    # dict_id_parameters[task.device_id] = device_details.parameter if device_details.parameter is not None else {}
+
 
     payload = AcquisitionPayload(
         **task.model_dump(),
         sequence=sequence,
         mrd_header="header_xml_placeholder",  # Placeholder, should be filled with actual MRD header
         access_token=access_token,
-        device_parameter=dict_id_parameters[task.device_id],
+        device_parameter=device_details.parameter if device_details.parameter is not None else {},
     )
 
     if task.device_id in dict_id_websocket:
@@ -113,7 +139,7 @@ async def connection_with_valid_id_and_token(websocket: WebSocket) -> UUID:
     try:
         device_id = UUID(device_id_header)
     except ValueError:
-        print("Invalid device_id format:", device_id)
+        print("Invalid device_id format:", device_id_header)
         raise WebSocketException(code=1008, reason="Invalid device_id")
 
     if not (device := await dal_get_device(device_id)):
@@ -136,6 +162,17 @@ async def connection_with_valid_id_and_token(websocket: WebSocket) -> UUID:
 # but only to regular http endpoints.
 # pylint: disable=locally-disabled, too-many-branches
 # TODO improve overall logic and resilience
+
+
+# Coroutine to monitor device status depending on ping-pong
+async def monitor_devices():
+    """Monitor device online/offline status."""
+    while True:
+        now = time.time()
+        for dev, last_seen in device_last_seen.items():
+            if now - last_seen > 60:  # 1 minute timeout
+                await dal_update_device(dev, {"status": DeviceStatus.OFFLINE})
+        await asyncio.sleep(30)
 
 
 @router.websocket("/ws")
@@ -161,6 +198,11 @@ async def websocket_endpoint(websocket: WebSocket):
             if command == "register":
                 await handle_register(websocket, message, device_id)
 
+            # ---------- Response to heartbeat
+            elif command == "ping":
+                device_last_seen[device_id] = time.time()
+                await send_json(websocket, {"command": "pong"})
+
             # ---------- Update device status
             elif command == "update_status":
                 await handle_status_update(websocket, message, device_id)
@@ -170,7 +212,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 await handle_file_transfer(websocket, message, device_id)
 
             else:
-                await websocket.send_json({"command": "feedback", "message": f"Unknown command: {command}"})
+                await send_json(websocket, {"command": "feedback", "message": f"Unknown command: {command}"})
                 print("Received unknown command, which will be ignored:", command)
 
             command = None  # Reset command to avoid confusion in the next iteration
@@ -178,7 +220,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         print("WebSocketDisconnect")
         dict_id_websocket.pop(device_id, None)
-        dict_id_parameters.pop(device_id, None)
+        # dict_id_parameters.pop(device_id, None)
         print("Device disconnected:", device_id)
         # Set the status of the disconnected device to "disconnected"
         if not await dal_update_device(device_id, {"status": DeviceStatus.OFFLINE}):
@@ -191,68 +233,109 @@ async def handle_register(websocket: WebSocket, message: dict, device_id: UUID) 
     try:
         device_details = message.get("data")
         if not isinstance(device_details, dict):
-            await websocket.send_json({"message": "Invalid device details."})
+            await send_json(websocket, {"message": "Invalid device details."})
             return
         device_details_object = DeviceDetails(**device_details)
         device_details_object.status = DeviceStatus.ONLINE
         await dal_update_device(device_id, device_details_object.model_dump())
         print("Device registered.")
         # Send response to the device
-        await websocket.send_json({
+        await send_json(websocket, {
             "command": "feedback",
             "message": "Device registered successfully"})
     except exc.SQLAlchemyError as exception:
         print("Error registering device: ", exception)
-        await websocket.send_json({"message": "Error registering device" + str(exception)})
+        await send_json(websocket, {"message": "Error registering device" + str(exception)})
 
 
 async def handle_status_update(websocket: WebSocket, message: dict, device_id: UUID) -> None:
-    """Handle device status updates."""
-    print("Handle command 'update_status'...")
-    status_str = str(message.get("status"))
+    """Handle device status updates from the device SDK."""
+    print("Handle device status update...")
 
+    # Parse and validate status
+    status_str = str(message.get("status"))
     try:
         status = DeviceStatus(status_str)
     except ValueError:
-        await websocket.send_json({"message": f"Invalid status: {status_str}"})
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": f"Invalid status: {status_str}"
+        })
         return
 
+    # Update the device's current state in the DB
     if not await dal_update_device(device_id, {"status": status}):
         print("Error updating device, device_id:", device_id)
-        await websocket.send_json({"message": "Error updating device."})
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": "Error updating device state."
+        })
 
+    # Handle task-specific updates only when required
+    # For ONLINE/OFFLINE states, we don't expect a task_id or token
+    if status in (DeviceStatus.ONLINE, DeviceStatus.OFFLINE):
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": f"Device {status.value.upper()} acknowledged.",
+        })
+        return
+
+
+    # For BUSY or ERROR, these identifiers are required
+    task_id = message.get("task_id")
+    user_access_token = message.get("user_access_token")
+    if not task_id or not user_access_token:
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": "Missing task_id or user_access_token for task update."
+        })
+        return
+
+    # Retrieve and update the acquisition task
+    try:
+        task = exam_requests.get_task(str(task_id), str(user_access_token))
+    except Exception as exc:
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": f"Error fetching task: {exc}"
+        })
+        return
+
+    if not task:
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": f"Task not found for ID: {task_id}"
+        })
+        return
+
+    # Apply task state logic depending on device status
+    data = message.get("data", {})
     if status == DeviceStatus.ERROR:
-        task_id = str(message.get("task_id"))
-        user_access_token = str(message.get("user_access_token"))
-        if task_id and user_access_token:
-            task = exam_requests.get_task(task_id, user_access_token)
-            task.status = ItemStatus.ERROR
-            updated_task = exam_requests.set_task(task_id, task, user_access_token)
+        task.status = ItemStatus.ERROR
+        task.progress = task.progress or 0
+        error_message = data.get("error_message", "Unspecified device error.")
+        print(f"Device reported ERROR: {error_message}")
 
-    if status == DeviceStatus.BUSY:
-        data = message.get("data")
-        if data is None or "progress" not in data:
-            await websocket.send_json({"message": "Invalid data."})
-            return
-
-        task_id = str(message.get("task_id"))
-        user_access_token = str(message.get("user_access_token"))
-        task = exam_requests.get_task(task_id, user_access_token)
-        task.progress = int(data["progress"])
-        if task.progress == 100:
+    elif status == DeviceStatus.BUSY:
+        progress = int(data.get("progress", task.progress or 0))
+        task.progress = max(0, min(progress, 100))
+        if task.progress >= 100:
             task.status = ItemStatus.FINISHED
         else:
             task.status = ItemStatus.INPROGRESS
-        updated_task = exam_requests.set_task(task_id, task, user_access_token)
-        await websocket.send_json({
-            "command": "feedback",
-            "message": f"Acquisition task progress: {updated_task.progress}%",
-        })
 
-    await websocket.send_json({
-        "command": "feedback",
-        "message": "Device status updated."
-    })
+    # Persist and send feedback
+    try:
+        updated_task = exam_requests.set_task(str(task_id), task, str(user_access_token))
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": f"Device {status.value} update processed (progress={updated_task.progress}%)."
+        })
+    except Exception as exc:
+        await send_json(websocket, {
+            "command": "feedback",
+            "message": f"Could not update task: {exc}"
+        })
 
 
 async def handle_file_transfer(websocket: WebSocket, header: dict, device_id: UUID) -> None:
@@ -270,6 +353,7 @@ async def handle_file_transfer(websocket: WebSocket, header: dict, device_id: UU
     size_bytes: int = int(header["size_bytes"])
     # content_type: str = header.get("content_type")
     header_sha256: Optional[str] = header.get("sha256")
+    device_parameter: dict | None = header.get("device_parameter")
 
     # Locate task & result directory
     task = exam_requests.get_task(task_id, user_access_token)
@@ -306,7 +390,7 @@ async def handle_file_transfer(websocket: WebSocket, header: dict, device_id: UU
     if bytes_received != size_bytes:
         if tmp_path.exists():
             tmp_path.unlink()
-        await websocket.send_json({
+        await send_json(websocket, {
             "command": "feedback",
             "message": f"Incomplete file received ({bytes_received}/{size_bytes} bytes).",
         })
@@ -316,7 +400,7 @@ async def handle_file_transfer(websocket: WebSocket, header: dict, device_id: UU
     if header_sha256 and hasher.hexdigest() != header_sha256:
         if tmp_path.exists():
             tmp_path.unlink()
-        await websocket.send_json({
+        await send_json(websocket, {
             "command": "feedback",
             "message": "Checksum mismatch for uploaded file.",
         })
@@ -324,35 +408,34 @@ async def handle_file_transfer(websocket: WebSocket, header: dict, device_id: UU
 
     # os.replace(tmp_path, file_path)  # atomic finalize
     tmp_path.replace(file_path)
+    result_files = [file_path.name]
+
+    print("DEVICE PARAMETER: ", device_parameter)
 
     # Write device parameters if exist
-    parameter_path = result_directory / "device_parameter.json"
-    if parameter := dict_id_parameters.get(device_id):
+    if device_parameter:
+        parameter_path = result_directory / "device_parameter.json"
         data = {
             "device_id": str(device_id),
-            "parameter": parameter,
+            "parameter": device_parameter,
         }
         with parameter_path.open("w") as fh:
             json.dump(data, fh, indent=4)
+        result_files.append(parameter_path.name)
 
     # Set result
     set_result = SetResult(
         type=_pick_result_type(file_path.name),
         directory=str(result_directory),
-        files=[file_path.name, parameter_path.name],
+        files=result_files
     )
     print("Result to set: ", set_result.model_dump_json())
     result = exam_requests.set_result(str(blank_result.id), set_result, user_access_token)
 
-    # Update task status to FINISHED
-    task.status = ItemStatus.FINISHED
-    _ = exam_requests.set_task(task_id, task, user_access_token)
-    if dict_id_parameters.get(device_id):
-        del dict_id_parameters[device_id]
-
-    await websocket.send_json({
+    await send_json(websocket, {
         "command": "feedback",
         "message": f"File {result.id} saved to datalake: {file_path}",
+        "result_id": str(result.id),
     })
 
 

@@ -3,20 +3,32 @@
 
 """Definition of result API endpoints accessible through swagger UI."""
 
+import os
 import struct
+import tempfile
+import zipfile
 from typing import Annotated
 from uuid import UUID
 
+import httpx
+import requests
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import StreamingResponse
-from scanhub_libraries.models import MRDMetaResponse, ResultOut, SetResult, User
+from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.security import OAuth2PasswordBearer
+from scanhub_libraries.models import MRDMetaResponse, PatientOut, ResultOut, SetResult, User
 from scanhub_libraries.security import get_current_user
 from starlette.responses import Response
 
 import app.tools.mrd_provider as mrd
 from app import LOG_CALL_DELIMITER
-from app.dal import result_dal, task_dal
-from app.tools.dicom_provider import provide_p10_dicom, resolve_dicom_path
+from app.dal import exam_dal, result_dal, task_dal, workflow_dal
+from app.tools.dicom_provider import (
+    get_p10_dicom_bytes,
+    provide_p10_dicom,
+    resolve_dicom_path,
+)
+
+PREFIX_PATIENT_MANAGER = "http://patient-manager:8100/api/v1/patient"
 
 # Http status codes
 # 200 = Ok: GET, PUT
@@ -26,6 +38,8 @@ from app.tools.dicom_provider import provide_p10_dicom, resolve_dicom_path
 
 result_router = APIRouter(dependencies=[Depends(get_current_user)])
 
+# Define OAuth2 scheme for token-based authentication
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 @result_router.post("/result", response_model=ResultOut, status_code=201, tags=["results"])
 async def create_blank_result(task_id: str | UUID, user: Annotated[User, Depends(get_current_user)]) -> ResultOut:
@@ -216,6 +230,90 @@ async def get_dicom(
         raise HTTPException(status_code=500, detail=f"Failed to provide P10 DICOM: {e}")
 
 
+@result_router.post(
+    "/xnat/upload/{workflow_id}/{task_id}/{result_id}/{filename}",
+    operation_id="upload-to-xnat",
+    tags=["results", "data"],
+    summary="Upload DICOM result to XNAT",
+)
+async def upload_to_xnat(
+    workflow_id: str, task_id: str, result_id: str, filename: str, access_token: Annotated[str, Depends(oauth2_scheme)]
+) -> dict:
+    """Upload a DICOM file to XNAT test database."""
+    print(LOG_CALL_DELIMITER)
+    print(f"UPLOADING {filename} TO XNAT...")
+
+    headers = {"Authorization": "Bearer " + access_token}
+    dicom_path = resolve_dicom_path(workflow_id, task_id, result_id, filename)
+
+    xnat_host = os.getenv("XNAT_HOST", "http://host.docker.internal:8081")
+    xnat_user = os.getenv("XNAT_USER", "admin")
+    xnat_pass = os.getenv("XNAT_PASSWORD", "admin")
+    project_id = os.getenv("XNAT_PROJECT_ID", "A4IM")
+
+    # Fetch workflow and exam to get actual patient info
+    workflow = await workflow_dal.get_workflow_data(UUID(workflow_id))
+    if not workflow:
+        raise HTTPException(status_code=404, detail=f"Workflow not found: {workflow_id}")
+
+    exam = await exam_dal.get_exam_data(workflow.exam_id)
+    if not exam:
+        raise HTTPException(status_code=404, detail=f"Exam not found for workflow: {workflow_id}")
+
+    # Fetch patient details from patient-manager
+    get_patient_response = requests.get(f"{PREFIX_PATIENT_MANAGER}/{exam.patient_id}", headers=headers, timeout=3)
+    if get_patient_response.status_code != 200:
+        raise HTTPException(
+            status_code=get_patient_response.status_code,
+            detail="Failed to fetch patient with id=" + str(exam.patient_id),
+        )
+    patient_raw = get_patient_response.json()
+    patient = PatientOut(**patient_raw)
+
+    patient_name = f"{patient.first_name}^{patient.last_name}"
+    subject_id = str(patient.patient_id)
+    session_id = str(exam.id)
+
+    upload_url = (
+        f"{xnat_host}/data/services/import"
+        f"?project={project_id}&subject={subject_id}&session={session_id}&type=DICOM-zip&quarantine=false&overwrite=true"
+    )
+
+    try:
+        dicom_bytes = get_p10_dicom_bytes(
+            dicom_path,
+            patient_id=subject_id,
+            patient_name=patient_name,
+            study_description=session_id
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to prepare DICOM for XNAT: {e}")
+
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=True) as tmp_zip:
+        with zipfile.ZipFile(tmp_zip, "w") as zf:
+            zf.writestr(dicom_path.name, dicom_bytes)
+
+        tmp_zip.seek(0)
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            try:
+                files = {"file": (f"{filename}.zip", tmp_zip, "application/zip")}
+                response = await client.post(
+                    upload_url,
+                    auth=(xnat_user, xnat_pass),
+                    files=files,
+                )
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"XNAT upload request failed: {e}")
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=response.status_code,
+            detail=f"XNAT upload failed: {response.status_code} - {response.text}",
+        )
+
+    return {"status": "success", "xnat_response": response.text}
+
+
 
 @result_router.get(
     "/mrd/{workflow_id}/{task_id}/{result_id}/meta",
@@ -293,3 +391,36 @@ def get_mrd_binary(
                 yield view[i:i+step]
 
     return StreamingResponse(gen(), media_type="application/octet-stream")
+@result_router.get(
+    "/mrd/{workflow_id}/{task_id}/{result_id}/download",
+    operation_id="downloadMRD",
+    tags=["results", "data"],
+    summary="Download MRD file",
+    responses={
+        200: {
+            "description": "The raw MRD file.",
+            "content": {
+                "application/octet-stream": {
+                    "schema": {"type": "string", "format": "binary"},
+                },
+            },
+        },
+    },
+)
+async def download_mrd(
+    workflow_id: str,
+    task_id: str,
+    result_id: str,
+    user: Annotated[User, Depends(get_current_user)],
+):
+    """Download the full MRD file."""
+    try:
+        path = mrd.locate_mrd(workflow_id, task_id, result_id)
+    except FileNotFoundError:
+        raise HTTPException(404, "MRD file not found")
+
+    return FileResponse(
+        path=path,
+        media_type="application/octet-stream",
+        filename=path.name,
+    )

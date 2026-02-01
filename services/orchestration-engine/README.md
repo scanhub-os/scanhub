@@ -13,8 +13,9 @@ orchestration-engine
 ├── LICENSE
 ├── orchestrator/
 │   ├── jobs/
-│   ├── ops/
-│   ├── ressources/
+│   ├── assets/
+│   ├── io/
+│   ├── hooks.py
 │   └── repository.py
 ├── poetry.lock
 └── pyproject.toml
@@ -24,9 +25,10 @@ orchestration-engine
 - Dockerfile — Container build definition for this service
 - orchestrator/ — Python package with orchestration logic
     - jobs/ — Dagster jobs (pipelines/graphs) such as frequency calibration and image reconstruction
-    - ops/ — Reusable Dagster ops (atomic computation steps)
-    - repository.py — Dagster repository definition that registers jobs, ops, and resources
-    - ressources/ — Dagster resources (interfaces to external systems like device manager, storage, etc.)
+    - assets/ — Reusable Dagster ops (atomic computation steps)
+    - io/ — Assets, ops and io managers related to input and output
+    - hooks.py - Hooks are used to notify the backend upon success of job execution
+    - repository.py - Configuration/definition of the dagster repo components
 
 
 ## 🚀 Getting Started

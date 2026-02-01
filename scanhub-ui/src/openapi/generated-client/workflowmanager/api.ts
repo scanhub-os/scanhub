@@ -26,6 +26,19 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost
+ */
+export interface BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost
+     */
+    'success': boolean;
+}
+/**
+ * 
+ * @export
  * @interface HTTPValidationError
  */
 export interface HTTPValidationError {
@@ -42,13 +55,6 @@ export interface HTTPValidationError {
  * @interface ResultId
  */
 export interface ResultId {
-}
-/**
- * 
- * @export
- * @interface TaskId
- */
-export interface TaskId {
 }
 /**
  * 
@@ -193,18 +199,17 @@ export const WorkflowManagerApiAxiosParamCreator = function (configuration?: Con
         /**
          * Notify that results are ready via callback endpoint.  Args:     dag_id (str): The ID of the DAG.     access_token (str): The access token for authentication.  Returns -------     dict: A dictionary containing a success message.
          * @summary Callback Results Ready
-         * @param {TaskId} taskId 
          * @param {ResultId} resultId 
+         * @param {BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost} bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost: async (taskId: TaskId, resultId: ResultId, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'taskId' is not null or undefined
-            assertParamExists('callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost', 'taskId', taskId)
+        callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost: async (resultId: ResultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost: BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'resultId' is not null or undefined
-            assertParamExists('callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost', 'resultId', resultId)
-            const localVarPath = `/api/v1/workflowmanager/result_ready/{task_id}/{result_id}`
-                .replace(`{${"task_id"}}`, encodeURIComponent(String(taskId)))
+            assertParamExists('callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost', 'resultId', resultId)
+            // verify required parameter 'bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost' is not null or undefined
+            assertParamExists('callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost', 'bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost', bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost)
+            const localVarPath = `/api/v1/workflowmanager/result_ready/{result_id}`
                 .replace(`{${"result_id"}}`, encodeURIComponent(String(resultId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -223,9 +228,12 @@ export const WorkflowManagerApiAxiosParamCreator = function (configuration?: Con
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -317,15 +325,15 @@ export const WorkflowManagerApiFp = function(configuration?: Configuration) {
         /**
          * Notify that results are ready via callback endpoint.  Args:     dag_id (str): The ID of the DAG.     access_token (str): The access token for authentication.  Returns -------     dict: A dictionary containing a success message.
          * @summary Callback Results Ready
-         * @param {TaskId} taskId 
          * @param {ResultId} resultId 
+         * @param {BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost} bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost(taskId: TaskId, resultId: ResultId, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost(taskId, resultId, options);
+        async callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost(resultId: ResultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost: BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: any; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost(resultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowManagerApi.callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['WorkflowManagerApi.callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -366,13 +374,13 @@ export const WorkflowManagerApiFactory = function (configuration?: Configuration
         /**
          * Notify that results are ready via callback endpoint.  Args:     dag_id (str): The ID of the DAG.     access_token (str): The access token for authentication.  Returns -------     dict: A dictionary containing a success message.
          * @summary Callback Results Ready
-         * @param {TaskId} taskId 
          * @param {ResultId} resultId 
+         * @param {BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost} bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost(taskId: TaskId, resultId: ResultId, options?: any): AxiosPromise<{ [key: string]: any; }> {
-            return localVarFp.callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost(taskId, resultId, options).then((request) => request(axios, basePath));
+        callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost(resultId: ResultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost: BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options?: any): AxiosPromise<{ [key: string]: any; }> {
+            return localVarFp.callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost(resultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options).then((request) => request(axios, basePath));
         },
         /**
          * Endpoint to list the available tasks from the orchestration engine.  Returns -------     dict: A dictionary containing the list of available dagster jobs.
@@ -406,14 +414,14 @@ export class WorkflowManagerApi extends BaseAPI {
     /**
      * Notify that results are ready via callback endpoint.  Args:     dag_id (str): The ID of the DAG.     access_token (str): The access token for authentication.  Returns -------     dict: A dictionary containing a success message.
      * @summary Callback Results Ready
-     * @param {TaskId} taskId 
      * @param {ResultId} resultId 
+     * @param {BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost} bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof WorkflowManagerApi
      */
-    public callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost(taskId: TaskId, resultId: ResultId, options?: RawAxiosRequestConfig) {
-        return WorkflowManagerApiFp(this.configuration).callbackResultsReadyApiV1WorkflowmanagerResultReadyTaskIdResultIdPost(taskId, resultId, options).then((request) => request(this.axios, this.basePath));
+    public callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost(resultId: ResultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost: BodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options?: RawAxiosRequestConfig) {
+        return WorkflowManagerApiFp(this.configuration).callbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost(resultId, bodyCallbackResultsReadyApiV1WorkflowmanagerResultReadyResultIdPost, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

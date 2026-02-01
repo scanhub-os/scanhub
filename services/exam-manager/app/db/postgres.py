@@ -7,11 +7,19 @@ import os
 import uuid
 
 from pydantic import BaseModel
-from scanhub_libraries.models import AcquisitionLimits, AcquisitionParameter, ItemStatus, ResultType, TaskType
+from scanhub_libraries.models import (
+    AcquisitionLimits,
+    AcquisitionParameter,
+    CalibrationType,
+    ItemStatus,
+    ResultType,
+    TaskType,
+)
 from sqlalchemy import JSON, ForeignKey, String, create_engine, func
-from sqlalchemy.dialects.postgresql import ARRAY, UUID
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -103,7 +111,9 @@ class Workflow(Base):  # TBD: rename to "Workflow"
         onupdate=func.now(),
         nullable=True,  # pylint: disable=not-callable
     )
-    tasks: Mapped[list["Task"]] = relationship("Task", lazy="selectin", cascade="all, delete-orphan")
+    tasks: Mapped[list["Task"]] = relationship(
+        "Task", lazy="selectin", cascade="all, delete-orphan", order_by="Task.position"
+    )
     exam_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("exam.id"), nullable=True)
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
@@ -135,6 +145,7 @@ class Task(Base):
     status: Mapped[ItemStatus] = mapped_column(nullable=False)
     progress: Mapped[int] = mapped_column(nullable=False)
     is_template: Mapped[bool] = mapped_column(nullable=False, default=True)
+    position: Mapped[int] = mapped_column(nullable=False, default=0)
     results: Mapped[list["Result"]] = relationship("Result", lazy="selectin", cascade="all, delete-orphan")
 
     __mapper_args__ = {
@@ -154,9 +165,14 @@ class AcquisitionTask(Task):
     id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("task.id", ondelete="CASCADE"), primary_key=True, default=uuid.uuid4
     )
-    sequence_id: Mapped[str] = mapped_column(nullable=False)
+    sequence_id: Mapped[str] = mapped_column(nullable=True)
+    calibration: Mapped[list[CalibrationType]] = mapped_column(
+        type_=MutableList.as_mutable(JSONB),
+        nullable=False,
+        default=list,
+    )
     device_id: Mapped[uuid.UUID] = mapped_column(nullable=True)
-    acquisition_parameter: Mapped[AcquisitionParameter] = mapped_column(type_=JSON, nullable=False)
+    acquisition_parameter: Mapped[AcquisitionParameter] = mapped_column(type_=JSON, nullable=True)
     acquisition_limits: Mapped[AcquisitionLimits] = mapped_column(type_=JSON, nullable=True)
 
 

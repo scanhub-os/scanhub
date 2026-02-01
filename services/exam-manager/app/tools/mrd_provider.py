@@ -23,13 +23,15 @@ def locate_mrd(workflow_id: str, task_id: str, result_id: str) -> Path:
     """
     Build a file path.
 
-    /data_lake/{workflow_id}/{task_id}/{result_id}/data.mrd
+    /data_lake/{workflow_id}/{task_id}/{result_id}/*.mrd
     """
     # You may also look up a DB row here instead of building a path.
-    data_path = DATA_LAKE_DIR / workflow_id / task_id / result_id / "data.mrd"
-    if not data_path.exists() or not data_path.is_file():
-        raise FileNotFoundError(data_path)
-    return data_path
+    # You may also look up a DB row here instead of building a path.
+    result_dir = DATA_LAKE_DIR / workflow_id / task_id / result_id
+    try:
+        return next(result_dir.glob("*.mrd"))
+    except StopIteration:
+        raise FileNotFoundError(f"No .mrd file found in {result_dir}")
 
 
 @lru_cache(maxsize=64)

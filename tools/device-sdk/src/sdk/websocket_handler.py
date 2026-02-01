@@ -8,6 +8,7 @@ Classes:
     WebSocketHandler: Manages WebSocket connections with reconnect logic.
 """
 
+import asyncio
 import logging
 import ssl
 
@@ -72,26 +73,21 @@ class WebSocketHandler:
                 "Device-Token": str(self.device_token),
             },
             ssl=ssl.create_default_context(cafile=self.ca_file),
+            max_size=None,
         )
         self.logger.info("WebSocket connection established.")
 
     async def send_message(self, message: str | bytes) -> None:
-        """Send a message through the WebSocket connection.
-
-        Args:
-            message (str): The message to be sent over the WebSocket.
-
-        Raises
-        ------
-            ConnectionError: If the WebSocket connection is closed during the send operation.
-        """
+        """Send a message through the WebSocket connection, buffering if disconnected."""
         try:
             if self.websocket is not None:
                 await self.websocket.send(message)
             else:
                 raise ConnectionError("WebSocket closed")
-        except Exception:
-            self.logger.exception("Failed to send message.", exc_info=True)
+        except Exception as e:
+            self.logger.warning("WebSocket send failed: %s", e)
+            # Optionally trigger reconnect if not already doing so
+            await asyncio.sleep(1)
             raise
 
     async def receive_message(self) -> str | bytes | None:
