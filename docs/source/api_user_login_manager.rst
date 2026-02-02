@@ -1,24 +1,24 @@
 .. Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
    SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 
-MRI Sequences Manager
-=====================
+User Login Manager
+================
 
 Introduction
 ------------
 
-The MRI Sequence Manager API is designed to handle the creation, retrieval, modification, and deletion of MRI sequences within a medical imaging environment.
-Leveraging MongoDB for storage, this API provides a comprehensive set of endpoints to manage various aspects of MRI sequences. Below is an overview of the key endpoints:
+The User Login Manager API provided by ScanHub is specifically designed to manage user authentication and authorization within the system.
+It plays a crucial role in creating, updating, retrieving, and deleting user login sessions, as well as handling the uploading of results related to specific records. The key endpoints in this API are:
 
 Web API
 -------
 
-.. openapi:: ./_openapi/mri/sequences_openapi.json
+.. openapi:: ./_openapi/user_login_manager_openapi.json
 
 License
 -------
 
-MRI Sequence Manager, including all its source code and associated documentation (collectively, the "Software"), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.
+User Login Manager, including all its source code and associated documentation (collectively, the "Software"), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.
 
 Open Source License
 ~~~~~~~~~~~~~~~~~~~

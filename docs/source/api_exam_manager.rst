@@ -1,24 +1,24 @@
 .. Copyright (C) 2023, BRAIN-LINK UG (haftungsbeschränkt). All Rights Reserved.
    SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-ScanHub-Commercial
 
-MRI Acquisition Manager
-=======================
+Exam Manager
+============
 
 Introduction
 ------------
 
-The Acquisition Manager API provides a streamlined interface for managing the MRI acquisition process, bridging the gap between the scanning devices and the user-facing components.
-Its straightforward design ensures that the initiation and monitoring of scans are conducted efficiently and transparently, enhancing the overall workflow of medical imaging procedures.
+The Exam Manager API is designed to manage the complete lifecycle of exams, procedures, jobs, and records within the healthcare system.
+This comprehensive API allows users to perform essential operations on these entities and offers the following key endpoints:
 
 Web API
 -------
 
-.. openapi:: ./_openapi/mri/acquisition_openapi.json
+.. openapi:: ./_openapi/exam_manager_openapi.json
 
 License
 -------
 
-MRI Acquisition Manager, including all its source code and associated documentation (collectively, the "Software"), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.
+Exam Manager, including all its source code and associated documentation (collectively, the "Software"), is dual-licensed under the GNU General Public License version 3 (GPLv3) and the ScanHub commercial license.
 
 Open Source License
 ~~~~~~~~~~~~~~~~~~~
