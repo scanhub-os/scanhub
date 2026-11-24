@@ -15,10 +15,6 @@
     </a>
 </p>
 
-
-
-# About
-
 ScanHub is intended to be a multimodal acquisition software, which allows individualizable, modular and cloud-based processing of functional and anatomical medical images. 
 It seamlessly merges the acquisition with the processing of complex data on a single platform.
 ScanHub is open-source and freely available to anyone :earth_africa:.
@@ -152,7 +148,11 @@ Open the protocol, select the acquisition and click the play button to start the
 See our dedicated [Documentation](https://scanhub.brain-link.de/) web page to get insights into the structure of ScanHub, microservice APIs and more.
 
 
-### State of development
+## State of development
 
 This software is not yet ready for clinical use, it is work in progress.
 However, the integration with a research MRI device was successful, and the scanner could be operated remotely.
+
+## Acknowledgments
+
+This work was supported by project 22HLT02 A4IM which has received funding from the European Partnership on Metrology, co-financed from the European Union’s Horizon Europe Research and Innovation Programme and by the Participating states.
